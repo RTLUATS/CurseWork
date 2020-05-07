@@ -1,0 +1,27 @@
+﻿<Window x:Class="CurseWork.Economist"
+        ResizeMode="NoResize"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CurseWork" 
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        mc:Ignorable="d"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="16"
+        TextOptions.TextFormattingMode="Ideal"
+        TextOptions.TextRenderingMode="Auto"
+        Background="{DynamicResource MaterialDesignPaper}"
+        FontFamily="{DynamicResource MaterialDesignFont}"
+        Title="Economist" Height="650" Width="1000">
+    <Grid Background="Black">
+        <Frame Name="Frame" Margin="10,10,302,10"></Frame>
+        <Label Foreground="White" FontWeight="DemiBold" FontSize="17" Margin="695,488,143,88">Сумма рассходов:</Label>
+        <Label Foreground="White" FontWeight="DemiBold" FontSize="17" Margin="695,536,143,40">Сумма доходов:</Label>
+        <RadioButton Foreground="PaleGreen" Style="{StaticResource MaterialDesignDarkRadioButton}" Tag="True" Name="Foods" FontSize="16" Content="Доходы" Margin="815,58,10,536" Checked="Foods_Checked" ></RadioButton>
+        <RadioButton Foreground="PaleGreen" Style="{StaticResource MaterialDesignDarkRadioButton}" Tag="True" Name="Ingredients" FontSize="16" Content="Расходы" Margin="815,136,10,458" Checked="Ingredients_Checked"></RadioButton>
+        <TextBlock Name="Income" Margin="854,536,10,40"></TextBlock>
+        <TextBlock Name="Expenses" Margin="854,488,10,88"></TextBlock>
+    </Grid>
+</Window>

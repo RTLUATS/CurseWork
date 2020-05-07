@@ -1,0 +1,29 @@
+﻿<Window x:Class="CurseWork.ChefViewFood"
+        ResizeMode="NoResize"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CurseWork"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        mc:Ignorable="d"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="16"
+        TextOptions.TextFormattingMode="Ideal"
+        TextOptions.TextRenderingMode="Auto"
+        Background="{DynamicResource MaterialDesignPaper}"
+        FontFamily="{DynamicResource MaterialDesignFont}"
+        Title="Food" Height="450" Width="800">
+    <Grid Background="Black">
+        <Image Name="Image" Margin="10,10,376,219"></Image>
+        <TextBox Foreground="PaleGreen" FontSize="16" Name="Description" SpellCheck.IsEnabled="True" materialDesign:HintAssist.Hint="Описание..." Margin="10,242,542,10"/>
+        <TextBox Foreground="PaleGreen" FontSize="16" Name="Structure" SpellCheck.IsEnabled="True" materialDesign:HintAssist.Hint="Состав..." Margin="276,242,276,10"/>
+        <TextBox Foreground="PaleGreen" FontSize="16" Name="Recept" SpellCheck.IsEnabled="True"  materialDesign:HintAssist.Hint="Рецепт..." Margin="542,242,10,10"/>
+        <TextBox Foreground="PaleGreen" FontSize="16" Name="Name" SpellCheck.IsEnabled="True"  materialDesign:HintAssist.Hint="Наименование..." Margin="431,87,209,290"/>
+        <TextBox Foreground="PaleGreen" FontSize="16" Name="Category" SpellCheck.IsEnabled="True"  materialDesign:HintAssist.Hint="Категория..." Margin="431,167,209,213"/>
+        <Button Foreground="White" FontWeight="DemiBold" FontSize="14" Name="ChangeImage" Content="Выбрать картинку" Margin="431,10,189,370" Click="ChangeImage_Click" Height="Auto"></Button>
+        <Button Foreground="White" FontWeight="DemiBold" FontSize="14" Name="AddFood" Content="Добавить в меню" Margin="612,167,10,213" Click="AddFood_Click" Height="Auto"></Button>
+        <Button Foreground="White" FontWeight="DemiBold" FontSize="14" Name="SaveChange" Content="Сохранить измения" Margin="612,117,10,263" Click="SaveChange_Click" Height="Auto"></Button>
+    </Grid>
+</Window>

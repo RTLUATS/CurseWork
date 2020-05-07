@@ -1,0 +1,29 @@
+﻿<Window x:Class="CurseWork.UserViewFood"
+        ResizeMode="NoResize"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CurseWork"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        mc:Ignorable="d"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="16"
+        TextOptions.TextFormattingMode="Ideal"
+        TextOptions.TextRenderingMode="Auto"
+        Background="{DynamicResource MaterialDesignPaper}"
+        FontFamily="{DynamicResource MaterialDesignFont}"
+        Title="Food" Height="450" Width="800">
+    <Grid Background="Black">
+        <Image Name="foodImage" Margin="10,10,376,217"></Image>
+        <Label Foreground="White" FontWeight="DemiBold" FontSize="24" VerticalAlignment="Center" Margin="0,225,642,152" Height="42">Описание :</Label>
+        <Label Foreground="White" FontWeight="DemiBold" FontSize="24" VerticalAlignment="Center" Margin="443,10,251,367" Height="42">Состав:</Label>
+        <Label Foreground="White" FontWeight="DemiBold" FontSize="24" VerticalAlignment="Center" Margin="582,230,60,147" Height="42" Content="Цена :"/>
+        <TextBlock Foreground="White" FontWeight="DemiBold" FontSize="16" Name="foodDescription" VerticalAlignment="Center" Margin="10,272,354,10" Height="137"/>
+        <TextBlock Foreground="White" FontWeight="DemiBold" FontSize="16" Name="foodStruct" VerticalAlignment="Center" Margin="443,57,10,199" Height="163"/>
+        <Button Name="addToBasket" Foreground="White" FontWeight="DemiBold" FontSize="15" Content="Добавить в корзину" Margin="582,355,10,20" Click="AddToBasket_Click" Height="Auto"/>
+        <TextBlock Foreground="White" FontWeight="DemiBold" FontSize="16" Name="Price" VerticalAlignment="Center" Margin="582,272,60,103" Height="44"/>
+    </Grid>
+</Window>
+

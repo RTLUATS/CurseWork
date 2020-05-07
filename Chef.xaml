@@ -1,0 +1,37 @@
+﻿<Window x:Class="CurseWork.Chef"
+        ResizeMode="NoResize"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CurseWork"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        mc:Ignorable="d"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="16"
+        TextOptions.TextFormattingMode="Ideal"
+        TextOptions.TextRenderingMode="Auto"
+        Background="{DynamicResource MaterialDesignPaper}"
+        FontFamily="{DynamicResource MaterialDesignFont}"
+        Title="Chef" Height="450" Width="800">
+    <Grid Background="Black">
+
+        <ListBox Visibility="Hidden" IsEnabled="False" Name="Menu" Margin="10,10,289,10"/>
+        <DataGrid Margin="10,10,289,10">
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding Path=Name}" IsReadOnly="True" Header="Название"/>
+                <DataGridTextColumn Binding="{Binding Path=Count}" IsReadOnly="True" Header="Имеющееся количество"/>
+                <DataGridTextColumn Binding="{Binding Path=AddtionalCount}" IsReadOnly="False" Header="Сколько докупить">
+                    
+                </DataGridTextColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+        <StackPanel Margin="539,10,10,10">
+            <Button Foreground="White" FontWeight="DemiBold" FontSize="16" Name="AddFood" Margin="10" Content="Добавить блюдо" Click="AddFood_Click"/>
+            <Button Foreground="White" FontWeight="DemiBold" FontSize="16" Name="AllFood" Margin="10" Content="Посмтреть все блюда"  IsEnabled="False" Click="AllFood_Click"/>
+            <Button Foreground="White" FontWeight="DemiBold" FontSize="11" Name="Querty"  Margin="10" ToolTip="Запрос необходимых ингредиентов" Content="Запрос необходимых ингредиентов"  IsEnabled="True" Click="Querty_Click"/>
+            <Button Foreground="White" FontWeight="DemiBold" FontSize="16" Name="QuertyExecute" Margin="10" IsEnabled="False" Content="Сделать запрос" />
+        </StackPanel>
+    </Grid>
+</Window>

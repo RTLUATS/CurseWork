@@ -1,0 +1,42 @@
+﻿<Window x:Class="CurseWork.Basket"
+        ResizeMode="NoResize"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CurseWork"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        mc:Ignorable="d"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="16"
+        TextOptions.TextFormattingMode="Ideal"
+        TextOptions.TextRenderingMode="Auto"
+        Background="{DynamicResource MaterialDesignPaper}"
+        FontFamily="{DynamicResource MaterialDesignFont}"
+        Title="Basket" Height="600" Width="800">
+    <Grid Background="Black">
+        <DataGrid Name="BasketTable" Margin="0,10,481,10">
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding Path=Num}"  Header="Номер" Width="*"/>
+                <DataGridTextColumn Binding="{Binding Path=Name}"  Header="Название" Width="*"/>
+                <DataGridTextColumn Binding="{Binding Path=Price}"  Header="Цена" Width="*"/>
+            </DataGrid.Columns>
+            <DataGrid.Resources>
+                <Style TargetType="DataGridColumnHeader">
+                    <Setter Property="Background" Value="Black"/>
+                    <Setter Property="Foreground" Value="White"/>
+                </Style>
+            </DataGrid.Resources>
+        </DataGrid>
+        <Label Foreground="White" FontWeight="DemiBold" FontSize="24" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="643,0,11,0" Width="140">Итог:</Label>
+        <TextBlock FontWeight="DemiBold" Foreground="White" FontSize="24" Name="AllSum" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="628,42,11,0" Width="155" Height="51"/>
+        <TextBox FontWeight="DemiBold" Foreground="PaleGreen" materialDesign:HintAssist.Hint="Введите через пробел номера блюда" Name="Delete" FontSize="15" Margin="318,58,196,478" Width="280" Height="35"/>
+        <TextBox FontWeight="DemiBold" Foreground="PaleGreen" materialDesign:HintAssist.Hint="Фамилия" Name="MiddleName" Margin="318,194,196,338"/>
+        <TextBox FontWeight="DemiBold" Foreground="PaleGreen" materialDesign:HintAssist.Hint="Имя" Name="FirstName" Margin="318,259,196,273"/>
+        <TextBox FontWeight="DemiBold" Foreground="PaleGreen" materialDesign:HintAssist.Hint="Отчество" Name="LastName" Margin="318,332,196,200"/>
+        <TextBox FontWeight="DemiBold" Foreground="PaleGreen" materialDesign:HintAssist.Hint="Телефон" Name="Telephone"  materialDesign:TransitionAssist.DisableTransitions="True" Margin="318,419,196,113"/>
+        <Button FontWeight="DemiBold" Name="DeleteFromBasket" Foreground="White" FontSize="16" Content="Убрать из корзины" Margin="318,101,196,428" Click="DeleteFromBasket_Click" Height="Auto"/>
+        <Button FontWeight="DemiBold" Name="Buy" Foreground="White" Content="Покупка" Margin="628,101,10,428" Click="Buy_Click" IsEnabled="False" Height="Auto"/>
+    </Grid>
+</Window>
