@@ -1,8 +1,10 @@
-﻿using System;
+﻿using MSharp.Framework.Services.Globalization;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.UI;
 
 namespace CurseWork
 {
@@ -25,6 +27,8 @@ namespace CurseWork
         public string Telephone { get; set; }
 
         public virtual ICollection<OrderList> OrderLists { get; set; }
+
+        public virtual ICollection<Inquiry> Inquiries { get; set; }
 
     }
 }

@@ -20,8 +20,6 @@ namespace CurseWork
 
         public decimal CurrentPrice { get; set; }
 
-        public string Recept { get; set; }
-
         public byte[] Image { get; set; }
 
         public bool? InMenu { get; set; }

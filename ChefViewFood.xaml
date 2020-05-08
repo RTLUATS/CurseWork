@@ -5,6 +5,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CurseWork"
+        xmlns:col="clr-namespace:System.Collections;assembly=mscorlib"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
@@ -17,9 +19,21 @@
         Title="Food" Height="450" Width="800">
     <Grid Background="Black">
         <Image Name="Image" Margin="10,10,376,219"></Image>
-        <TextBox Foreground="PaleGreen" FontSize="16" Name="Description" SpellCheck.IsEnabled="True" materialDesign:HintAssist.Hint="Описание..." Margin="10,242,542,10"/>
-        <TextBox Foreground="PaleGreen" FontSize="16" Name="Structure" SpellCheck.IsEnabled="True" materialDesign:HintAssist.Hint="Состав..." Margin="276,242,276,10"/>
-        <TextBox Foreground="PaleGreen" FontSize="16" Name="Recept" SpellCheck.IsEnabled="True"  materialDesign:HintAssist.Hint="Рецепт..." Margin="542,242,10,10"/>
+        <DataGrid Name="Table" Margin="10,242,10,10" CanUserResizeColumns="False" AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Binding="{Binding Path=IngredientName, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" Header="Наименование ингредиента" ToolTipService.ToolTip="Здесь должно быть наименование ингредиента" />
+                <DataGridTextColumn Binding="{Binding Path=Weight, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" Header="Колличество в блюде" ToolTipService.ToolTip="Если у вас в блюде используется 300 грамм булочки, то вы заносите в таблицу как 0.3 киллограмм, если нпиток то сколько литров напитка например: 0.5 литров"/>
+                <DataGridComboBoxColumn Header="В чём измеряется" SelectedValueBinding="{Binding Path=Unit}">
+                    <DataGridComboBoxColumn.ItemsSource>
+                        <col:ArrayList>
+                            <sys:String>Литры</sys:String>
+                            <sys:String>Килограммы</sys:String>
+                        </col:ArrayList>
+                    </DataGridComboBoxColumn.ItemsSource>
+                </DataGridComboBoxColumn>
+                <DataGridTextColumn Binding="{Binding Path=CookingSteps}" Header="Действия при приготовлении"/>
+            </DataGrid.Columns>
+        </DataGrid>
         <TextBox Foreground="PaleGreen" FontSize="16" Name="Name" SpellCheck.IsEnabled="True"  materialDesign:HintAssist.Hint="Наименование..." Margin="431,87,209,290"/>
         <TextBox Foreground="PaleGreen" FontSize="16" Name="Category" SpellCheck.IsEnabled="True"  materialDesign:HintAssist.Hint="Категория..." Margin="431,167,209,213"/>
         <Button Foreground="White" FontWeight="DemiBold" FontSize="14" Name="ChangeImage" Content="Выбрать картинку" Margin="431,10,189,370" Click="ChangeImage_Click" Height="Auto"></Button>

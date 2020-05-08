@@ -7,7 +7,7 @@ using System.Data.Entity;
 
 namespace CurseWork
 {
-    class MSSQLContext : DbContext
+    public class MSSQLContext : DbContext
     {
         public MSSQLContext() : base("MSSQL") { }
 
@@ -26,5 +26,7 @@ namespace CurseWork
         public DbSet<Ingredient> Ingredients { get; set; }
 
         public DbSet<PurchaseIngredient> PurchaseIngredients { get; set; }
+
+        public DbSet<Inquiry> Inquiries { get; set; }
     }
 }

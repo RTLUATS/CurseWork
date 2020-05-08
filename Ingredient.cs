@@ -15,9 +15,13 @@ namespace CurseWork
         public int Count { get; set; }
 
         public decimal? Price { get; set; }
+
+        public string Unit { get; set; }
         
         public virtual ICollection<Structure> Structures { get; set; }
 
         public virtual ICollection<PurchaseIngredient> purchaseIngredients { get; set; }
+
+        public virtual ICollection<Inquiry> Inquiries { get; set; }
     }
 }

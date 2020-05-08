@@ -17,51 +17,23 @@ namespace CurseWork
 {
     /// <summary>
     /// Interaction logic for ChefViewFood.xaml
-    /// </summary>
+    /// </summary> 
+
     public partial class ChefViewFood : Window
     {
         private Food food;
+        private List<IngredientsModel> model;
 
         public ChefViewFood(Food food = null)
         {
             InitializeComponent();
+
+            model = new List<IngredientsModel>();
+            
             if (food != null)
             {
                 this.food = food;
-                AddFood.IsEnabled = false;
-                AddFood.Visibility = Visibility.Hidden;
-                /*
-                using (var ms = new MemoryStream(food.Image))
-                {
-                    var image = new BitmapImage();
-
-                    image.BeginInit();
-                    image.CacheOption = BitmapCacheOption.OnLoad;
-                    image.StreamSource = ms;
-                    image.EndInit();
-                    Image.Source = image;
-                }
-                */
-
-                List<Structure> structuries;
-
-                using (var context = new MSSQLContext())
-                {
-
-                    Name.Text = food.Name;
-                    Category.Text = context.Categories.First(c => c.Id == food.CategoryId).Name;
-                    Recept.Text = food.Recept;
-                    Description.Text = food.Description;
-                    structuries = context.Database.SqlQuery<Structure>($"select *  from Structures where FoodId={food.Id}").ToList();
-
-
-                    foreach (var structure in structuries)
-                    {
-                        Structure.Text += context.Ingredients.First(i => i.Id == structure.IngredientId).Name + ",";
-                    }
-                }
-
-                Structure.Text = Structure.Text.TrimEnd(new char[] { ',' });
+                LoadFood();
             }
             else
             {
@@ -70,6 +42,43 @@ namespace CurseWork
             }
 
         }
+
+        private void LoadFood()
+        {
+            foreach(var item in food.Structures)
+            {
+                model.Add(new IngredientsModel() 
+                { 
+                    CookingStep = item.CookingStep,
+                    Unit = item.Ingredients.First(i => i.Id == item.IngredientId).Unit,
+                    Weight = item.Quntity,
+                    IngredientName = item.Ingredients.First(i => i.Id == item.IngredientId).Name
+                });
+            }
+
+            Table.ItemsSource = model;
+            AddFood.IsEnabled = false;
+            AddFood.Visibility = Visibility.Hidden;
+            Name.Text = food.Name;
+            Category.Text = food.Category.Name;
+
+            LoadImage();
+        }
+
+        private void LoadImage()
+        {
+            using (var ms = new MemoryStream(food.Image))
+            {
+                var image = new BitmapImage();
+
+                image.BeginInit();
+                image.CacheOption = BitmapCacheOption.OnLoad;
+                image.StreamSource = ms;
+                image.EndInit();
+                Image.Source = image;
+            }
+        }
+
 
         private void ChangeImage_Click(object sender, RoutedEventArgs e)
         {
@@ -108,14 +117,11 @@ namespace CurseWork
             using (var context = new MSSQLContext())
             {
 
-                food = context.Foods.FirstOrDefault(f => f.Id == food.Id);
-
+                food = context.Foods.First(f => f.Id == food.Id);
                 food.Name = Name.Text;
                 food.Image = bits;
-                food.Recept = Recept.Text;
-                food.Description = Description.Text;
-
-                var category = context.Categories.FirstOrDefault(c => c.Name == Category.Text);
+                
+                var category = context.Categories.First(c => c.Name.ToLower() == Category.Text.ToLower());
 
                 if (category == null)
                 {
@@ -128,14 +134,51 @@ namespace CurseWork
                     context.SaveChanges();
 
                     food.CategoryId = newCategory.Id;
-
                 }
                 else
-                {
                     food.CategoryId = category.Id;
-                }
 
-                var str = Structure.Text.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                foreach(var item in model)
+                {
+                    var ingredient = context.Ingredients.FirstOrDefault(i => i.Name == item.IngredientName);
+
+                    if( ingredient == null)
+                    {
+                        ingredient = new Ingredient() { Count = 0, Name = item.IngredientName, Price = 0, Unit = item.Unit };
+
+                        context.Ingredients.Add(ingredient);
+                        context.SaveChanges();
+
+                        var structure = new Structure() { IngredientId = ingredient.Id, FoodId = food.Id, Quntity = item.Weight, CookingStep = item.CookingStep };
+
+                        context.Structures.Add(structure);
+                        context.SaveChanges();
+                    }
+                    else
+                    {
+                        var structure = context.Structures.FirstOrDefault(s => s.FoodId == food.Id && s.IngredientId == ingredient.Id);
+
+                        if(structure == null)
+                        {
+                            structure = new Structure() { IngredientId = ingredient.Id, FoodId = food.Id, Quntity = item.Weight, CookingStep = item.CookingStep };
+
+                            context.Structures.Add(structure);
+                            context.SaveChanges();
+                        }
+                        else
+                        {
+                            structure.CookingStep = item.CookingStep;
+                            structure.Quntity = item.Weight;
+
+                            context.SaveChanges();
+                        }
+                    }
+
+
+                }
+                
+
+               /* var str = Structure.Text.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
                 var ingredients = new List<Ingredient>();
 
                 foreach (var ingredient in str)
@@ -172,6 +215,7 @@ namespace CurseWork
 
                 context.Structures.AddRange(list);
                 context.SaveChanges();
+            */
             }
         }
 
@@ -258,8 +302,8 @@ namespace CurseWork
                 {
                     Image = bits,
                     Name = Name.Text,
-                    Description = Description.Text,
-                    Recept = Recept.Text,
+                 //   Description = Description.Text,
+                 //   Recept = Recept.Text,
                     InMenu = false,
                     CurrentPrice = 0,
                 };
@@ -286,7 +330,7 @@ namespace CurseWork
                 context.Foods.Add(newFood);
                 context.SaveChanges();
 
-                var str = Structure.Text.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                /*var str = Structure.Text.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
                 var ingredients = new List<Ingredient>();
 
                 foreach (var ingredient in str)
@@ -317,6 +361,7 @@ namespace CurseWork
 
                 context.Structures.AddRange(list);
                 context.SaveChanges();
+                */
             }
         }
 

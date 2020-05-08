@@ -17,6 +17,10 @@ namespace CurseWork
         [Key, Column(Order = 2)]
         public int IngredientId { get; set; }
 
+        public decimal  Quntity { get; set; }
+
+        public string CookingStep { get; set; }
+
         public virtual ICollection<Food> Foods { get; set; }
 
         public virtual ICollection<Ingredient> Ingredients { get; set; }

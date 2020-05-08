@@ -16,11 +16,11 @@
         FontFamily="{DynamicResource MaterialDesignFont}"
         Title="Basket" Height="600" Width="800">
     <Grid Background="Black">
-        <DataGrid Name="BasketTable" Margin="0,10,481,10">
+        <DataGrid Background="Black" Name="BasketTable" Margin="10,10,481,10" AutoGenerateColumns="False">
             <DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding Path=Num}"  Header="Номер" Width="*"/>
-                <DataGridTextColumn Binding="{Binding Path=Name}"  Header="Название" Width="*"/>
-                <DataGridTextColumn Binding="{Binding Path=Price}"  Header="Цена" Width="*"/>
+                <DataGridTextColumn Binding="{Binding Path=Num}" IsReadOnly="True" Header="Номер" Width="*"/>
+                <DataGridTextColumn Binding="{Binding Path=Name}" IsReadOnly="True" Header="Название" Width="*"/>
+                <DataGridTextColumn Binding="{Binding Path=Price}" IsReadOnly="True" Header="Цена" Width="*"/>
             </DataGrid.Columns>
             <DataGrid.Resources>
                 <Style TargetType="DataGridColumnHeader">
@@ -28,6 +28,12 @@
                     <Setter Property="Foreground" Value="White"/>
                 </Style>
             </DataGrid.Resources>
+            <DataGrid.CellStyle>
+                <Style TargetType="DataGridCell">
+                    <Setter Property="Foreground" Value="White"/>
+                    <Setter Property="Background" Value="Black"/>
+                </Style>
+            </DataGrid.CellStyle>
         </DataGrid>
         <Label Foreground="White" FontWeight="DemiBold" FontSize="24" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="643,0,11,0" Width="140">Итог:</Label>
         <TextBlock FontWeight="DemiBold" Foreground="White" FontSize="24" Name="AllSum" VerticalAlignment="Top" HorizontalAlignment="Center" Margin="628,42,11,0" Width="155" Height="51"/>

@@ -17,21 +17,20 @@
         Title="Chef" Height="450" Width="800">
     <Grid Background="Black">
 
-        <ListBox Visibility="Hidden" IsEnabled="False" Name="Menu" Margin="10,10,289,10"/>
-        <DataGrid Margin="10,10,289,10">
+        <ListBox Name="Menu" Margin="10,10,289,10"/>
+        <DataGrid Visibility="Hidden" IsEnabled="False" Name="Table" AutoGenerateColumns="False" Margin="10,10,260,10">
             <DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding Path=Name}" IsReadOnly="True" Header="Название"/>
-                <DataGridTextColumn Binding="{Binding Path=Count}" IsReadOnly="True" Header="Имеющееся количество"/>
-                <DataGridTextColumn Binding="{Binding Path=AddtionalCount}" IsReadOnly="False" Header="Сколько докупить">
-                    
-                </DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding Path=Name}" IsReadOnly="True" Header="Название" Width="*"/>
+                <DataGridTextColumn Binding="{Binding Path=Count}" IsReadOnly="True" Header="Сколько есть" Width="*"/>
+                <DataGridTextColumn Binding="{Binding Path=Unit}" IsReadOnly="True" Header="Единица измерения" Width="*"/>
+                <DataGridTextColumn Binding="{Binding Path=AddtionalCount, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="False" Header="Сколько докупить" Width="*"/>
             </DataGrid.Columns>
         </DataGrid>
         <StackPanel Margin="539,10,10,10">
             <Button Foreground="White" FontWeight="DemiBold" FontSize="16" Name="AddFood" Margin="10" Content="Добавить блюдо" Click="AddFood_Click"/>
             <Button Foreground="White" FontWeight="DemiBold" FontSize="16" Name="AllFood" Margin="10" Content="Посмтреть все блюда"  IsEnabled="False" Click="AllFood_Click"/>
-            <Button Foreground="White" FontWeight="DemiBold" FontSize="11" Name="Querty"  Margin="10" ToolTip="Запрос необходимых ингредиентов" Content="Запрос необходимых ингредиентов"  IsEnabled="True" Click="Querty_Click"/>
-            <Button Foreground="White" FontWeight="DemiBold" FontSize="16" Name="QuertyExecute" Margin="10" IsEnabled="False" Content="Сделать запрос" />
+            <Button Foreground="White" FontWeight="DemiBold" FontSize="11" Name="Inquiry"  Margin="10" ToolTip="Запрос необходимых ингредиентов" Content="Запрос необходимых ингредиентов"  IsEnabled="True" Click="Inquiry_Click"/>
+            <Button Foreground="White" FontWeight="DemiBold" FontSize="16" Name="InquiryExecute" Margin="10" IsEnabled="False" Content="Сделать запрос" Click="InquiryExecute_Click" />
         </StackPanel>
     </Grid>
 </Window>

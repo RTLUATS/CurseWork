@@ -34,7 +34,6 @@ namespace CurseWork
             {
                 foodInBasket = foods;
                 BasketTable.ItemsSource = foods;
-                
                 this.button = button;
                 user = currentUser;
                 AllSum.Text = foods.Sum(f => f.Price).ToString();

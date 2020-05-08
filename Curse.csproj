@@ -238,6 +238,7 @@
     <Compile Include="ChefViewFood.xaml.cs">
       <DependentUpon>ChefViewFood.xaml</DependentUpon>
     </Compile>
+    <Compile Include="EnumDescriptionTypeConverter.cs" />
     <Compile Include="IncomeChart.xaml.cs">
       <DependentUpon>IncomeChart.xaml</DependentUpon>
     </Compile>
@@ -248,6 +249,8 @@
       <DependentUpon>ExpenseChart.xaml</DependentUpon>
     </Compile>
     <Compile Include="Food.cs" />
+    <Compile Include="IngredientsModel.cs" />
+    <Compile Include="Inquiry.cs" />
     <Compile Include="Manager.xaml.cs">
       <DependentUpon>Manager.xaml</DependentUpon>
     </Compile>
@@ -261,6 +264,7 @@
       <DependentUpon>ManagerViewUsers.xaml</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="ObservableObject.cs" />
     <Compile Include="PurchaseIngredient.cs" />
     <Compile Include="RequestIngredientsModel.cs" />
     <Compile Include="UserViewFood.xaml.cs">
