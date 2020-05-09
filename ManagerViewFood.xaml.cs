@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore.Internal;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -43,29 +44,35 @@ namespace CurseWork
             {
                 NameFood.Text = food.Name;
                 Category.Text = context.Categories.First(c=>c.Id== food.CategoryId).Name ;
-                Price.Text = ((food.CurrentPrice == null) ? 0 : food.CurrentPrice).ToString();
+                Price.Text = food.CurrentPrice.ToString();
                 InMenu.IsChecked = food.InMenu;
                 Description.Text = food.Description;
-                Recept.Text = food.Recept;
                 this.food = food;
 
                 var structures = context.Structures.Where(s => s.FoodId == food.Id).ToList();
 
                 foreach (var currentStructure in structures)
                 {
-                    Ingredients.Text += context.Ingredients.First(i => i.Id == currentStructure.IngredientId).Name + ",";
+                    Ingredients.Text += context.Ingredients.First(i => i.Id == currentStructure.IngredientId).Name + " ,";
+                   
+                    if(structures.IndexOf(currentStructure) == structures.Count)
+                        Ingredients.Text += context.Ingredients.First(i => i.Id == currentStructure.IngredientId).Name + ".";
                 }
             }
-
-            Ingredients.Text.TrimEnd(new char[]{','});
         }
 
         private void Save_Click(object sender, RoutedEventArgs e)
         {
 
-            if (Regex.IsMatch(Price.Text, "^(0-9)+([.][0-9]+)*$"))
+            if (!Regex.IsMatch(Price.Text, "^(0-9)+([.][0-9]{1,3}){0,1}$"))
             {
-                MessageBox.Show("Цена должна быть числом. Пример: 12");
+                MessageBox.Show("Цена должна быть числом. Пример: 1.1");
+                return;
+            }
+
+            if (Description.Text.Trim().IsEmpty())
+            {
+                MessageBox.Show("Описание не может быть пустым");
                 return;
             }
 

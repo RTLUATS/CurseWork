@@ -127,7 +127,6 @@ namespace CurseWork
             var allCategories = new Button()
             {
                 Name = "AllCategories",
-                IsEnabled = true,
                 Margin = new Thickness(10),
                 Content = "Все категории",
                 FontSize = 16,
@@ -142,8 +141,7 @@ namespace CurseWork
             {
                 var button = new Button()
                 {
-                    Name = "Name" + category.Id.ToString(),
-                    IsEnabled = true,
+                    Name = "Name" + category.Id,
                     Content = $"{category.Name}",
                     FontWeight = FontWeights.DemiBold,
                     FontSize = 16,

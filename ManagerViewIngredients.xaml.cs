@@ -38,7 +38,7 @@ namespace CurseWork
                 return;
             }
 
-            if (!Regex.IsMatch(IngredientPrice.Text, "^([0-9]+)(([.][0-9]){0,2})$"))
+            if (!Regex.IsMatch(IngredientPrice.Text, "^([0-9]+)([.][0-9]{1,3})$"))
             {
                 MessageBox.Show("Введите дробное число, по какой цене купим 1 штуку товара. Пример: 10.22");
                 return;

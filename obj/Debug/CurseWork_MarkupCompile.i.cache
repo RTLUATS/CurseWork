@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 C:\Users\jtmotn\source\repos\CurseWork\App.xaml
-14452090436
+1685768461
 
-351276867631
+37-208026203
 169-1054748516
-Authorization.xaml;Basket.xaml;Chef.xaml;ChefViewFood.xaml;IncomeChart.xaml;Economist.xaml;ExpenseChart.xaml;MainWindow.xaml;Manager.xaml;ManagerViewFood.xaml;ManagerViewIngredients.xaml;ManagerViewUsers.xaml;UserViewFood.xaml;Registration.xaml;
+Administrator.xaml;Authorization.xaml;Basket.xaml;Chef.xaml;ChefViewFood.xaml;Director.xaml;IncomeChart.xaml;Economist.xaml;ExpenseChart.xaml;MainWindow.xaml;Manager.xaml;ManagerViewFood.xaml;ManagerViewIngredients.xaml;ManagerViewUsers.xaml;UserViewFood.xaml;Registration.xaml;
 
 True
 

@@ -14,7 +14,7 @@ namespace CurseWork
 
         public decimal Price { get; set; }
 
-        public int Count { get; set; }
+        public decimal Count { get; set; }
 
         public DateTime DateOfPurchase { get; set; }
 

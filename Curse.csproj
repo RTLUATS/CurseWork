@@ -227,6 +227,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Administrator.xaml.cs">
+      <DependentUpon>Administrator.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Basket.xaml.cs">
       <DependentUpon>Basket.xaml</DependentUpon>
     </Compile>
@@ -237,6 +240,9 @@
     </Compile>
     <Compile Include="ChefViewFood.xaml.cs">
       <DependentUpon>ChefViewFood.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Director.xaml.cs">
+      <DependentUpon>Director.xaml</DependentUpon>
     </Compile>
     <Compile Include="EnumDescriptionTypeConverter.cs" />
     <Compile Include="IncomeChart.xaml.cs">
@@ -278,6 +284,10 @@
     </Compile>
     <Compile Include="Structure.cs" />
     <Compile Include="User.cs" />
+    <Page Include="Administrator.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Authorization.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -291,6 +301,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ChefViewFood.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Director.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -20,15 +20,13 @@
         <Label Foreground="White" FontWeight="DemiBold" Margin="442,10,227,376" FontSize="16">Наименование:</Label>
         <Label Foreground="White" FontWeight="DemiBold" FontSize="16" Margin="442,50,257,336">Категория:</Label>
         <Label Foreground="White" FontWeight="DemiBold" Margin="10,214,691,170" FontSize="16">Описание:</Label>
-        <Label Foreground="White" FontWeight="DemiBold" Margin="278,214,423,170" FontSize="16" Content="Рецепт:"/>
         <Label Foreground="White" FontWeight="DemiBold" Margin="542,214,132,170" FontSize="16" Content="Ингредиенты:"/>
         <TextBlock FontWeight="DemiBold" Foreground="White" FontSize="16" Name="NameFood" Margin="588,10,45,376"/>
         <TextBlock FontWeight="DemiBold" Foreground="White" FontSize="16" Name="Category" Margin="588,50,45,336"/>
-        <TextBlock FontWeight="DemiBold" Foreground="White" FontSize="16" Name="Description" Margin="10,254,542,10"/>
-        <TextBlock FontWeight="DemiBold" Foreground="White" FontSize="16" Name="Recept" Margin="278,254,274,10"/>
         <TextBlock FontWeight="DemiBold" Foreground="White" FontSize="16" Name="Ingredients" Margin="542,254,10,10"/>
-        <CheckBox  Foreground="PaleGreen" FontWeight="DemiBold" Name="InMenu" Margin="442,153,227,238" FontSize="16"  Content="Есть в меню?"></CheckBox>
-        <TextBox Foreground="PaleGreen" FontWeight="DemiBold" FontSize="16" Name="Price" materialDesign:HintAssist.Hint="Цена..." Margin="588,93,45,290"></TextBox>
-        <Button Name="Save" FontSize="15" Foreground="White"  Content="Сохранить измениния" Margin="588,136,10,238" Click="Save_Click" Height="Auto"></Button>
+        <CheckBox  Foreground="PaleGreen" FontWeight="DemiBold" Name="InMenu" Margin="442,153,227,238" FontSize="16"  Content="Есть в меню?"/>
+        <TextBox Foreground="PaleGreen" FontWeight="DemiBold" FontSize="16" Name="Price" materialDesign:HintAssist.Hint="Цена..." Margin="588,93,45,290"/>
+        <TextBox FontWeight="DemiBold" Foreground="PaleGreen" FontSize="16" Name="Description"  materialDesign:HintAssist.Hint="Описание..." Margin="10,254,542,10"/>
+        <Button Name="Save" FontSize="15" Foreground="White"  Content="Сохранить измениния" Margin="588,136,10,238" Click="Save_Click" Height="Auto"/>
     </Grid>
 </Window>

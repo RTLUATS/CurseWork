@@ -12,7 +12,7 @@ namespace CurseWork
 
         public string Name { get; set; }
 
-        public int Count { get; set; }
+        public decimal Count { get; set; }
 
         public decimal? Price { get; set; }
 

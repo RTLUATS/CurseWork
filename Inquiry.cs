@@ -18,8 +18,6 @@ namespace CurseWork
 
         public decimal ExpectedQuantity { get; set; }
 
-        public bool IsCompleted { get; set; }
-
         public virtual ICollection<Ingredient> Ingredients { get; set; }
 
     }

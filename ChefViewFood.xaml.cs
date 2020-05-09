@@ -138,7 +138,9 @@ namespace CurseWork
                 else
                     food.CategoryId = category.Id;
 
-                foreach(var item in model)
+                var structures = context.Structures.Where(s => s.FoodId == food.Id).ToList();
+
+                foreach (var item in model)
                 {
                     var ingredient = context.Ingredients.FirstOrDefault(i => i.Name == item.IngredientName);
 
@@ -169,53 +171,15 @@ namespace CurseWork
                         {
                             structure.CookingStep = item.CookingStep;
                             structure.Quntity = item.Weight;
+                            structures.Remove(structures.First(s => s.FoodId == food.Id && s.IngredientId == ingredient.Id));
 
                             context.SaveChanges();
                         }
                     }
-
-
                 }
-                
-
-               /* var str = Structure.Text.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-                var ingredients = new List<Ingredient>();
-
-                foreach (var ingredient in str)
-                {
-                    var curIngredient = context.Ingredients.FirstOrDefault(i => i.Name == ingredient);
-
-                    if (curIngredient == null)
-                    {
-                        var newIngredient = new Ingredient()
-                        {
-                            Name = ingredient,
-                            Count = 0,
-                            Price = 0,
-                        };
-
-                        context.Ingredients.Add(newIngredient);
-                        context.SaveChanges();
-
-                        ingredients.Add(newIngredient);
-                    }
-                    else
-                    {
-                        ingredients.Add(curIngredient);
-                    }
-                }
-
-
-
-                var structures = context.Structures.Where(s => s.FoodId == food.Id);
 
                 context.Structures.RemoveRange(structures);
-
-                var list = ingredients.Select(ingredient => new Structure() { FoodId = food.Id, IngredientId = ingredient.Id }).ToList();
-
-                context.Structures.AddRange(list);
                 context.SaveChanges();
-            */
             }
         }
 
@@ -302,13 +266,11 @@ namespace CurseWork
                 {
                     Image = bits,
                     Name = Name.Text,
-                 //   Description = Description.Text,
-                 //   Recept = Recept.Text,
                     InMenu = false,
                     CurrentPrice = 0,
                 };
 
-                var category = context.Categories.FirstOrDefault(c => c.Name == Category.Text);
+                var category = context.Categories.FirstOrDefault(c => c.Name.ToLower() == Category.Text.ToLower());
 
                 if (category == null)
                 {
@@ -323,45 +285,39 @@ namespace CurseWork
                     newFood.CategoryId = newCategory.Id;
                 }
                 else
-                {
                     newFood.CategoryId = category.Id;
-                }
 
                 context.Foods.Add(newFood);
                 context.SaveChanges();
 
-                /*var str = Structure.Text.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-                var ingredients = new List<Ingredient>();
-
-                foreach (var ingredient in str)
+                foreach (var item in model)
                 {
-                    var curIngredient = context.Ingredients.FirstOrDefault(i => i.Name == ingredient);
+                    var ingredient = context.Ingredients.FirstOrDefault(i => i.Name == item.IngredientName);
 
-                    if (curIngredient == null)
+                    if (ingredient == null)
                     {
-                        var newIngredient = new Ingredient()
-                        {
-                            Name = ingredient,
-                            Count = 0,
-                            Price = 0,
-                        };
+                        ingredient = new Ingredient() { Count = 0, Name = item.IngredientName, Price = 0, Unit = item.Unit };
 
-                        ingredients.Add(newIngredient);
+                        context.Ingredients.Add(ingredient);
                         context.SaveChanges();
 
+                        var structure = new Structure() { IngredientId = ingredient.Id, FoodId = food.Id, Quntity = item.Weight, CookingStep = item.CookingStep };
+
+                        context.Structures.Add(structure);
+                        context.SaveChanges();
                     }
                     else
                     {
-                        ingredients.Add(curIngredient);
+                        var structure = new Structure();
+
+                        structure = new Structure() { IngredientId = ingredient.Id, FoodId = food.Id, Quntity = item.Weight, CookingStep = item.CookingStep };
+
+                        context.Structures.Add(structure);
+                        context.SaveChanges();
                     }
                 }
 
-
-                var list = ingredients.Select(ingredient => new Structure() { FoodId = newFood.Id, IngredientId = ingredient.Id }).ToList();
-
-                context.Structures.AddRange(list);
                 context.SaveChanges();
-                */
             }
         }
 
