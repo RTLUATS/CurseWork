@@ -25,7 +25,7 @@ namespace CurseWork
         private List<Category> listCategories;
         private List<Ingredient> listIngredients;
         private List<BasketModel> foodInBasket;
-        private Action<User> successAuth;
+        private Action<User> success;
         private int checker = 0;
         private bool show = false;
         
@@ -54,17 +54,26 @@ namespace CurseWork
 
         }
 
+        private void EditInfo_Click(object sender, RoutedEventArgs e)
+        {
+            success += GetUserData;
+
+            var window = new EditInfo(currentUser, success);
+            
+            window.Show();
+        }
+
         private void LogOut_Click(object sender, RoutedEventArgs e) 
         {
-            LogOut.Visibility = Visibility.Hidden;
-            LogOut.IsEnabled = false;
-
             if (currentUser.LvlAccess > 0) 
             {
                 WorkRoom.Visibility = Visibility.Hidden;
                 WorkRoom.IsEnabled = false;
             }
-            
+            LogOut.Visibility = Visibility.Hidden;
+            LogOut.IsEnabled = false;
+            EditInfo.Visibility = Visibility.Hidden;
+            EditInfo.IsEnabled = false;
             Autorization.Visibility = Visibility.Visible;
             Autorization.IsEnabled = true;
             currentUser = null;
@@ -175,9 +184,9 @@ namespace CurseWork
 
         private void Autarization_Click(object sender, RoutedEventArgs e)
         {
-            successAuth += GetUserData;
+            success += GetUserData;
             
-            var autorization = new Authorization(currentUser, LogOut, WorkRoom, Autorization, successAuth);
+            var autorization = new Authorization(EditInfo, LogOut, WorkRoom, Autorization, success);
 
             autorization.Show();
 
@@ -186,7 +195,7 @@ namespace CurseWork
         private void GetUserData(User user)
         {
             currentUser = user;
-            successAuth -= GetUserData;
+            success -= GetUserData;
         }
 
         private void WorkRoom_Click(object sender, RoutedEventArgs e)

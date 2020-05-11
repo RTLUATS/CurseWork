@@ -1,12 +1,43 @@
 ﻿<Window x:Class="CurseWork.Director"
+        ResizeMode="NoResize"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CurseWork"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="16"
+        TextOptions.TextFormattingMode="Ideal"
+        TextOptions.TextRenderingMode="Auto"
+        Background="{DynamicResource MaterialDesignPaper}"
+        FontFamily="{DynamicResource MaterialDesignFont}"
         Title="Director" Height="450" Width="800">
-    <Grid>
-        
+    <Grid Background="Black">
+        <DataGrid Name="TableIngredients" IsEnabled="False" Visibility="Hidden" IsReadOnly="True" Margin="277,10,244,10"/>
+        <DataGrid Name="TableOrders" IsEnabled="False" Visibility="Hidden" IsReadOnly="True" Margin="0,10,522,10"/>
+        <DataGrid Name="CommonTable" IsEnabled="False" Visibility="Hidden" IsReadOnly="True" Margin="10,10,249,10"/>
+        <Label Name="Income" Visibility="Hidden" Foreground="White" Content="Доход:" Margin="550,256,169,131"/>
+        <Label Name="Expenses" Visibility="Hidden" Foreground="White" Content="Расход:" Margin="550,295,169,92"/>
+        <TextBlock Name="CommonIncome" Visibility="Hidden" FontSize="16" Foreground="White" Margin="625,256,10,131"/>
+        <TextBlock Name="CommonExpenses" Visibility="Hidden" FontSize="16" Foreground="White" Margin="625,295,10,92"/>
+        <ComboBox Name="Date" SelectedIndex="0" IsEnabled="False" Visibility="Hidden"  Margin="550,183,10,188" Foreground="PaleGreen" Height="50" materialDesign:HintAssist.Hint="Период" Style="{StaticResource MaterialDesignFloatingHintComboBox}" materialDesign:TextFieldAssist.UnderlineBrush="{DynamicResource SecondaryAccentBrush}" materialDesign:ColorZoneAssist.Mode="Inverted">
+            <Button Foreground="White" Content="За всё время" Click="AllTime_Click"/>
+            <Button Foreground="White" Content="За прошедший год" Click="LastYear_Click"/>
+            <Button Foreground="White" Content="За полгода" Click="LastHalfYear_Click"/>
+            <Button Foreground="White" Content="За 3 месяца" Click="Last3Month_Click"/>
+            <Button Foreground="White" Content="За месяц" Click="LastMonth_Click"/>
+            <Button Foreground="White" Content="За неделю" Click="LastWeek_Click"/>
+            <Button Foreground="White" Content="За 3 дня" Click="Last3Days_Click"/>
+            <Button Foreground="White" Content="За вчера" Click="Yesterday_Click"/>
+        </ComboBox>
+        <ComboBox Margin="560,49,10,322" Foreground="PaleGreen" materialDesign:HintAssist.Hint="Просматреть отчёты" Style="{StaticResource MaterialDesignFloatingHintComboBox}" materialDesign:TextFieldAssist.UnderlineBrush="{DynamicResource SecondaryAccentBrush}" materialDesign:ColorZoneAssist.Mode="Inverted" Height="50">
+            <Button Foreground="White" Content="Статистика" Click="Statistic_Click"/>
+            <Button Foreground="White" Content="Посмотреть все блюда" Click="AllFood_Click"/>
+            <Button Foreground="White" Content="Блюда, которые в Меню" Click="FoodInMenu_Click"/>
+            <Button Foreground="White" Content="Потребность в ингредиентах"/>
+        </ComboBox>
     </Grid>
 </Window>

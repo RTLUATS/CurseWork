@@ -19,18 +19,16 @@ namespace CurseWork
     /// </summary>
     public partial class Authorization : Window
     {
-        private User autUser = null;
-        private User currentUser;
         private Action<User> successAuth;
-        private Button LogOut, WorkRoom, Autoris;
+        private Button LogOut, WorkRoom, Autoris, Edit;
 
-        public Authorization(User user, Button LogOut, Button WorkRoom, Button Authorization, Action<User> successAuth)
+        public Authorization(Button Edit, Button LogOut, Button WorkRoom, Button Authorization, Action<User> successAuth)
         {
             InitializeComponent();
-            currentUser = user;
             this.LogOut = LogOut;
             this.WorkRoom = WorkRoom;
             this.successAuth = successAuth;
+            this.Edit = Edit;
             Autoris = Authorization;
 
         }
@@ -49,40 +47,48 @@ namespace CurseWork
             {
                 using (var context = new MSSQLContext())
                 {
-                    autUser = context.Database.SqlQuery<User>("SELECT * FROM Users").FirstOrDefault(u => u.Login == login && u.Password == password);
+                    var autUser = context.Database.SqlQuery<User>("SELECT * FROM Users").FirstOrDefault(u => u.Login == login && u.Password == password);
+
+                    if (autUser == null)
+                    {
+                        MessageBox.Show("Проверьте правильность введённых данных");
+                        return;
+                    }
+
+                    else
+                    {
+                        successAuth.Invoke(autUser);
+
+                        Edit.IsEnabled = true;
+                        LogOut.IsEnabled = true;
+                        Autoris.IsEnabled = false;
+
+                        Edit.Visibility = Visibility.Visible;
+                        LogOut.Visibility = Visibility.Visible;
+                        Autoris.Visibility = Visibility.Hidden;
+
+                        if (autUser.LvlAccess > 0)
+                        {
+                            WorkRoom.Visibility = Visibility.Visible;
+                            WorkRoom.IsEnabled = true;
+                        }
+
+                    }
+
                 }
-            }
-
-            if (autUser == null)
-            {
-                MessageBox.Show("Проверьте правильность введённых данных");
-                return;
-            }
-            
-            else
-            {
-                LogOut.IsEnabled = true;
-                LogOut.Visibility = Visibility.Visible;
-                Autoris.IsEnabled = false;
-                Autoris.Visibility = Visibility.Hidden;
-
-                if (autUser.LvlAccess > 0)
-                {
-                    WorkRoom.Visibility = Visibility.Visible;
-                    WorkRoom.IsEnabled = true;
-                }
-
-            }
-
-            successAuth.Invoke(autUser);            
+            }          
 
             Close();
         }
 
+        private void EditPassword_Click(object sender, RoutedEventArgs e)
+        {
+            var window = new EditInfo();
+        }
 
         private void Registration_Click(object sender, RoutedEventArgs e)
         {
-            var registration = new Registration(autUser, LogOut, Autoris);
+            var registration = new Registration(successAuth, LogOut, Autoris, Edit);
             
             registration.Show();
         }

@@ -81,8 +81,6 @@ C:\Users\jtmotn\source\repos\CurseWork\obj\Debug\Economist.baml
 C:\Users\jtmotn\source\repos\CurseWork\obj\Debug\Manager.baml
 C:\Users\jtmotn\source\repos\CurseWork\obj\Debug\ManagerViewFood.baml
 C:\Users\jtmotn\source\repos\CurseWork\obj\Debug\ManagerViewIngredients.baml
-C:\Users\jtmotn\source\repos\CurseWork\obj\Debug\ManagerViewUsers.g.cs
-C:\Users\jtmotn\source\repos\CurseWork\obj\Debug\ManagerViewUsers.baml
 C:\Users\jtmotn\source\repos\CurseWork\obj\Debug\IncomeChart.g.cs
 C:\Users\jtmotn\source\repos\CurseWork\obj\Debug\ExpenseChart.g.cs
 C:\Users\jtmotn\source\repos\CurseWork\bin\Debug\HtmlAgilityPack.dll
@@ -92,8 +90,6 @@ C:\Users\jtmotn\source\repos\CurseWork\bin\Debug\MaterialDesignColors.dll
 C:\Users\jtmotn\source\repos\CurseWork\bin\Debug\MaterialDesignThemes.Wpf.dll
 C:\Users\jtmotn\source\repos\CurseWork\bin\Debug\MSharp.Framework.Core.dll
 C:\Users\jtmotn\source\repos\CurseWork\bin\Debug\Newtonsoft.Json.dll
-C:\Users\jtmotn\source\repos\CurseWork\bin\Debug\Syncfusion.Licensing.dll
-C:\Users\jtmotn\source\repos\CurseWork\bin\Debug\Syncfusion.SfChart.WPF.dll
 C:\Users\jtmotn\source\repos\CurseWork\bin\Debug\System.Configuration.ConfigurationManager.dll
 C:\Users\jtmotn\source\repos\CurseWork\bin\Debug\System.Data.SqlClient.dll
 C:\Users\jtmotn\source\repos\CurseWork\bin\Debug\System.Drawing.Common.dll
@@ -112,7 +108,6 @@ C:\Users\jtmotn\source\repos\CurseWork\bin\Debug\MaterialDesignThemes.Wpf.xml
 C:\Users\jtmotn\source\repos\CurseWork\bin\Debug\MSharp.Framework.Core.pdb
 C:\Users\jtmotn\source\repos\CurseWork\bin\Debug\MSharp.Framework.Core.xml
 C:\Users\jtmotn\source\repos\CurseWork\bin\Debug\Newtonsoft.Json.xml
-C:\Users\jtmotn\source\repos\CurseWork\bin\Debug\Syncfusion.SfChart.WPF.xml
 C:\Users\jtmotn\source\repos\CurseWork\obj\Debug\App.baml
 C:\Users\jtmotn\source\repos\CurseWork\obj\Debug\IncomeChart.baml
 C:\Users\jtmotn\source\repos\CurseWork\obj\Debug\ExpenseChart.baml
@@ -120,4 +115,12 @@ C:\Users\jtmotn\source\repos\CurseWork\obj\Debug\ChefViewFood.g.cs
 C:\Users\jtmotn\source\repos\CurseWork\obj\Debug\UserViewFood.g.cs
 C:\Users\jtmotn\source\repos\CurseWork\obj\Debug\ChefViewFood.baml
 C:\Users\jtmotn\source\repos\CurseWork\obj\Debug\UserViewFood.baml
-C:\Users\jtmotn\source\repos\CurseWork\obj\Debug\Curse.csprojAssemblyReference.cache
+C:\Users\jtmotn\source\repos\CurseWork\obj\Debug\Administrator.g.cs
+C:\Users\jtmotn\source\repos\CurseWork\obj\Debug\AdministratorViewUsers.g.cs
+C:\Users\jtmotn\source\repos\CurseWork\obj\Debug\Director.g.cs
+C:\Users\jtmotn\source\repos\CurseWork\obj\Debug\Administrator.baml
+C:\Users\jtmotn\source\repos\CurseWork\obj\Debug\AdministratorViewUsers.baml
+C:\Users\jtmotn\source\repos\CurseWork\obj\Debug\Director.baml
+C:\Users\jtmotn\source\repos\CurseWork\obj\Debug\Curse.csproj.ResolveComReference.cache
+C:\Users\jtmotn\source\repos\CurseWork\obj\Debug\EditInfo.g.cs
+C:\Users\jtmotn\source\repos\CurseWork\obj\Debug\EditInfo.baml

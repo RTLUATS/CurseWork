@@ -31,6 +31,8 @@
             <Button Foreground="White" Name="IngredientsCountNull" Content="Ингредиенты которых нет" Width="222" Click="IngredientsCountNull_Click"/>
             <Button Foreground="White" Name="IngredientsWithOutPrice" Content="Ингредиенты без цены" Width="222" Click="IngredientsWithOutPrice_Click"/>
         </ComboBox>
+        <Button Name="DishReport" Foreground="White" Content="Отчёт о блюдах" Margin="570,482,10,107" Click="DishReport_Click"/>
+        <Button Name="IngredientReport" Foreground="White" Content="Отчёт об ингредиентах" Margin="570,530,10,59" Click="IngredientReport_Click"/>
         <Button Foreground="White" Name="SearchButton" Content="Поиск" Margin="700,18,10,560" Height="Auto"></Button>
         <TextBox Foreground="PaleGreen" materialDesign:HintAssist.Hint="Поиск..." Name="SearchText" Margin="564,18,99,560"></TextBox>
     </Grid>

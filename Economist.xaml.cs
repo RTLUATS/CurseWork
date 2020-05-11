@@ -19,21 +19,62 @@ namespace CurseWork
     /// </summary>
     public partial class Economist : Window
     {
+        private DiagramIncome pageIncome;
+        private ExpenseChart pageExpense;
+        private Dictionary<int, int> dictionary;
+        private bool isIncome;
+
         public Economist()
         {
             InitializeComponent();
 
+            dictionary = new Dictionary<int, int>()
+            {
+                {0, 0},
+                {1, 365},
+                {2, 182},
+                {3, 91},
+                {4, 30},
+                {5, 7},
+                {6, 3},
+                {7, 1}
+            };
         }
 
-        private void Foods_Checked(object sender, RoutedEventArgs e)
+        private void Foods_Click(object sender, RoutedEventArgs e)
         {
-            var page = new DiagramIncome();
+            isIncome = true;
 
+            LoadIncome(Date.SelectedIndex);
         }
 
-        private void Ingredients_Checked(object sender, RoutedEventArgs e)
+        private void LoadIncome(int index = 0)
         {
+            pageIncome = new DiagramIncome(dictionary[index]);
 
+            Frame.Navigate(pageIncome);
+        }
+
+        private void Ingredients_Click(object sender, RoutedEventArgs e)
+        {
+            isIncome = false;
+
+            LoadExpense(Date.SelectedIndex);   
+        }
+
+        private void LoadExpense(int index = 0)
+        {
+            pageExpense = new ExpenseChart(dictionary[index]);
+            
+            Frame.Navigate(pageExpense);
+        }
+
+        private void Date_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (isIncome)
+                LoadIncome(Date.SelectedIndex);
+            else
+                LoadExpense(Date.SelectedIndex);
         }
     }
 }

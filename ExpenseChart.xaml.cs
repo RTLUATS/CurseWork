@@ -4,6 +4,7 @@ using System.Linq;
 using LiveCharts;
 using LiveCharts.Wpf;
 using System.Windows.Controls;
+using System.Data.Entity;
 
 namespace CurseWork
 {
@@ -12,7 +13,7 @@ namespace CurseWork
     /// </summary>
     public partial class ExpenseChart : Page
     {
-        public ExpenseChart()
+        public ExpenseChart(int days)
         {
             InitializeComponent();
             PointLabel = chartPoint =>
@@ -22,31 +23,37 @@ namespace CurseWork
 
             List<ValueTuple<string, decimal>> expense = new List<(string, decimal)>();
 
-            LoadOrders(expense);
+            LoadOrders(expense, days);
             LoadPieDiagram(expense);
         }
 
 
-        private void LoadOrders(List<ValueTuple<string, decimal>> expense)
+        private void LoadOrders(List<ValueTuple<string, decimal>> expense, int days)
         {
+            List<int> listId = new List<int>();
 
             using (var context = new MSSQLContext())
             {
-                var purchase = context.Database.SqlQuery<PurchaseIngredient>("select * from PurchaseIngredients").ToList();
+                var purchaseList = context.PurchaseIngredients
+                                        .Include(p => p.Ingredient)    
+                                        .ToList();
 
-                for (int index = 0; index < purchase.Count; index++)
+                foreach(var item in purchaseList)
                 {
-                    (string name, decimal AllIncome) tuple = (purchase[index].ingredient.Name, purchase[index].Price * purchase[index].Count);
-
-                    for (int count = index + 1; count < purchase.Count; count++)
+                    if (!listId.Contains(item.IngredientId))
                     {
-                        if (purchase[index].IngredientId == purchase[count].IngredientId)
-                        {
-                            tuple.AllIncome += purchase[count].Price* purchase[count].Count;
-                        }
-                    }
+                        listId.Add(item.IngredientId);
 
-                    expense.Add(tuple);
+                        if(days == 0)
+                            expense.Add((item.Ingredient.Name, 
+                                purchaseList.Where(l => l.IngredientId == item.IngredientId)
+                                .Sum(l => l.Price * l.Count)));
+                        else
+                            expense.Add((item.Ingredient.Name,
+                               purchaseList.Where(l => l.IngredientId == item.IngredientId && 
+                                                l.DateOfPurchase.Subtract(DateTime.Now).TotalDays <= days)
+                                                .Sum(l => l.Price * l.Count)));
+                    }
                 }
             }
         }

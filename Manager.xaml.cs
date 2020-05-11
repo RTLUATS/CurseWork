@@ -93,36 +93,6 @@ namespace CurseWork
             LoadFood("select * from Foods where InMenu=0");
         }
 
-        private void AllUsers_Click(object sender, RoutedEventArgs e)
-        {
-            LoadUsers("select * from Users");
-        }
-
-        private void LoadUsers(string sqlQuery)
-        {
-            Table.Children.RemoveRange(0, Table.Children.Count);
-
-            using (var context = new MSSQLContext())
-            {
-                users = context.Database.SqlQuery<User>(sqlQuery).ToList();
-            }
-
-            foreach (var user in users)
-            {
-                var button = new Button()
-                {
-                    Name = "Name" + user.Id.ToString(),
-                    IsEnabled = true,
-                    Content = $"{user.FirstName} {user.MiddleName} {user.LastName}" + $"{dictionary[user.LvlAccess]}"
-                };
-
-                button.Margin = new Thickness(10);
-                button.Click += EventForUsers;
-               
-                Table.Children.Add(button);
-            }
-        }
-
         private void LoadIngredients(string sqlQuery)
         {
             Table.Children.RemoveRange(0, Table.Children.Count);
@@ -159,35 +129,7 @@ namespace CurseWork
             window.Show();
         }
 
-        private void EventForUsers(object sender, RoutedEventArgs e)
-        {
-            var button = (Button)sender;
-            var id = Convert.ToInt32(button.Name.Replace("Name", ""));
-            var window = new ManagerViewUsers(users.First(u => u.Id == id ));
-
-            window.Show();
-        }
-
-        private void Economists_Click(object sender, RoutedEventArgs e)
-        {
-            LoadUsers("select * from Users where LvlAccess=2");
-        }
-
-        private void Managers_Click(object sender, RoutedEventArgs e)
-        {
-            LoadUsers("select * from Users where LvlAccess=1");
-        }
-
-        private void Users_Click(object sender, RoutedEventArgs e)
-        {
-            LoadUsers("select * from Users where LvlAccess=0");
-        }
-
-        private void Chefs_Click(object sender, RoutedEventArgs e)
-        {
-            LoadUsers("select * from Users where LvlAccess=3");
-        }
-
+       
         private void AllIngredients_Click(object sender, RoutedEventArgs e)
         {
             LoadIngredients("select * from Ingredients");
@@ -328,6 +270,16 @@ namespace CurseWork
 
             InquiryListBox.Items.Remove(listInquiry.IndexOf(listInquiry.First(i => i.Id == id)));
             dictionary.Remove(id);
+        }
+
+        private void DishReport_Click(object sender, RoutedEventArgs e)
+        {
+            Reports.CommonPart(1);
+        }
+
+        private void IngredientReport_Click(object sender, RoutedEventArgs e)
+        {
+            Reports.CommonPart(2);
         }
     }
 }

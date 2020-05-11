@@ -16,12 +16,22 @@
         FontFamily="{DynamicResource MaterialDesignFont}"
         Title="Economist" Height="650" Width="1000">
     <Grid Background="Black">
-        <Frame Name="Frame" Margin="10,10,302,10"></Frame>
-        <Label Foreground="White" FontWeight="DemiBold" FontSize="17" Margin="695,488,143,88">Сумма рассходов:</Label>
-        <Label Foreground="White" FontWeight="DemiBold" FontSize="17" Margin="695,536,143,40">Сумма доходов:</Label>
-        <RadioButton Foreground="PaleGreen" Style="{StaticResource MaterialDesignDarkRadioButton}" Tag="True" Name="Foods" FontSize="16" Content="Доходы" Margin="815,58,10,536" Checked="Foods_Checked" ></RadioButton>
-        <RadioButton Foreground="PaleGreen" Style="{StaticResource MaterialDesignDarkRadioButton}" Tag="True" Name="Ingredients" FontSize="16" Content="Расходы" Margin="815,136,10,458" Checked="Ingredients_Checked"></RadioButton>
-        <TextBlock Name="Income" Margin="854,536,10,40"></TextBlock>
-        <TextBlock Name="Expenses" Margin="854,488,10,88"></TextBlock>
+        <Frame Name="Frame" Margin="10,10,302,10"/>
+        <Label Name="LabelIncome" Foreground="White" FontWeight="DemiBold" FontSize="17" Margin="695,488,143,88">Сумма рассходов:</Label>
+        <Label Name="LabelExpenses" Foreground="White" FontWeight="DemiBold" FontSize="17" Margin="695,536,143,40">Сумма доходов:</Label>
+        <ComboBox Name="Date" SelectionChanged="Date_SelectionChanged"  SelectedIndex="0" Margin="734,283,10,288" Foreground="PaleGreen" Height="50" materialDesign:HintAssist.Hint="Период" Style="{StaticResource MaterialDesignFloatingHintComboBox}" materialDesign:TextFieldAssist.UnderlineBrush="{DynamicResource SecondaryAccentBrush}" materialDesign:ColorZoneAssist.Mode="Inverted">
+            <Button Foreground="White" Content="За всё время"/>
+            <Button Foreground="White" Content="За прошедший год"/>
+            <Button Foreground="White" Content="За полгода"/>
+            <Button Foreground="White" Content="За 3 месяца"/>
+            <Button Foreground="White" Content="За месяц"/>
+            <Button Foreground="White" Content="За неделю"/>
+            <Button Foreground="White" Content="За 3 дня"/>
+            <Button Foreground="White" Content="За вчера"/>
+        </ComboBox>
+        <Button Foreground="PaleGreen" Name="Foods" FontSize="16" Content="Доходы" Margin="815,57,10,524" Click="Foods_Click" Height="Auto"/>
+        <Button Foreground="PaleGreen" Name="Ingredients" FontSize="16" Content="Расходы" Margin="815,136,10,445" Click="Ingredients_Click" Height="Auto"/>
+        <TextBlock Name="Income" Margin="854,536,10,40"/>
+        <TextBlock Name="Expenses" Margin="854,488,10,88"/>
     </Grid>
 </Window>

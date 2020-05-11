@@ -1,9 +1,13 @@
 ﻿
 FC:\Users\jtmotn\source\repos\CurseWork\App.xaml;;
+FC:\Users\jtmotn\source\repos\CurseWork\Administrator.xaml;;
+FC:\Users\jtmotn\source\repos\CurseWork\AdministratorViewUsers.xaml;;
 FC:\Users\jtmotn\source\repos\CurseWork\Authorization.xaml;;
 FC:\Users\jtmotn\source\repos\CurseWork\Basket.xaml;;
 FC:\Users\jtmotn\source\repos\CurseWork\Chef.xaml;;
 FC:\Users\jtmotn\source\repos\CurseWork\ChefViewFood.xaml;;
+FC:\Users\jtmotn\source\repos\CurseWork\Director.xaml;;
+FC:\Users\jtmotn\source\repos\CurseWork\EditInfo.xaml;;
 FC:\Users\jtmotn\source\repos\CurseWork\IncomeChart.xaml;;
 FC:\Users\jtmotn\source\repos\CurseWork\Economist.xaml;;
 FC:\Users\jtmotn\source\repos\CurseWork\ExpenseChart.xaml;;
@@ -11,7 +15,6 @@ FC:\Users\jtmotn\source\repos\CurseWork\MainWindow.xaml;;
 FC:\Users\jtmotn\source\repos\CurseWork\Manager.xaml;;
 FC:\Users\jtmotn\source\repos\CurseWork\ManagerViewFood.xaml;;
 FC:\Users\jtmotn\source\repos\CurseWork\ManagerViewIngredients.xaml;;
-FC:\Users\jtmotn\source\repos\CurseWork\ManagerViewUsers.xaml;;
 FC:\Users\jtmotn\source\repos\CurseWork\UserViewFood.xaml;;
 FC:\Users\jtmotn\source\repos\CurseWork\Registration.xaml;;
 

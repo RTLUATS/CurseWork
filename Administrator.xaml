@@ -16,13 +16,14 @@
         FontFamily="{DynamicResource MaterialDesignFont}"
         Title="Administrator" Height="450" Width="800">
     <Grid Background="Black">
-        <ComboBox Margin="584,101,10,289" Foreground="PaleGreen" materialDesign:HintAssist.Hint="Пользователи">
-            <Button Name="AllUsers" Content="Все пользователи" Foreground="White" Width="190"/>
-            <Button Name="Manager" Content="Менеджеры" Foreground="White" Width="190" />
-            <Button Name="Chef" Content="Шеф-повара" Foreground="White" Width="190"/>
+        <ListBox Name="ListUsers" Margin="10,10,215,10"/>
+        <ComboBox Margin="584,95,10,275" Foreground="PaleGreen" Style="{StaticResource MaterialDesignFloatingHintComboBox}" materialDesign:TextFieldAssist.UnderlineBrush="{DynamicResource SecondaryAccentBrush}" materialDesign:ColorZoneAssist.Mode="Inverted" materialDesign:HintAssist.Hint="Пользователи" Height="51">
+            <Button Name="AllUsers" Content="Все пользователи" Foreground="White" Width="190" Click="AllUsers_Click"/>
+            <Button Name="Managers" Content="Менеджеры" Foreground="White" Width="190" Click="ViewManagers_Click" />
+            <Button Name="Chefs" Content="Шеф-повара" Foreground="White" Width="190" Click="ViewChefs_Click"/>
             <Button Name="Users" Content="Обычные пользователи" Foreground="White" Width="190"/>
-            <Button Name="Director" Content="Директора" Foreground="White" Width="190"/>
-            <Button Name="Администраторы" Content="Администраторы" Foreground="White" Width="190"/>
+            <Button Name="Directors" Content="Директора" Foreground="White" Width="190" Click="ViewDirectors_Click"/>
+            <Button Name="Administrators" Content="Администраторы" Foreground="White" Width="190" Click="ViewAdministrators_Click"/>
         </ComboBox>
     </Grid>
 </Window>

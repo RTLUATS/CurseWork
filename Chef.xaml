@@ -31,6 +31,7 @@
             <Button Foreground="White" FontWeight="DemiBold" FontSize="16" Name="AllFood" Margin="10" Content="Посмтреть все блюда"  IsEnabled="False" Click="AllFood_Click"/>
             <Button Foreground="White" FontWeight="DemiBold" FontSize="11" Name="Inquiry"  Margin="10" ToolTip="Запрос необходимых ингредиентов" Content="Запрос необходимых ингредиентов"  IsEnabled="True" Click="Inquiry_Click"/>
             <Button Foreground="White" FontWeight="DemiBold" FontSize="16" Name="InquiryExecute" Margin="10" IsEnabled="False" Content="Сделать запрос" Click="InquiryExecute_Click" />
+            <Button Foreground="White" FontWeight="DemiBold" FontSize="16" Name="RequestReport" Content="Отчёт о запросах" Margin="10" Click="RequestReport_Click"/>
         </StackPanel>
     </Grid>
 </Window>

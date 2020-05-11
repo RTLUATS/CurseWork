@@ -18,7 +18,7 @@ namespace CurseWork
 
         public DateTime DateOfPurchase { get; set; }
 
-        public virtual Ingredient ingredient { get; set; }
+        public virtual Ingredient Ingredient { get; set; }
         
     }
 }

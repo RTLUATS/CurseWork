@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Windows.Controls;
 using LiveCharts;
@@ -12,7 +13,7 @@ namespace CurseWork
     /// </summary>
     public partial class DiagramIncome : Page
     {
-        public DiagramIncome()
+        public DiagramIncome(int days)
         {
             InitializeComponent();
      
@@ -23,31 +24,36 @@ namespace CurseWork
 
             List<ValueTuple<string, decimal>> income = new List<(string, decimal)>();
 
-            LoadOrders(income);
+            LoadOrders(income, days);
             LoadPieDiagram(income);
         }
 
-
-        private void LoadOrders(List<ValueTuple<string, decimal>> income)
+        private void LoadOrders(List<ValueTuple<string, decimal>> income, int days)
         {
+            var listId = new List<int>();
 
             using(var context = new MSSQLContext())
             {
-                var orders = context.Database.SqlQuery<Order>("select * from Orders").ToList();
+                var orders = context.Orders
+                                        .Include(o => o.Food)
+                                        .Include(o => o.OrderList)
+                                        .ToList();
 
-                for (int index = 0; index < orders.Count; index++)
+                foreach(var item in orders)
                 {
-                    (string name, decimal AllIncome) tuple = (orders[index].Food.Name, orders[index].PriceBoughtFor);
+                    if (!listId.Contains(item.FoodId)) {
 
-                    for (int count = index + 1; count < orders.Count; count++)
-                    {
-                        if (orders[index].FoodId == orders[count].FoodId)
-                        {
-                            tuple.AllIncome += orders[count].PriceBoughtFor;
-                        }
+                        listId.Add(item.FoodId);
+
+                        if (days == 0)
+                            income.Add((item.Food.Name, orders.Where(o => o.FoodId == item.FoodId)
+                                                                .Sum(o => o.PriceBoughtFor * o.Count)));
+                        else
+                            income.Add((item.Food.Name, orders.Where(o => o.FoodId == item.FoodId
+                                                                     && o.OrderList.DateOrder
+                                                                     .Subtract(DateTime.Now).TotalDays <= days)
+                                                                .Sum(o => o.PriceBoughtFor * o.Count)));
                     }
-
-                    income.Add(tuple);
                 }
             }
         }

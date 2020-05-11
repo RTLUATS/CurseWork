@@ -26,6 +26,8 @@ namespace CurseWork
 
         public string Telephone { get; set; }
 
+        public bool IsBlock { get; set; }
+
         public virtual ICollection<OrderList> OrderLists { get; set; }
 
         public virtual ICollection<Inquiry> Inquiries { get; set; }

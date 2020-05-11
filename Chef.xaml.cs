@@ -124,7 +124,7 @@ namespace CurseWork
                 {
                     if (item.AdditionalAmount == 0) continue;
 
-                    listInquiry.Add(new Inquiry() { IngredientId = item.Id, ExpectedQuantity = item.AdditionalAmount, Date = DateTime.Now, IsCompleted = false });
+                    listInquiry.Add(new Inquiry() { IngredientId = item.Id, ExpectedQuantity = item.AdditionalAmount, Date = DateTime.Now});
                 }
 
                 list.Clear();
@@ -135,6 +135,11 @@ namespace CurseWork
                     context.SaveChanges();
                 }
             }
+        }
+
+        private void RequestReport_Click(object sender, RoutedEventArgs e)
+        {
+            Reports.CommonPart(0);
         }
     }
 }

@@ -12,12 +12,12 @@ namespace CurseWork
 
         public int IdOrderList { get; set; }
 
-        public int Id { get; set; }
-
         public decimal PriceBoughtFor { get; set; }
+
+        public int Count { get; set; }
 
         public virtual Food Food { get; set; }
 
-        public virtual ICollection<OrderList> OrderLists { get; set; }
+        public virtual OrderList OrderList { get; set; }
     }
 }
