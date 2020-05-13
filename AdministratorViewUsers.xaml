@@ -27,13 +27,25 @@
         <TextBlock Foreground="White" FontWeight="DemiBold" FontSize="16" Name="LastName" Margin="100,96,522,288"/>
         <TextBlock Foreground="White" FontWeight="DemiBold" FontSize="16" Name="Telephone" Margin="100,136,522,245"/>
         <TextBlock Foreground="White" FontWeight="DemiBold" FontSize="16" Name="Id" Margin="100,179,522,206"/>
-        <ComboBox Name="Role" Margin="100,220,470,155" Style="{StaticResource MaterialDesignFloatingHintComboBox}" materialDesign:TextFieldAssist.UnderlineBrush="{DynamicResource SecondaryAccentBrush}" materialDesign:ColorZoneAssist.Mode="Inverted"  Foreground="PaleGreen" materialDesign:HintAssist.Hint="Нажмите чтобы изменить" Height="46">
-            <Button Foreground="White" FontWeight="DemiBold" Name="SimpleUser" FontSize="16" Content="Пользователь" Width="160"/>
-            <Button Foreground="White" FontWeight="DemiBold" Name="Manager" FontSize="16" Content="Менеджер" Width="160"/>
-            <Button Foreground="White" FontWeight="DemiBold" Name="Chef" FontSize="16" Content="Шеф-повар" Width="160"/>
-            <Button Foreground="White" FontWeight="DemiBold" Name="Economist" FontSize="16" Content="Экономист" Width="160"/>
-            <Button Foreground="White" FontWeight="DemiBold" Name="Administrator" FontSize="16" Content="Администратор" Width="160"/>
-            <Button Foreground="White" FontWeight="DemiBold" Name="Director" FontSize="16" Content="Директор" Width="160"/>
+        <ComboBox  Name="Role" Margin="100,220,470,155" Style="{StaticResource MaterialDesignFloatingHintComboBox}" materialDesign:TextFieldAssist.UnderlineBrush="{DynamicResource SecondaryAccentBrush}" materialDesign:ColorZoneAssist.Mode="Inverted"  Foreground="PaleGreen" materialDesign:HintAssist.Hint="Нажмите чтобы изменить" Height="46">
+            <ComboBoxItem>
+                <TextBlock Foreground="White" FontWeight="DemiBold" Name="SimpleUser" FontSize="16" Text="Пользователь" Width="160"/>
+            </ComboBoxItem>
+            <ComboBoxItem>
+                <TextBlock Foreground="White" FontWeight="DemiBold" Name="Manager" FontSize="16" Text="Менеджер" Width="160"/>
+            </ComboBoxItem>
+            <ComboBoxItem>
+                <TextBlock Foreground="White" FontWeight="DemiBold" Name="Chef" FontSize="16" Text="Шеф-повар" Width="160"/>
+            </ComboBoxItem>
+            <ComboBoxItem>
+                <TextBlock Foreground="White" FontWeight="DemiBold" Name="Economist" FontSize="16" Text="Экономист" Width="160"/>
+            </ComboBoxItem>
+            <ComboBoxItem>
+                <TextBlock Foreground="White" FontWeight="DemiBold" Name="Administrator" FontSize="16" Text="Администратор" Width="160"/>
+            </ComboBoxItem>
+            <ComboBoxItem>
+                <TextBlock Foreground="White" FontWeight="DemiBold" Name="Director" FontSize="16" Text="Директор" Width="160"/>
+            </ComboBoxItem>
         </ComboBox>
         <CheckBox Foreground="PaleGreen" FontWeight="DemiBold" Name="IsBlock" Margin="275,10,367,381" FontSize="16"  Content="Заблокирован?"/>
         <Button Name="Save" Foreground="White" FontWeight="DemiBold" FontSize="16" Content="Сохранить измения" Margin="582,357,10,15" Click="Save_Click" Height="Auto"/>

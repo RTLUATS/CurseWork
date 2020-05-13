@@ -98,11 +98,11 @@ namespace CurseWork
             using(var context = new MSSQLContext())
             {
                 var list = context.Inquiries
-                                .Include(i => i.Ingredients);
+                                .Include(i => i.Ingredient);
 
                 foreach(var item in list)
                 {
-                    commonDataTable.Rows.Add(item.Ingredients.First(i => i.Id == item.IngredientId).Name, item.ExpectedQuantity, item.Date);
+                    commonDataTable.Rows.Add(item.Ingredient.Name, item.ExpectedQuantity, item.Date);
                 }
             }
 

@@ -18,12 +18,24 @@
     <Grid Background="Black">
         <ListBox Name="ListUsers" Margin="10,10,215,10"/>
         <ComboBox Margin="584,95,10,275" Foreground="PaleGreen" Style="{StaticResource MaterialDesignFloatingHintComboBox}" materialDesign:TextFieldAssist.UnderlineBrush="{DynamicResource SecondaryAccentBrush}" materialDesign:ColorZoneAssist.Mode="Inverted" materialDesign:HintAssist.Hint="Пользователи" Height="51">
-            <Button Name="AllUsers" Content="Все пользователи" Foreground="White" Width="190" Click="AllUsers_Click"/>
-            <Button Name="Managers" Content="Менеджеры" Foreground="White" Width="190" Click="ViewManagers_Click" />
-            <Button Name="Chefs" Content="Шеф-повара" Foreground="White" Width="190" Click="ViewChefs_Click"/>
-            <Button Name="Users" Content="Обычные пользователи" Foreground="White" Width="190"/>
-            <Button Name="Directors" Content="Директора" Foreground="White" Width="190" Click="ViewDirectors_Click"/>
-            <Button Name="Administrators" Content="Администраторы" Foreground="White" Width="190" Click="ViewAdministrators_Click"/>
+            <ComboBoxItem>
+                <Button Name="AllUsers" Content="Все пользователи" Foreground="White" Width="190" Click="AllUsers_Click"/>
+            </ComboBoxItem>
+            <ComboBoxItem>
+                <Button Name="Managers" Content="Менеджеры" Foreground="White" Width="190" Click="ViewManagers_Click" />
+            </ComboBoxItem>
+            <ComboBoxItem>
+                <Button Name="Chefs" Content="Шеф-повара" Foreground="White" Width="190" Click="ViewChefs_Click"/>
+            </ComboBoxItem>
+            <ComboBoxItem>
+                <Button Name="Users" Content="Обычные пользователи" Foreground="White" Width="190"/>
+            </ComboBoxItem>
+            <ComboBoxItem>
+                <Button Name="Directors" Content="Директора" Foreground="White" Width="190" Click="ViewDirectors_Click"/>
+            </ComboBoxItem>
+            <ComboBoxItem>
+                <Button Name="Administrators" Content="Администраторы" Foreground="White" Width="190" Click="ViewAdministrators_Click"/>
+            </ComboBoxItem>
         </ComboBox>
     </Grid>
 </Window>

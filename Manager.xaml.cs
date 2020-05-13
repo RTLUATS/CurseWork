@@ -28,15 +28,6 @@ namespace CurseWork
         private List<Ingredient> ingredients;
         private Dictionary<int, TextBox> inquiryDictionary;
 
-        private Dictionary<int, string> dictionary = new Dictionary<int, string>()
-        {
-            {0, "(Пользователь)"},
-            {1, "(Менеджер)"},
-            {2, "(Шеф-повар)"},
-            {3, "(Экономист)" },
-            
-        };
-
         public Manager()
         {
             InitializeComponent();
@@ -60,7 +51,7 @@ namespace CurseWork
 
         private void FoodWithOutPrice_Click(object sender, RoutedEventArgs e)
         {
-           LoadFood("select * from Foods where Price=0");
+           LoadFood("select * from Foods where CurrentPrice=0");
         }
 
         private void LoadFood(string sqlQuery)
@@ -132,22 +123,22 @@ namespace CurseWork
        
         private void AllIngredients_Click(object sender, RoutedEventArgs e)
         {
-            LoadIngredients("select * from Ingredients");
+            LoadIngredients("select * from Ingredient");
         }
 
         private void IngredientsCountNull_Click(object sender, RoutedEventArgs e)
         {
-            LoadIngredients("select * from Ingredients where Count=0");
+            LoadIngredients("select * from Ingredient where Count=0");
         }
 
         private void IngredientsWithOutPrice_Click(object sender, RoutedEventArgs e)
         {
-            LoadIngredients("select * from Ingredients where Price=0");
+            LoadIngredients("select * from Ingredient where Price=0");
         }
 
         private void ShowFoodWithOutDescription_Click(object sender, RoutedEventArgs e)
         {
-
+            
         }
 
         private void InquiryBuy_Click(object sender, RoutedEventArgs e)
@@ -163,22 +154,22 @@ namespace CurseWork
         {
             inquiryDictionary = new Dictionary<int, TextBox>();
 
-            using (var context = new MSSQLContext())
-            {
+            var context = new MSSQLContext();
+
                 listInquiry = context.Inquiries
-                     .Include(i => i.Ingredients)
+                     .Include(i => i.Ingredient)
                      .ToList();
-            }   
-            
+ 
             foreach(var item in listInquiry)
             {
                 var panel = new StackPanel();
 
                 var label = new Label()
                 {
+                    Foreground = Brushes.White,
                     HorizontalAlignment = HorizontalAlignment.Center,
-                    Content = "Наименование: " + item.Ingredients.First(i => i.Id == item.IngredientId).Name + " Количество: "
-                                + item.ExpectedQuantity + " Дата подачи заказа: " + item.Date.ToString("d", CultureInfo.CreateSpecificCulture("de-DE"))
+                    Content = item.Ingredient.Name + "\t\t"
+                                + item.ExpectedQuantity + "\t\t" + item.Date.ToString("d", CultureInfo.CreateSpecificCulture("de-DE"))
                 };
 
                 var textBox = new TextBox()
@@ -209,7 +200,7 @@ namespace CurseWork
                 inquiryDictionary.Add(item.Id, textBox);
             }
 
-            
+            context.Database.Connection.Close();
         }
 
         private void GotKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
@@ -269,7 +260,7 @@ namespace CurseWork
             }
 
             InquiryListBox.Items.Remove(listInquiry.IndexOf(listInquiry.First(i => i.Id == id)));
-            dictionary.Remove(id);
+            
         }
 
         private void DishReport_Click(object sender, RoutedEventArgs e)

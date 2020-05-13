@@ -1,17 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.Windows;
-using System.Windows.Media.Imaging;
-using Microsoft.Win32;
 using System.Drawing;
-using System.IO;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Text.RegularExpressions;
-using System.Windows.Media;
-using MSharp.Framework;
-using System.Data.Entity;
+using System.Windows;
 
 namespace CurseWork
 {
@@ -33,6 +25,7 @@ namespace CurseWork
             if (food != null)
             {
                 this.food = food;
+                
                 LoadFood();
             }
             else
@@ -41,85 +34,53 @@ namespace CurseWork
                 SaveChange.Visibility = Visibility.Hidden;
             }
 
+            Table.ItemsSource = model;
+
         }
 
         private void LoadFood()
         {
-            foreach(var item in food.Structures)
-            {
-                model.Add(new IngredientsModel() 
-                { 
-                    CookingStep = item.CookingStep,
-                    Unit = item.Ingredients.First(i => i.Id == item.IngredientId).Unit,
-                    Weight = item.Quntity,
-                    IngredientName = item.Ingredients.First(i => i.Id == item.IngredientId).Name
-                });
-            }
+            using (MSSQLContext context = new MSSQLContext())
+            { 
 
-            Table.ItemsSource = model;
-            AddFood.IsEnabled = false;
-            AddFood.Visibility = Visibility.Hidden;
-            Name.Text = food.Name;
-            Category.Text = food.Category.Name;
+                foreach (var item in context.Structures.Where(s => s.FoodId == food.Id).ToList())
+                {
+                    model.Add(new IngredientsModel()
+                    {
+                        CookingStep = item.CookingStep,
+                        Unit = item.Ingredient.Unit,
+                        Weight = item.Quantity,
+                        IngredientName = item.Ingredient.Name
+                    });
+                }
 
-            LoadImage();
-        }
-
-        private void LoadImage()
-        {
-            using (var ms = new MemoryStream(food.Image))
-            {
-                var image = new BitmapImage();
-
-                image.BeginInit();
-                image.CacheOption = BitmapCacheOption.OnLoad;
-                image.StreamSource = ms;
-                image.EndInit();
-                Image.Source = image;
+                Table.ItemsSource = model;
+                AddFood.IsEnabled = false;
+                AddFood.Visibility = Visibility.Hidden;
+                Name.Text = food.Name;
+                Category.Text = context.Categories.Find(food.CategoryId).Name;
+                Image.Source = WorkWithImage.ConvertArrayByteToImage(food.Image);
             }
         }
-
 
         private void ChangeImage_Click(object sender, RoutedEventArgs e)
         {
-            var dialog = new OpenFileDialog();
-
-            dialog.InitialDirectory = "C:\\";
-            dialog.Filter = "Image File |*.jpg;*.jpeg;*.png";
-            dialog.CheckFileExists = true;
-            dialog.RestoreDirectory = true;
-
-            if (dialog.ShowDialog() == true)
-            {
-                if (dialog.OpenFile() != null)
-                {
-                    Image.Source = new BitmapImage(new Uri(dialog.FileName));
-                }
-            }
+            Image.Source = WorkWithImage.LoadImageFromPc();
         }
 
         private void SaveChange_Click(object sender, RoutedEventArgs e)
         {
-            var bmp = Image.Source as BitmapImage;
-            byte[] bits = null;
-
-            if (bmp != null)
-            {
-                ConverImageToBytes(bmp, ref bits);
-            }
-
-            if (Check()) UpdateDb(bits);
-
+            if (Check()) UpdateDb();
         }
 
-        private void UpdateDb(byte[] bits)
+        private void UpdateDb()
         {
             using (var context = new MSSQLContext())
             {
 
-                food = context.Foods.First(f => f.Id == food.Id);
+                food = context.Foods.Find(food.Id);
                 food.Name = Name.Text;
-                food.Image = bits;
+                food.Image = WorkWithImage.ConverImageToArrayByte(Image.Source);
                 
                 var category = context.Categories.First(c => c.Name.ToLower() == Category.Text.ToLower());
 
@@ -140,7 +101,36 @@ namespace CurseWork
 
                 var structures = context.Structures.Where(s => s.FoodId == food.Id).ToList();
 
+                var listName = new List<string>();
+                var newModel = new List<IngredientsModel>();
+
                 foreach (var item in model)
+                {
+                    if (!listName.Contains(item.IngredientName))
+                    {
+                        var usefullList = model.Where(m => m.IngredientName.ToLower() == item.IngredientName.ToLower()).ToList();
+
+                        string CookingStep = "";
+                        decimal Weight = 0;
+
+                        foreach (var elem in usefullList)
+                        {
+                            CookingStep += elem.CookingStep + ";";
+                            Weight += elem.Weight;
+                        }
+
+
+                        newModel.Add(new IngredientsModel()
+                        {
+                            IngredientName = item.IngredientName,
+                            CookingStep = CookingStep,
+                            Weight = Weight,
+                            Unit = item.Unit
+                        });
+                    }
+                }
+
+                foreach (var item in newModel)
                 {
                     var ingredient = context.Ingredients.FirstOrDefault(i => i.Name == item.IngredientName);
 
@@ -151,7 +141,7 @@ namespace CurseWork
                         context.Ingredients.Add(ingredient);
                         context.SaveChanges();
 
-                        var structure = new Structure() { IngredientId = ingredient.Id, FoodId = food.Id, Quntity = item.Weight, CookingStep = item.CookingStep };
+                        var structure = new Structure() { IngredientId = ingredient.Id, FoodId = food.Id, Quantity = item.Weight, CookingStep = item.CookingStep };
 
                         context.Structures.Add(structure);
                         context.SaveChanges();
@@ -162,7 +152,7 @@ namespace CurseWork
 
                         if(structure == null)
                         {
-                            structure = new Structure() { IngredientId = ingredient.Id, FoodId = food.Id, Quntity = item.Weight, CookingStep = item.CookingStep };
+                            structure = new Structure() { IngredientId = ingredient.Id, FoodId = food.Id, Quantity = item.Weight, CookingStep = item.CookingStep };
 
                             context.Structures.Add(structure);
                             context.SaveChanges();
@@ -170,7 +160,7 @@ namespace CurseWork
                         else
                         {
                             structure.CookingStep = item.CookingStep;
-                            structure.Quntity = item.Weight;
+                            structure.Quantity = item.Weight;
                             structures.Remove(structures.First(s => s.FoodId == food.Id && s.IngredientId == ingredient.Id));
 
                             context.SaveChanges();
@@ -236,37 +226,21 @@ namespace CurseWork
 
         }
 
-        private void ConverImageToBytes(BitmapImage bmp, ref byte[] bits)
-        {
-            MemoryStream memStream = new MemoryStream();
-            JpegBitmapEncoder encoder = new JpegBitmapEncoder();
-            encoder.Frames.Add(BitmapFrame.Create(bmp));
-            encoder.Save(memStream);
-            bits = memStream.ToArray();
-        }
-
         private void AddFood_Click(object sender, RoutedEventArgs e)
         {
-            var bmp = Image.Source as BitmapImage;
-            byte[] bits = null;
-
-            if (bmp != null)
-            {
-                ConverImageToBytes(bmp, ref bits);
-            }
-
-            if (Check()) AddToDB(bits);
+            if (Check()) AddToDB();
         }
 
-        private void AddToDB(byte[] bits)
+        private void AddToDB()
         {
             using (var context = new MSSQLContext())
             {
                 var newFood = new Food
                 {
-                    Image = bits,
+                    Image = WorkWithImage.ConverImageToArrayByte(Image.Source),
                     Name = Name.Text,
                     InMenu = false,
+                    Description = "",
                     CurrentPrice = 0,
                 };
 
@@ -290,18 +264,59 @@ namespace CurseWork
                 context.Foods.Add(newFood);
                 context.SaveChanges();
 
-                foreach (var item in model)
+                var listName = new List<string>();
+                var newModel = new List<IngredientsModel>();
+
+                foreach(var item in model)
+                {
+                    if (!listName.Contains(item.IngredientName))
+                    {
+                        var usefullList = model.Where(m => m.IngredientName.ToLower() == item.IngredientName.ToLower()).ToList();
+
+                        string CookingStep = "";
+                        decimal Weight = 0;
+
+                        foreach(var elem in usefullList)
+                        {
+                            CookingStep += elem.CookingStep + ";";
+                            Weight += elem.Weight;  
+                        }
+
+
+                        newModel.Add(new IngredientsModel()
+                        {
+                            IngredientName = item.IngredientName,
+                            CookingStep = CookingStep,
+                            Weight = Weight,
+                            Unit = item.Unit
+                        }) ;
+                    }
+                }
+
+
+                foreach (var item in newModel)
                 {
                     var ingredient = context.Ingredients.FirstOrDefault(i => i.Name == item.IngredientName);
 
                     if (ingredient == null)
                     {
-                        ingredient = new Ingredient() { Count = 0, Name = item.IngredientName, Price = 0, Unit = item.Unit };
+                        ingredient = new Ingredient() 
+                        { 
+                            Count = 0,
+                            Name = item.IngredientName,
+                            Price = 0, 
+                            Unit = item.Unit
+                        };
 
                         context.Ingredients.Add(ingredient);
                         context.SaveChanges();
 
-                        var structure = new Structure() { IngredientId = ingredient.Id, FoodId = food.Id, Quntity = item.Weight, CookingStep = item.CookingStep };
+                        var structure = new Structure()
+                        { 
+                            IngredientId = ingredient.Id,
+                            FoodId = newFood.Id,
+                            Quantity = item.Weight,
+                            CookingStep = item.CookingStep };
 
                         context.Structures.Add(structure);
                         context.SaveChanges();
@@ -310,7 +325,7 @@ namespace CurseWork
                     {
                         var structure = new Structure();
 
-                        structure = new Structure() { IngredientId = ingredient.Id, FoodId = food.Id, Quntity = item.Weight, CookingStep = item.CookingStep };
+                        structure = new Structure() { IngredientId = ingredient.Id, FoodId = newFood.Id, Quantity = item.Weight, CookingStep = item.CookingStep };
 
                         context.Structures.Add(structure);
                         context.SaveChanges();

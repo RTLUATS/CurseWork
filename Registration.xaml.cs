@@ -54,42 +54,26 @@ namespace CurseWork
         private void Access_Click(object sender, RoutedEventArgs e)
         {
 
-            if (string.IsNullOrWhiteSpace(FirstName.Text) || string.IsNullOrWhiteSpace(MiddleName.Text) 
-                || string.IsNullOrWhiteSpace(LastName.Text) || string.IsNullOrWhiteSpace(Telephone.Text) 
-                || string.IsNullOrWhiteSpace(Login.Text) || string.IsNullOrWhiteSpace(Password.Password)
-                || string.IsNullOrWhiteSpace(PasswordCheck.Password))
+            if (!Validation.EmtyValidation(FirstName.Text) || !Validation.EmtyValidation(MiddleName.Text) 
+                || !Validation.EmtyValidation(LastName.Text) || !Validation.EmtyValidation(Telephone.Text) 
+                || !Validation.EmtyValidation(Login.Text) || !Validation.EmtyValidation(Password.Password)
+                || !Validation.EmtyValidation(PasswordCheck.Password))
             {
-                MessageBox.Show("Все поля должны быть заполнены", "Внимание", MessageBoxButton.OK , MessageBoxImage.Error);
                 return;
             }
             
 
-            if (!CheckStringField(FirstName.Text, "[А-Я]{1}[а-я]+") || !CheckStringField(MiddleName.Text, "[А-Я]{1}[а-я]+") 
-                || !CheckStringField(LastName.Text, "[А-Я]{1}[а-я]+"))
+            if (!Validation.NameValidation(FirstName.Text)|| !Validation.NameValidation(MiddleName.Text) 
+                || !Validation.NameValidation(LastName.Text))
             {
-                MessageBox.Show("В ФИО должны быть только символы кириллицы Пример:Иванов Иван Иванович");
                 return;
             }
 
- 
-
-            if (!CheckStringField(Telephone.Text, "^([+375]{1}[0-9]{9})$"))
-            {
-                MessageBox.Show("В Телефоне должны быть только цифры Пример: +375447856909");
-                return;
-            }
-
-            if (!CheckStringField(Login.Text, "\\S{4,20}"))
-            {
-                MessageBox.Show("В Логине должны быть любые непробельные символы от 4 до 20 символов Пример: Adam123&");
-                return;
-            }
-
-            if (!CheckStringField(Password.Password, "\\S{6,20}"))
-            {
-                MessageBox.Show("В Пароле должны быть любые непробельные символы от 6 до 20 символов Пример: BigB0$");
-                return;
-            }
+            if (!Validation.LoginValidation(Login.Text)) return;
+            if (!Validation.CheckUser(Login.Text)) return;
+            if (!Validation.TelephoneValidation(Telephone.Text))  return;
+            if (!Validation.CheckTelephone(Telephone.Text)) return;
+            if (!Validation.PasswordValidation(Password.Password)) return;
 
             if (Password.Password != PasswordCheck.Password)
             {
@@ -99,19 +83,6 @@ namespace CurseWork
 
             using (var context = new MSSQLContext())
             {
-
-                if (null != context.Users.FirstOrDefault(u =>u.Login==Login.Text ))
-                {
-                    MessageBox.Show("Пользователь с таким логином уже есть. Придумайте новый");
-                    return;
-                }
-
-                if (null != context.Users.FirstOrDefault(u => u.Telephone == Telephone.Text))
-                {
-                    MessageBox.Show("Этот телефон уже привязан к пользователю");
-                    return;
-                }
-
                 var user = new User()
                 {
                     Login = Login.Text,
@@ -120,18 +91,19 @@ namespace CurseWork
                     Telephone = Telephone.Text,
                     FirstName = FirstName.Text,
                     MiddleName = MiddleName.Text,
-                    LastName = LastName.Text
+                    LastName = LastName.Text,
+                    IsBlock = false
                 };
 
 
                 context.Users.Add(user);
-
                 context.SaveChanges();
 
                 success.Invoke(user);
-                
-                Close();
 
+                isDataDirty = false;
+
+                Close();
             }
 
             LogOut.Visibility = Visibility.Visible;
@@ -141,11 +113,5 @@ namespace CurseWork
             Edit.Visibility = Visibility.Visible;
             Edit.IsEnabled = true;
         }
-
-        private bool CheckStringField(string text, string pattern)
-        {
-            return Regex.IsMatch(text, pattern);
-        }
-
     }
 }

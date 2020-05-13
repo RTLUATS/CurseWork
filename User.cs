@@ -30,7 +30,5 @@ namespace CurseWork
 
         public virtual ICollection<OrderList> OrderLists { get; set; }
 
-        public virtual ICollection<Inquiry> Inquiries { get; set; }
-
     }
 }

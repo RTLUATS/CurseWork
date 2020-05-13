@@ -1,4 +1,5 @@
 ﻿<Window x:Class="CurseWork.Chef"
+        Closing="Chef_Closing"
         ResizeMode="NoResize"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -8,7 +9,7 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
-        TextElement.FontWeight="Regular"
+        TextElement.FontWeight="DemiBold"
         TextElement.FontSize="16"
         TextOptions.TextFormattingMode="Ideal"
         TextOptions.TextRenderingMode="Auto"
@@ -18,20 +19,23 @@
     <Grid Background="Black">
 
         <ListBox Name="Menu" Margin="10,10,289,10"/>
-        <DataGrid Visibility="Hidden" IsEnabled="False" Name="Table" AutoGenerateColumns="False" Margin="10,10,260,10">
+        <DataGrid Visibility="Hidden" IsEnabled="False"  CanUserAddRows="False" CanUserDeleteRows="False" Name="Table" AutoGenerateColumns="False" Margin="0,0,260,0">
             <DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding Path=Name}" IsReadOnly="True" Header="Название" Width="*"/>
-                <DataGridTextColumn Binding="{Binding Path=Count}" IsReadOnly="True" Header="Сколько есть" Width="*"/>
-                <DataGridTextColumn Binding="{Binding Path=Unit}" IsReadOnly="True" Header="Единица измерения" Width="*"/>
-                <DataGridTextColumn Binding="{Binding Path=AddtionalCount, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="False" Header="Сколько докупить" Width="*"/>
+                <DataGridTextColumn CanUserResize="False" Binding="{Binding Path=Name}"  IsReadOnly="True" Header="Название" Width="120"/>
+                <DataGridTextColumn CanUserResize="False" Binding="{Binding Path=Count}" IsReadOnly="True" Header="Сколько есть" Width="140"/>
+                <DataGridTextColumn CanUserResize="False" Binding="{Binding Path=Unit}" IsReadOnly="True" Header="Измерение" Width="110"/>
+                <DataGridTextColumn CanUserResize="False" Binding="{Binding Path=AdditionalAmount, ValidatesOnDataErrors=True, Mode=TwoWay}" IsReadOnly="False" Header="Сколько докупить" Width="*"/>
             </DataGrid.Columns>
         </DataGrid>
         <StackPanel Margin="539,10,10,10">
+            <TextBox Name="SearchField" FontWeight="DemiBold" Background="Black" Foreground="PaleGreen"  ToolTip="Для показа всех элементов отчистите строку и нажмите Поиск" materialDesign:HintAssist.Hint="Поиск по названию" Grid.Row="0" Grid.Column="2" VerticalAlignment="Center"   Margin="10" Height="35"/>
+            <Button Name="Search" Style="{StaticResource MaterialDesignRaisedDarkButton}" FontSize="16" FontWeight="DemiBold" Content="Поиск" Click="Search_Click" Margin="10"/>
             <Button Foreground="White" FontWeight="DemiBold" FontSize="16" Name="AddFood" Margin="10" Content="Добавить блюдо" Click="AddFood_Click"/>
             <Button Foreground="White" FontWeight="DemiBold" FontSize="16" Name="AllFood" Margin="10" Content="Посмтреть все блюда"  IsEnabled="False" Click="AllFood_Click"/>
             <Button Foreground="White" FontWeight="DemiBold" FontSize="11" Name="Inquiry"  Margin="10" ToolTip="Запрос необходимых ингредиентов" Content="Запрос необходимых ингредиентов"  IsEnabled="True" Click="Inquiry_Click"/>
             <Button Foreground="White" FontWeight="DemiBold" FontSize="16" Name="InquiryExecute" Margin="10" IsEnabled="False" Content="Сделать запрос" Click="InquiryExecute_Click" />
-            <Button Foreground="White" FontWeight="DemiBold" FontSize="16" Name="RequestReport" Content="Отчёт о запросах" Margin="10" Click="RequestReport_Click"/>
+            <Button Foreground="White" FontWeight="DemiBold" FontSize="16" Name="RequestReport" Content="Сделать отчёт о запросах" Margin="10" Click="RequestReport_Click"/>
         </StackPanel>
+
     </Grid>
 </Window>

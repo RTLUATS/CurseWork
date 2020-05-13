@@ -14,7 +14,7 @@ namespace CurseWork
 
         public decimal Count { get; set; }
 
-        public decimal? Price { get; set; }
+        public decimal Price { get; set; }
 
         public string Unit { get; set; }
         

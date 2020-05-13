@@ -22,9 +22,7 @@ namespace CurseWork
 
             using(var context = new MSSQLContext()) 
             {
-                var list = context.Inquiries
-                                    .Include(i => i.Ingredients)
-                                    .ToList();
+                var list = context.Inquiries.ToList();
                
                 table.Columns.Add(new DataColumn("Название", typeof(string)));
                 table.Columns.Add(new DataColumn("Количество", typeof(decimal)));
@@ -34,7 +32,7 @@ namespace CurseWork
                 {
                     DataRow newRow = table.NewRow();
 
-                    newRow[0] = item.Ingredients.First(i => i.Id == item.IngredientId).Name;
+                    newRow[0] = context.Ingredients.Find(item.IngredientId).Name;
                     newRow[1] = item.ExpectedQuantity;
                     newRow[2] = item.Date;
 
@@ -188,7 +186,7 @@ namespace CurseWork
 
             // File save dialog
             SaveFileDialog saveFileDialog = new SaveFileDialog();
-            saveFileDialog.Filter = "Execl files (*.xls)|*.xls";
+            saveFileDialog.Filter = "Execl files (*.xls)|*.xls;*.xlsx";
 
             saveFileDialog.FilterIndex = 0;
             saveFileDialog.RestoreDirectory = true;
@@ -225,9 +223,7 @@ namespace CurseWork
                     }
 
                     wkBook.SaveAs(saveFileDialog.FileName);
-
-                    wkBooks.Close();
-                    wkBook.Close(false, Missing.Value, Missing.Value);
+                    
                     excelApp.Quit();
 
                     MessageBox.Show("Отчёт создан");

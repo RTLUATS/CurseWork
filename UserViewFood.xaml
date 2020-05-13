@@ -20,9 +20,9 @@
         <Label Foreground="White" FontWeight="DemiBold" FontSize="24" VerticalAlignment="Center" Margin="0,225,642,152" Height="42">Описание :</Label>
         <Label Foreground="White" FontWeight="DemiBold" FontSize="24" VerticalAlignment="Center" Margin="443,10,251,367" Height="42">Состав:</Label>
         <Label Foreground="White" FontWeight="DemiBold" FontSize="24" VerticalAlignment="Center" Margin="582,230,60,147" Height="42" Content="Цена :"/>
-        <TextBlock Foreground="White" FontWeight="DemiBold" FontSize="16" Name="foodDescription" VerticalAlignment="Center" Margin="10,272,354,10" Height="137"/>
-        <TextBlock Foreground="White" FontWeight="DemiBold" FontSize="16" Name="foodStruct" VerticalAlignment="Center" Margin="443,57,10,199" Height="163"/>
-        <Button Name="addToBasket" Foreground="White" FontWeight="DemiBold" FontSize="15" Content="Добавить в корзину" Margin="582,355,10,20" Click="AddToBasket_Click" Height="Auto"/>
+        <TextBlock Foreground="White" FontWeight="DemiBold" FontSize="16" Name="FoodDescription" VerticalAlignment="Center" Margin="10,272,354,10" Height="137"/>
+        <TextBlock Foreground="White" FontWeight="DemiBold" FontSize="16" Name="FoodStruct" VerticalAlignment="Center" Margin="443,57,10,199" Height="163"/>
+        <Button Name="AddToBasket" Foreground="White" FontWeight="DemiBold" FontSize="15" Content="Добавить в корзину" Margin="582,355,10,20" Click="AddToBasket_Click" Height="Auto"/>
         <TextBlock Foreground="White" FontWeight="DemiBold" FontSize="16" Name="Price" VerticalAlignment="Center" Margin="582,272,60,103" Height="44"/>
     </Grid>
 </Window>

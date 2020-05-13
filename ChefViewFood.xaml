@@ -19,11 +19,11 @@
         Title="Food" Height="450" Width="800">
     <Grid Background="Black">
         <Image Name="Image" Margin="10,10,376,219"></Image>
-        <DataGrid Name="Table" Margin="10,242,10,10" CanUserResizeColumns="False" AutoGenerateColumns="False">
+        <DataGrid Name="Table" CanUserAddRows="True" CanUserDeleteRows="True" Margin="10,242,10,10" CanUserResizeColumns="False" AutoGenerateColumns="False">
             <DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding Path=IngredientName, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" Header="Наименование ингредиента" ToolTipService.ToolTip="Здесь должно быть наименование ингредиента" />
-                <DataGridTextColumn Binding="{Binding Path=Weight, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged}" Header="Колличество в блюде" ToolTipService.ToolTip="Если у вас в блюде используется 300 грамм булочки, то вы заносите в таблицу как 0.3 киллограмм, если нпиток то сколько литров напитка например: 0.5 литров"/>
-                <DataGridComboBoxColumn Header="В чём измеряется" SelectedValueBinding="{Binding Path=Unit}">
+                <DataGridTextColumn Binding="{Binding Path=IngredientName, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Header="Наименование ингредиента" ToolTipService.ToolTip="Здесь должно быть наименование ингредиента" />
+                <DataGridTextColumn Binding="{Binding Path=Weight, ValidatesOnDataErrors=True, Mode=TwoWay}" Header="Колличество в блюде" ToolTipService.ToolTip="Если у вас в блюде используется 300 грамм булочки, то вы заносите в таблицу как 0.3 киллограмм, если нпиток то сколько литров напитка например: 0.5 литров"/>
+                <DataGridComboBoxColumn Header="В чём измеряется" SelectedValueBinding="{Binding Path=Unit, Mode=TwoWay}">
                     <DataGridComboBoxColumn.ItemsSource>
                         <col:ArrayList>
                             <sys:String>Литры</sys:String>
@@ -31,7 +31,7 @@
                         </col:ArrayList>
                     </DataGridComboBoxColumn.ItemsSource>
                 </DataGridComboBoxColumn>
-                <DataGridTextColumn Binding="{Binding Path=CookingSteps}" Header="Действия при приготовлении"/>
+                <DataGridTextColumn Binding="{Binding Path=CookingSteps, Mode=TwoWay}" Header="Действия при приготовлении"/>
             </DataGrid.Columns>
         </DataGrid>
         <TextBox Foreground="PaleGreen" FontSize="16" Name="Name" SpellCheck.IsEnabled="True"  materialDesign:HintAssist.Hint="Наименование..." Margin="431,87,209,290"/>

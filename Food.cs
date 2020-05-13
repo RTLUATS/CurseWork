@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Drawing;
+using System.Data.Entity.Core.Objects.DataClasses;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CurseWork
 {
@@ -25,7 +27,7 @@ namespace CurseWork
         public bool? InMenu { get; set; }
 
         public virtual ICollection<Order> Orders { get; set; }
-
+        
         public virtual ICollection<Structure> Structures { get; set; }
 
         public virtual Category Category { get; set; }

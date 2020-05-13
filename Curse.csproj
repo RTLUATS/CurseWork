@@ -230,7 +230,6 @@
     <Compile Include="Basket.xaml.cs">
       <DependentUpon>Basket.xaml</DependentUpon>
     </Compile>
-    <Compile Include="BasketModel.cs" />
     <Compile Include="Category.cs" />
     <Compile Include="Chef.xaml.cs">
       <DependentUpon>Chef.xaml</DependentUpon>
@@ -281,6 +280,8 @@
     </Compile>
     <Compile Include="Structure.cs" />
     <Compile Include="User.cs" />
+    <Compile Include="Validation.cs" />
+    <Compile Include="WorkWithImage.cs" />
     <Page Include="Administrator.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

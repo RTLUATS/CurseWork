@@ -24,7 +24,7 @@ namespace CurseWork
         private List<Food> listFood;
         private List<Category> listCategories;
         private List<Ingredient> listIngredients;
-        private List<BasketModel> foodInBasket;
+        private List<Food> foodInBasket;
         private Action<User> success;
         private int checker = 0;
         private bool show = false;
@@ -34,7 +34,7 @@ namespace CurseWork
             InitializeComponent();
             Load();
 
-            foodInBasket =  new List<BasketModel>();
+            foodInBasket =  new List<Food>();
 
         }
 
@@ -200,21 +200,30 @@ namespace CurseWork
 
         private void WorkRoom_Click(object sender, RoutedEventArgs e)
         {
-            if (currentUser.Id == 1)
+            switch (currentUser.LvlAccess) 
             {
-                var manager = new Manager();
-                manager.Show();
+                case 1: var managerWindow = new Manager();
+                        
+                        managerWindow.Show();
+                    break;
+                case 2: var chefWindow = new Chef();
+
+                        chefWindow.Show();
+                    break;
+                case 3: var economistWindow = new Economist();
+
+                        economistWindow.Show();
+                    break;
+                case 4: var adminWindow = new Administrator();
+
+                        adminWindow.Show();
+                    break;
+                case 5: var directorWindow = new Director();
+
+                        directorWindow.Show();
+                    break;
             }
-            else if(currentUser.Id == 2)
-            {
-                var chef = new Chef();
-                chef.Show();
-            }
-            else if(currentUser.Id == 3)
-            {
-                var economist = new Economist();
-                economist.Show();
-            }
+
 
         }
 

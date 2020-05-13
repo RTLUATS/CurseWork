@@ -17,7 +17,10 @@
         Title="Manager" Height="650" Width="800">
     <Grid Background="Black">
         <UniformGrid Visibility="Hidden" IsEnabled="False" Name="Table" Columns="1" Margin="10,10,267,10"/>
-        <ListBox Visibility="Hidden" IsEnabled="False" Name="InquiryListBox" Margin="10,10,267,10"/>
+        <ListBox  IsEnabled="False" Name="InquiryListBox" Margin="10,63,267,10"/>
+        <Label Content="Наименование" Foreground="White" Margin="10,10,644,568"/>
+        <Label Content="Количество" Foreground="White" Margin="198,10,485,568"/>
+        <Label Content="Дата подачи заявки" Foreground="White" Margin="345,10,267,568"/>
         <Button Foreground="White" FontSize="16" FontWeight="DemiBold" Content="Заказать ингредиенты" IsEnabled="False" Visibility="Hidden" Margin="575,67,10,507"/>
         <ComboBox Margin="532,155,10,416" Style="{StaticResource MaterialDesignFloatingHintComboBox}" materialDesign:TextFieldAssist.UnderlineBrush="{DynamicResource SecondaryAccentBrush}" materialDesign:ColorZoneAssist.Mode="Inverted"  Foreground="PaleGreen" materialDesign:HintAssist.Hint="Действия с блюдами" Height="50">
             <Button Foreground="White" Name="AllFoods" Content="Все блюда" Width="222" Click="AllFoods_Click"/>

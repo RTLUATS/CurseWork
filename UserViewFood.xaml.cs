@@ -12,49 +12,41 @@ namespace CurseWork
     /// </summary>
     public partial class UserViewFood : Window
     {
-        private List<BasketModel> FoodInBasket;
+        private List<Food> FoodsInBasket;
         private Food currentFood;
         private Button basketButton;
 
-        public UserViewFood(Food currentFood, List<BasketModel> FoodInBasket, Button basketButton)
+        public UserViewFood(Food currentFood, List<Food> FoodsInBasket, Button basketButton)
         {
             InitializeComponent();
+
             Price.Text = currentFood.CurrentPrice.ToString();
-            foodDescription.Text = currentFood.Description;
+            FoodDescription.Text = currentFood.Description;
+            AddToBasket.IsEnabled = Validation.CanUserBuy(FoodsInBasket, currentFood);
+            foodImage.Source = WorkWithImage.ConvertArrayByteToImage(currentFood.Image);
 
             using (var context = new MSSQLContext())
             {
-
                 var structures = context.Structures.Where(s => s.FoodId == currentFood.Id).ToList();
 
                 foreach (var currentStructure in structures)
                 {
-                    foodStruct.Text += context.Ingredients.First(i => i.Id == currentStructure.IngredientId).Name + ", ";
+                    FoodStruct.Text += context.Ingredients.First(i => i.Id == currentStructure.IngredientId).Name + ", ";
                 }
             }
 
-            foodStruct.Text = foodStruct.Text.TrimEnd(new char[] { ',' });
-
-            using (var ms = new MemoryStream(currentFood.Image))
-            {
-                var image = new BitmapImage();
-
-                image.BeginInit();
-                image.StreamSource = ms;
-                image.CacheOption = BitmapCacheOption.OnLoad;
-                image.EndInit();
-                foodImage.Source = image;
-            }
-
-            this.FoodInBasket = FoodInBasket;
+            FoodStruct.Text = FoodStruct.Text.TrimEnd(new char[] { ',' });
+            
+            this.FoodsInBasket = FoodsInBasket;
             this.currentFood = currentFood;
             this.basketButton = basketButton;
         }
 
         private void AddToBasket_Click(object sender, RoutedEventArgs e)
         {
-            FoodInBasket.Add(new BasketModel() { Num = currentFood.Id, Name = currentFood.Name, Price = currentFood.CurrentPrice  });
-            basketButton.Content = $"Корзина ({FoodInBasket.Count})";
+            FoodsInBasket.Add(currentFood);
+            basketButton.Content = $"Корзина ({FoodsInBasket.Count})";
+
         }
     }
 }

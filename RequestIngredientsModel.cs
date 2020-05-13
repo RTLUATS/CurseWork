@@ -4,7 +4,7 @@ using System.ComponentModel;
 
 namespace CurseWork
 {
-    internal class RequestIngredientsModel: ObservableObject, IDataErrorInfo
+    public class RequestIngredientsModel: ObservableObject, IDataErrorInfo
     {
 
         public string Error { get { return null; } }
@@ -12,6 +12,12 @@ namespace CurseWork
         public Dictionary<string, string> ErrorCollection { get; private set; } = new Dictionary<string, string>();
 
         private decimal _AdditionalAmount;
+
+        private string _Unit;
+
+        private decimal _Count;
+
+        private string _Name;
 
         public string this[string columnName]
         {
@@ -23,7 +29,9 @@ namespace CurseWork
                 {
                     case nameof(AdditionalAmount):
                         if (AdditionalAmount < 0)
-                            result = "Колличество не может быть отрицательным" ;
+                            result = "Колличество не может быть отрицательным";
+                        else if (Validation.CountValidationWMB(AdditionalAmount.ToString()))
+                            result = "Количество указано неверно.";
                     break;
                 }
 
@@ -38,13 +46,37 @@ namespace CurseWork
             }
         }
 
-        internal int Id { set; get; }
+        public int Id { set; get; }
 
-        internal string Name { set; get; }
+        public string Name
+        {
+            get { return _Name; }
 
-        internal decimal Count { set; get; }
+            set
+            {
+                OnPropertyChanged(ref _Name, value);
+            }
+        }
 
-        internal string Unit { set; get; }
+        public decimal Count
+        {
+            get { return _Count; }
+
+            set
+            {
+                OnPropertyChanged(ref _Count, value);
+            }
+        }
+
+        public string Unit 
+        {
+            get { return _Unit; }
+
+            set
+            {
+                OnPropertyChanged(ref _Unit, value);
+            }
+        }
 
         public decimal AdditionalAmount
         {

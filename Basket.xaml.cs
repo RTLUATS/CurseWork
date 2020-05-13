@@ -22,11 +22,11 @@ namespace CurseWork
     public partial class Basket : Window
     { 
     
-        private List<BasketModel> foodInBasket;
+        private List<Food> foodInBasket;
         private User user;
         private Button button;
 
-        public Basket(List<BasketModel> foods, User currentUser, Button button)
+        public Basket(List<Food> foods, User currentUser, Button button)
         {
             InitializeComponent();
 
@@ -36,11 +36,9 @@ namespace CurseWork
                 BasketTable.ItemsSource = foods;
                 this.button = button;
                 user = currentUser;
-                AllSum.Text = foods.Sum(f => f.Price).ToString();
+                AllSum.Text = foods.Sum(f => f.CurrentPrice).ToString();
                 Buy.IsEnabled = true;
             }
-
-
 
             if (user != null)
             {
@@ -55,8 +53,6 @@ namespace CurseWork
                 LastName.IsEnabled = false;
 
             }
-
-            
         }
 
         private void DeleteFromBasket_Click(object sender, RoutedEventArgs e)
@@ -70,14 +66,14 @@ namespace CurseWork
              
                 var id = Convert.ToInt32(num);
 
-                if (foodInBasket.FirstOrDefault(f => f.Num == id) == null) continue;
+                if (foodInBasket.FirstOrDefault(f => f.Id == id) == null) continue;
                 
-                foodInBasket.Remove(foodInBasket.First(f=>f.Num==id));
-                foodInBasket.Remove(foodInBasket.First(f => f.Num == id));
+                foodInBasket.Remove(foodInBasket.First(f=>f.Id == id));
+                foodInBasket.Remove(foodInBasket.First(f => f.Id == id));
                 
             }
 
-            AllSum.Text = foodInBasket.Sum(f => f.Price).ToString();
+            AllSum.Text = foodInBasket.Sum(f => f.CurrentPrice).ToString();
             button.Content = $"Корзина ({foodInBasket.Count()})";
 
             if (foodInBasket.Count == 0) Buy.IsEnabled = false;
@@ -135,11 +131,12 @@ namespace CurseWork
         {
             using (var context =  new MSSQLContext())
             {
+                var listId = new List<int>();
+
                 var currentOrder = new OrderList()
                 {
                     AmountOrder = Convert.ToDecimal(AllSum.Text),
                     DateOrder = DateTime.Now,
-
                 };
 
                 if (id == 0)
@@ -154,15 +151,26 @@ namespace CurseWork
                     currentOrder.IdUser = id;
                 }
 
+                context.OrderLists.Add(currentOrder);
+                context.SaveChanges();
+
                 var orders =  new List<Order>();
 
                 foreach (var food in foodInBasket)
                 {
-                    orders.Add(new Order()
+                    if (!listId.Contains(food.Id))
                     {
-                        FoodId = food.Num,
-                        IdOrderList = currentOrder.Id
-                    });
+                        orders.Add(new Order()
+                        {
+                            FoodId = food.Id,
+                            IdOrderList = currentOrder.Id,
+                            PriceBoughtFor = food.CurrentPrice,
+                            Count = foodInBasket.Where(f => f.Id == food.Id).ToList().Count,
+                        });
+
+                        listId.Add(food.Id);
+                    }
+
                 }
 
                 context.OrderLists.Add(currentOrder);

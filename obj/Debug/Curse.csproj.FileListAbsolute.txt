@@ -124,3 +124,4 @@ C:\Users\jtmotn\source\repos\CurseWork\obj\Debug\Director.baml
 C:\Users\jtmotn\source\repos\CurseWork\obj\Debug\Curse.csproj.ResolveComReference.cache
 C:\Users\jtmotn\source\repos\CurseWork\obj\Debug\EditInfo.g.cs
 C:\Users\jtmotn\source\repos\CurseWork\obj\Debug\EditInfo.baml
+C:\Users\jtmotn\source\repos\CurseWork\obj\Debug\Curse.csprojAssemblyReference.cache
