@@ -46,6 +46,7 @@ namespace CurseWork
 
         private void CreateButtons()
         {
+            Menu.Items.Clear();
 
             foreach (var food in foods)
             {
@@ -123,7 +124,7 @@ namespace CurseWork
 
                 foreach (var item in list)
                 {
-                    if (item.AdditionalAmount == 0) continue;
+                    if (item.AdditionalAmount == 0 ) continue;
 
                     listInquiry.Add(new Inquiry() { IngredientId = item.Id, ExpectedQuantity = item.AdditionalAmount, Date = DateTime.Now});
                 }
@@ -164,6 +165,8 @@ namespace CurseWork
         private void LoadModel(List<Ingredient> ingredients)
         {
             list.Clear();
+            Table.ItemsSource = null;
+            Table.Items.Clear();
 
             foreach (var ingredient in ingredients)
             {
@@ -206,11 +209,6 @@ namespace CurseWork
 
                 report.CommonPart(0);
             }
-        }
-
-        private void Chef_Closing(object sender, CancelEventArgs e)
-        {
-           
         }
     }
 }

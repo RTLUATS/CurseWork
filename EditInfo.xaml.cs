@@ -71,18 +71,7 @@ namespace CurseWork
             // If data is dirty, notify user and ask for a response
             if (isDataDirty)
             {
-                string msg = "Данные были изменены. Вы точно хотите закрыть окно?";
-                MessageBoxResult result =
-                  MessageBox.Show(
-                    msg,
-                    "Data App",
-                    MessageBoxButton.YesNo,
-                    MessageBoxImage.Warning);
-                if (result == MessageBoxResult.No)
-                {
-                    // If user doesn't want to close, cancel closure
-                    e.Cancel = true;
-                }
+                e.Cancel = !Validation.CloseWindowValidation();
             }
         }
 
@@ -104,6 +93,7 @@ namespace CurseWork
             {
                 currentUser = context.Users.First(u => u.Telephone == Telephone.Text);
                 currentUser.Password = Password.Password;
+                context.SaveChanges();
             }
 
             MessageBox.Show("Изменения прошли успешно.", "Внимание", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -115,7 +105,7 @@ namespace CurseWork
 
         private bool ChangePasswordValidation()
         {
-            if(Validation.TelephoneValidation(Telephone.Text)) return false;
+            if(!Validation.TelephoneValidation(Telephone.Text)) return false;
             if (!Validation.PasswordValidation(Password.Password)) return false;
 
             if (Password.Password != PasswordCheck.Password)

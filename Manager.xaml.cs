@@ -85,8 +85,8 @@ namespace CurseWork
         private void LoadFood()
         {
             FoodContolVisiability();
-            
-            Table.Children.RemoveRange(0, Table.Children.Count);
+
+            Table.Items.Clear();
 
             foreach (var food in foods)
             {
@@ -100,7 +100,7 @@ namespace CurseWork
                 button.Margin = new Thickness(10);
                 button.Click += FoodClick;
 
-                Table.Children.Add(button);
+                Table.Items.Add(button);
             }
         }
 
@@ -155,7 +155,7 @@ namespace CurseWork
         {
             IngredientControlVisibility(1);
 
-            Table.Children.RemoveRange(0, Table.Children.Count);
+            Table.Items.Clear();
 
             foreach (var ingredient in ingredients)
             {
@@ -170,7 +170,7 @@ namespace CurseWork
                 button.Margin = new Thickness(10);
                 button.Click += EventForIngredients;
 
-                Table.Children.Add(button);
+                Table.Items.Add(button);
             }
         }
 

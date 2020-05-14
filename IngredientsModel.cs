@@ -23,6 +23,8 @@ namespace CurseWork
                         if (!Regex.IsMatch(IngredientName, "^\\p{Ll}{2,}(\\-?\\p{Ll}{2,})?$"))
                             result = "Название ингредиента должно быть записанно в нижнем регистре." +
                                 "И слово должно быть от 2-ух символов с обоих сторон тире";
+                        if (IngredientName.Length > 20)
+                            result = "Количество символов должно быть < 20";
                         break;
                     case nameof(Weight):
                         if (Weight < 0)
@@ -31,10 +33,8 @@ namespace CurseWork
                     case nameof(Unit):
                         if (Unit == "" || Unit == null)
                             result = "Единица измерения должна быть выбрана";
-                        break;
-                   
+                        break; 
                 }
-
 
                 return result;
             }

@@ -84,6 +84,7 @@ namespace CurseWork
         private void EditPassword_Click(object sender, RoutedEventArgs e)
         {
             var window = new EditInfo();
+            window.Show();
         }
 
         private void Registration_Click(object sender, RoutedEventArgs e)

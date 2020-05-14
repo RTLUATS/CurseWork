@@ -1,4 +1,5 @@
 ﻿<Window x:Class="CurseWork.ChefViewFood"
+        Closing="Window_Closing"
         ResizeMode="NoResize"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -18,7 +19,7 @@
         FontFamily="{DynamicResource MaterialDesignFont}"
         Title="Food" Height="450" Width="800">
     <Grid Background="Black">
-        <Image Name="Image" Margin="10,10,376,219"></Image>
+        <Image Name="Image" Margin="10,10,376,219"/>
         <DataGrid Name="Table" CanUserAddRows="True" CanUserDeleteRows="True" Margin="10,242,10,10" CanUserResizeColumns="False" AutoGenerateColumns="False">
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding Path=IngredientName, ValidatesOnDataErrors=True, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Header="Наименование ингредиента" ToolTipService.ToolTip="Здесь должно быть наименование ингредиента" />
@@ -31,11 +32,11 @@
                         </col:ArrayList>
                     </DataGridComboBoxColumn.ItemsSource>
                 </DataGridComboBoxColumn>
-                <DataGridTextColumn Binding="{Binding Path=CookingSteps, Mode=TwoWay}" Header="Действия при приготовлении"/>
+                <DataGridTextColumn Binding="{Binding Path=CookingSteps, UpdateSourceTrigger=PropertyChanged,  Mode=TwoWay}" Header="Действия при приготовлении"/>
             </DataGrid.Columns>
         </DataGrid>
-        <TextBox Foreground="PaleGreen" Name="Name" SpellCheck.IsEnabled="True"  materialDesign:HintAssist.Hint="Наименование..." Margin="431,87,209,290"/>
-        <TextBox Foreground="PaleGreen" Name="Category" SpellCheck.IsEnabled="True"  materialDesign:HintAssist.Hint="Категория..." Margin="431,167,209,213"/>
+        <TextBox Foreground="PaleGreen" MaxLength="20" TextChanged="Text_TextChanged" Name="Name" SpellCheck.IsEnabled="True"  materialDesign:HintAssist.Hint="Наименование..." Margin="431,87,209,290"/>
+        <TextBox Foreground="PaleGreen" MaxLength="20" TextChanged="Text_TextChanged" Name="Category" SpellCheck.IsEnabled="True"  materialDesign:HintAssist.Hint="Категория..." Margin="431,167,209,213"/>
         <Button Foreground="White" FontWeight="DemiBold" FontSize="14" Name="ChangeImage" Content="Выбрать картинку" Margin="431,10,189,370" Click="ChangeImage_Click" Height="Auto"/>
         <Button Foreground="White" FontWeight="DemiBold" FontSize="14" Name="AddFood" Content="Добавить в меню" Margin="612,167,10,213" Click="AddFood_Click" Height="Auto"/>
         <Button Foreground="White" FontWeight="DemiBold" FontSize="14" Name="SaveChange" Content="Сохранить измения" Margin="612,117,10,263" Click="SaveChange_Click" Height="Auto"/>

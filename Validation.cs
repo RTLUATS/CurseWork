@@ -39,13 +39,29 @@ namespace CurseWork
 
             return true;
         }
-        
+
+        internal static bool CloseWindowValidation()
+        {
+            var result = MessageBox.Show
+                        (
+                        "Вы уверены что хотите выйти?",
+                        "Внимание",
+                        MessageBoxButton.YesNo,
+                        MessageBoxImage.Question
+                        );
+
+            if (result == MessageBoxResult.No)
+                return false;
+
+            return true;
+        }
+
         internal static bool NameCategoryValidation(string str)
         {
 
-            if (!Regex.IsMatch(str, "^([А-я]{1}[а-я]+)$"))
+            if (!Regex.IsMatch(str, "^([А-я]{1}[а-я]+)$") || str.Length > 20)
             {
-                MessageBox.Show("Категория указана Неверно! Пример: Напиток",
+                MessageBox.Show("Категория указана неверно и количество сиволов < 20! Пример: Напиток",
                     "Внимание", MessageBoxButton.OK, MessageBoxImage.Error);
 
                 return false;
@@ -56,9 +72,10 @@ namespace CurseWork
 
         internal static bool NameIngredientValidation(string str)
         {
-            if (!Regex.IsMatch(str, "^([А-я]{1}[а-я]+)$"))
+            if (!Regex.IsMatch(str, "^([А-я]{1}[а-я]+)$") ||  str.Length > 20 )
             {
-                MessageBox.Show("имя ингредента указано не правильно. Пример:coca-cola",
+                MessageBox.Show("имя ингредента указано не правильно и" +
+                    " количество сиволов < 20! Пример:coca-cola",
                     "Внимание", MessageBoxButton.OK, MessageBoxImage.Error);
 
                 return false;
@@ -69,9 +86,10 @@ namespace CurseWork
 
         internal static bool NameValidation(string str)
         {
-            if(!Regex.IsMatch(str, "^([А-я]{1}[а-я]+)$"))
+            if(!Regex.IsMatch(str, "^([А-я]{1}[а-я]+)$") || str.Length > 20)
             {
-                MessageBox.Show("ФИО должно быть на русском. Пример: Ивано Иван Иванович",
+                MessageBox.Show("ФИО должно быть на русском и длина любой из " +
+                    "частей ФИО должна быть  до 20 символов. Пример: Ивано Иван Иванович",
                     "Внимание" , MessageBoxButton.OK, MessageBoxImage.Error);
                 
                 return false;

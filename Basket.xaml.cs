@@ -110,7 +110,7 @@ namespace CurseWork
 
                 var currentOrder = new OrderList()
                 {
-                    AmountOrder = Convert.ToDecimal(AllSum.Text),
+                    AmountOrder = basket.Sum(s => s.Price),
                     DateOrder = DateTime.Now,
                     FirstName = default,
                     MiddleName = default,
@@ -173,6 +173,9 @@ namespace CurseWork
                 context.Orders.AddRange(orders);
                 context.SaveChanges();
             }
+
+            BasketTable.ItemsSource = null;
+            BasketTable.Items.Clear();
         }
     }
 }

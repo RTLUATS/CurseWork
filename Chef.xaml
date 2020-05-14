@@ -1,5 +1,4 @@
 ﻿<Window x:Class="CurseWork.Chef"
-        Closing="Chef_Closing"
         ResizeMode="NoResize"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"

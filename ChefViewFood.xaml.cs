@@ -15,6 +15,7 @@ namespace CurseWork
     {
         private Food food;
         private List<IngredientsModel> model;
+        private bool isDataDirty;
 
         public ChefViewFood(Food food = null)
         {
@@ -34,6 +35,7 @@ namespace CurseWork
                 SaveChange.Visibility = Visibility.Hidden;
             }
 
+            isDataDirty = false;
             Table.ItemsSource = model;
 
         }
@@ -115,7 +117,7 @@ namespace CurseWork
 
                         foreach (var elem in usefullList)
                         {
-                            CookingStep += elem.CookingStep + ";";
+                            CookingStep += elem.CookingStep.TrimEnd(new char[] { ';' } ) + ";";
                             Weight += elem.Weight;
                         }
 
@@ -168,9 +170,13 @@ namespace CurseWork
                     }
                 }
 
+                isDataDirty = false;
+                
                 context.Structures.RemoveRange(structures);
                 context.SaveChanges();
             }
+
+            Close();
         }
 
         private bool Check()
@@ -182,6 +188,7 @@ namespace CurseWork
             {
                 if (!Validation.NameIngredientValidation(item.IngredientName)) return false;
                 if (!Validation.CountValidation(item.Weight.ToString())) return false;
+                if (!Validation.NegativeValidation(item.Weight.ToString())) return false;
             }
 
             return true;
@@ -238,7 +245,7 @@ namespace CurseWork
                         
                         foreach(var elem in usefullList)
                         {
-                            CookingStep += elem.CookingStep + ";";
+                            CookingStep += elem.CookingStep.TrimEnd(new char[] { ';' }) + ";";
                             Weight += elem.Weight;  
                         }
 
@@ -297,8 +304,25 @@ namespace CurseWork
                     }
                 }
 
+                isDataDirty = false;
+
                 context.SaveChanges();
             }
+
+            Close();
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (isDataDirty)
+            {
+                e.Cancel = !Validation.CloseWindowValidation();
+            }
+        }
+
+        private void Text_TextChanged(object sender, System.Windows.Controls.TextChangedEventArgs e)
+        {
+            isDataDirty = true;
         }
     }
 }
