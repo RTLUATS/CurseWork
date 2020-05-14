@@ -27,18 +27,14 @@ namespace CurseWork
             InitializeComponent();
         }
 
-        private void AllUsers_Click(object sender, RoutedEventArgs e)
-        {
-            LoadUsers("select * from Users");
-        }
-
-        private void LoadUsers(string sqlQuery)
+        private void LoadUsers(int LvlAccess)
         {
             ListUsers.Items.Clear();
 
             using (var context = new MSSQLContext())
             {
-                users = context.Database.SqlQuery<User>(sqlQuery).ToList();
+                users = LvlAccess == 6 ? context.Users.ToList() : 
+                    context.Users.Where(u => u.LvlAccess == LvlAccess).ToList();
             }
 
             foreach (var user in users)
@@ -60,7 +56,7 @@ namespace CurseWork
                     Name = "Name" + user.Id.ToString(),
                     IsEnabled = true,
                     Foreground = Brushes.White,
-                    HorizontalAlignment = HorizontalAlignment.Right,
+                    HorizontalAlignment = HorizontalAlignment.Left,
                     Content = $"Посмотреть",
                     Margin = new Thickness(5),
                 };
@@ -68,7 +64,7 @@ namespace CurseWork
 
                 panel.Children.Add(label);
                 panel.Children.Add(button);
-           
+
                 button.Click += EventForUsers;
 
                 ListUsers.Items.Add(panel);
@@ -84,35 +80,9 @@ namespace CurseWork
             window.Show();
         }
 
-        private void ViewEconomists_Click(object sender, RoutedEventArgs e)
+        private void Box_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            LoadUsers("select * from Users where LvlAccess=2");
+            LoadUsers(Box.SelectedIndex);
         }
-
-        private void ViewManagers_Click(object sender, RoutedEventArgs e)
-        {
-            LoadUsers("select * from Users where LvlAccess=1");
-        }
-
-        private void ViewAdministrators_Click(object sender, RoutedEventArgs e)
-        {
-            LoadUsers("select * from Users where LvlAccess=4");
-        }
-
-        private void ViewDirectors_Click(object sender, RoutedEventArgs e)
-        {
-            LoadUsers("select * from Users where LvlAccess=5");
-        }
-
-        private void ViewUsers_Click(object sender, RoutedEventArgs e)
-        {
-            LoadUsers("select * from Users where LvlAccess=0");
-        }
-
-        private void ViewChefs_Click(object sender, RoutedEventArgs e)
-        {
-            LoadUsers("select * from Users where LvlAccess=3");
-        }
-
     }
 }

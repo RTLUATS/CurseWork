@@ -39,10 +39,10 @@
                 </TextBlock>
             </StackPanel>
         </materialDesign:ColorZone>
-        <UniformGrid Columns="1" Name="Categories" Grid.Column="0" Grid.Row="1" Margin="10" Visibility="Hidden" IsEnabled="False" ></UniformGrid>
-        <UniformGrid Name="Menu" Grid.Column="1" Grid.Row="2" Margin="20" Columns="6" Grid.ColumnSpan="7"></UniformGrid>
+        <ListBox Grid.Column="0" Name="Categories" Grid.Row="1" Margin="10" Visibility="Hidden" IsEnabled="False" />
+        <ListBox Name="Menu" Grid.Column="1" Grid.Row="2" Margin="20" Grid.ColumnSpan="7"/>
         <Button Grid.Row="0"  Grid.Column="6"  Style="{StaticResource MaterialDesignRaisedDarkButton}" Name="Autorization" FontWeight="DemiBold" FontSize="16" Content="Авторизация" VerticalAlignment="Center"  Click="Autarization_Click" Margin="10,16,5,17"/>
-        <Button Grid.Row="0" Grid.Column="6" Style="{StaticResource MaterialDesignRaisedDarkButton}" Name="EditInfo" IsEnabled="False" Visibility="Hidden" FontWeight="DemiBold" FontSize="16" Content="Редактировать Информацию" VerticalAlignment="Center"  Click="EditInfo_Click" Margin="10,16,5,17"/>
+        <Button Grid.Row="0" Grid.Column="6" Style="{StaticResource MaterialDesignRaisedDarkButton}" Name="EditInfo" IsEnabled="False" Visibility="Hidden" FontWeight="DemiBold" FontSize="14" Content="Редактировать Информацию" VerticalAlignment="Center"  Click="EditInfo_Click" Margin="10,16,5,17"/>
         <Button Name="Search" Grid.Row="0" Style="{StaticResource MaterialDesignRaisedDarkButton}" Grid.Column="3" FontSize="16" FontWeight="DemiBold" Content="Поиск" Click="Search_Click" Margin="10,16,10,17"/>
         <Button Grid.Row="0" Grid.Column="7" Style="{StaticResource MaterialDesignRaisedDarkButton}" Name="LogOut" FontSize="16" Click="LogOut_Click" FontWeight="DemiBold" Content="Разлогиниться" IsEnabled="False" Visibility="Hidden" Height="Auto" Margin="10,16,10,17" />
         <Button Grid.Row="0" Grid.Column="5" Style="{StaticResource MaterialDesignRaisedDarkButton}" Name="WorkRoom" Click="WorkRoom_Click" Content="Рабочий кабинет" FontWeight="DemiBold" FontSize="16" IsEnabled="False" Visibility="Hidden" Height="Auto" Margin="10,16,5,17"/>

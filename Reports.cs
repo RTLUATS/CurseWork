@@ -13,10 +13,25 @@ using Excel = Microsoft.Office.Interop.Excel;
 
 namespace CurseWork
 {
-    internal static class Reports
+    internal class Reports
     {
+        private Dictionary<int, Func<int, System.Data.DataTable>> dictionary;
+        private string margCellsEnd;
+        private string reportName;
 
-        private static System.Data.DataTable ChefReport()
+        public Reports()
+        {
+            dictionary = new Dictionary<int, Func<int,System.Data.DataTable>>()
+            {
+                {0, ChefReport},
+                {1, ManagerReportFood},
+                {2, ManagerReportIngredient},
+                {3, EconomistReportIncome},
+                {4, EconomistReportExpense }
+            };
+        }
+
+        private System.Data.DataTable ChefReport(int a = 0)
         {
             var table = new System.Data.DataTable();
 
@@ -41,10 +56,13 @@ namespace CurseWork
                 }
             }
 
+            margCellsEnd = "C1";
+            reportName = "Отчёт Шеф-Повара";
+
             return table;
         }
 
-        private static System.Data.DataTable ManagerReportIngredient()
+        private  System.Data.DataTable ManagerReportIngredient(int a = 0)
         {
             var table = new System.Data.DataTable();
 
@@ -54,7 +72,7 @@ namespace CurseWork
 
                 table.Columns.Add(new DataColumn("Название", typeof(string)));
                 table.Columns.Add(new DataColumn("Количество", typeof(decimal)));
-                table.Columns.Add(new DataColumn("Последняя цена за 1 ед.", typeof(decimal)));
+                table.Columns.Add(new DataColumn("Текущая цена за 1 ед.", typeof(decimal)));
 
                 foreach (var item in list)
                 {
@@ -68,20 +86,26 @@ namespace CurseWork
                 }
             }
 
+            margCellsEnd = "С1";
+            reportName = "Отчёт Менеджера по Ингредиентам";
+
             return table;
         }
 
-        private static System.Data.DataTable ManagerReportFood()
+        private System.Data.DataTable ManagerReportFood(int a = 0)
         {
             var table = new System.Data.DataTable();
 
             using (var context = new MSSQLContext())
             {
-                var list = context.Foods.ToList();
+                var list = context.Foods
+                    .Include(f => f.Structures)
+                    .ToList();
 
                 table.Columns.Add(new DataColumn("Название", typeof(string)));
                 table.Columns.Add(new DataColumn("Есть в меню?", typeof(bool)));
                 table.Columns.Add(new DataColumn("Текущая цена", typeof(decimal)));
+                table.Columns.Add(new DataColumn("Состав", typeof(string)));
 
                 foreach (var item in list)
                 {
@@ -91,14 +115,27 @@ namespace CurseWork
                     newRow[1] = item.InMenu;
                     newRow[2] = item.CurrentPrice;
 
+                    var str = "";
+
+                    foreach(var structure in item.Structures)
+                    {
+                        if(item.Structures.IndexOf(structure) == item.Structures.Count - 1)
+                            str += $"{structure.Ingredient.Name} {structure.Quantity} {structure.Ingredient.Unit}.";
+                        else
+                            str += $"{structure.Ingredient.Name} {structure.Quantity} {structure.Ingredient.Unit},";
+                    }
+
                     table.Rows.Add(newRow);
                 }
+
+                reportName = "Отчёт Менеджера по Блюдам";
+                margCellsEnd = "D1";
             }
 
             return table;
         }
 
-        private static System.Data.DataTable EconomistReportIncome()
+        private System.Data.DataTable EconomistReportIncome(int days)
         {
             var table = new System.Data.DataTable();
             var listId = new List<(int, int)>();
@@ -107,31 +144,50 @@ namespace CurseWork
             {
                 var list = context.Orders
                                 .Include(o => o.Food)
+                                .Include(o => o.OrderList)
                                 .ToList();
 
                 table.Columns.Add(new DataColumn("Название", typeof(string)));
                 table.Columns.Add(new DataColumn("Общий доход", typeof(decimal)));
+                table.Columns.Add(new DataColumn("Проданное количество", typeof(decimal)));
 
                 foreach (var item in list)
                 {
-                    if(!listId.Contains((item.FoodId, item.IdOrderList))) {
+                    if(!listId.Contains((item.FoodId, item.OrderListId))) {
                         
                         DataRow newRow = table.NewRow();
 
                         newRow[0] = item.Food.Name;
-                        newRow[1] = list.Where(l => l.FoodId == item.FoodId).Sum(i => i.PriceBoughtFor * i.Count);
 
-                        listId.Add((item.FoodId, item.IdOrderList));
+                        if (days == 0)
+                        {
+                            newRow[1] = list.Where(l => l.FoodId == item.FoodId).Sum(i => i.PriceBoughtFor * i.Count);
+                            newRow[2] = list.Where(l => l.FoodId == item.FoodId).Sum(i => i.Count);
+                        }
+                        else
+                        {
+                            newRow[1] = list.Where(l => l.FoodId == item.FoodId &&
+                                                   l.OrderList.DateOrder.Subtract(DateTime.Now).TotalDays <= days)
+                                                   .Sum(i => i.PriceBoughtFor * i.Count);
+                            newRow[2] = list.Where(l => l.FoodId == item.FoodId &&
+                                                   l.OrderList.DateOrder.Subtract(DateTime.Now).TotalDays <= days)
+                                                   .Sum(i => i.Count);
+
+                        }
+                        listId.Add((item.FoodId, item.OrderListId));
 
                         table.Rows.Add(newRow);
                     }
                 }
+                
+                margCellsEnd = "C1";
+                reportName = "Отчёт Экономита по продажам за" + (days == 0 ? "всё время" : $"последние {days} дней"); 
             }
 
             return table;
         }
 
-        private static System.Data.DataTable EconomistReportExpense()
+        private System.Data.DataTable EconomistReportExpense(int days)
         {
             var table = new System.Data.DataTable();
             var listId = new List<int>();
@@ -144,6 +200,7 @@ namespace CurseWork
 
                 table.Columns.Add(new DataColumn("Название", typeof(string)));
                 table.Columns.Add(new DataColumn("Общий рассход", typeof(decimal)));
+                table.Columns.Add(new DataColumn("Приобретённое количество", typeof(decimal)));
 
                 foreach (var item in list)
                 {
@@ -153,29 +210,36 @@ namespace CurseWork
                         DataRow newRow = table.NewRow();
 
                         newRow[0] = item.Ingredient.Name;
-                        newRow[1] = list.Where(l => l.IngredientId == item.IngredientId).Sum(i => i.Price * i.Count);
+
+                        if (days == 0)
+                        {
+                            newRow[1] = list.Where(l => l.IngredientId == item.IngredientId).Sum(i => i.Price * i.Count);
+                            newRow[2] = list.Where(l => l.IngredientId == item.IngredientId).Sum(i => i.Count);
+                        }
+                        else
+                        {
+                            newRow[1] = list.Where(l => l.IngredientId == item.IngredientId && 
+                                                    item.DateOfPurchase.Subtract(DateTime.Now).TotalDays <= days)
+                                                            .Sum(i => i.Price * i.Count);
+                            newRow[2] = list.Where(l => l.IngredientId == item.IngredientId &&
+                                                    item.DateOfPurchase.Subtract(DateTime.Now).TotalDays <= days)
+                                                            .Sum(i => i.Count);
+                        }
 
                         listId.Add(item.Id);
 
                         table.Rows.Add(newRow);
                     }
                 }
+                margCellsEnd = "C1";
+                reportName = "Отчёт Экономита по рассходам за" + (days == 0 ? "всё время" : $"последние {days} дней"); ;
             }
 
             return table;
         }
 
-        internal static void CommonPart(int index)
+        internal void CommonPart(int index, int days = 0)
         {
-            Dictionary<int, Func<System.Data.DataTable>> dictionary = new Dictionary<int, Func<System.Data.DataTable>>()
-            {
-                {0, ChefReport},
-                {1, ManagerReportFood},
-                {2, ManagerReportIngredient},
-                {3, EconomistReportIncome},
-                {4, EconomistReportIncome }
-            };
-
             var excelApp = new Excel.Application();
 
             if (excelApp == null)
@@ -195,22 +259,33 @@ namespace CurseWork
             saveFileDialog.Title = "Save path of the file to be exported";
 
             if (saveFileDialog.ShowDialog() == true) {
-
              
-                Excel.Workbooks wkBooks = excelApp.Workbooks;
-                Excel.Workbook wkBook = wkBooks.Add();
-                Excel.Sheets wkSheets = wkBook.Sheets;
-                Excel.Worksheet wkSheet = wkSheets.Add();
-
+                Workbooks wkBooks = excelApp.Workbooks;
+                Workbook wkBook = wkBooks.Add();
+                Sheets wkSheets = wkBook.Sheets;
+                Worksheet wkSheet = wkSheets.Add();
                 wkSheet.Name = "Отчёт";
 
                 try
                 {
-                    var dtTable = dictionary[index].Invoke();
+                    var dtTable = dictionary[index].Invoke(days);
+
+                    Range _excelCells1 = (Excel.Range)wkSheet.get_Range("A1", margCellsEnd).Cells;
+                    Range excelRange = wkSheet.UsedRange;
+                    // Производим объединение
+                    _excelCells1.Merge();
+                    wkSheet.Cells[1, 1] = reportName;
+
 
                     for (var i = 0; i < dtTable.Columns.Count; i++)
                     {
-                        wkSheet.Cells[1, i + 1] = dtTable.Columns[i].ColumnName;
+                        wkSheet.Cells[2, i + 1] = dtTable.Columns[i].ColumnName;
+                        wkSheet.Cells[2, i + 1].Font.Bold = true;
+
+                        Range cell = excelRange.Cells[2, i + 1];
+                        Borders bd = cell.Borders;
+                        bd.LineStyle = XlLineStyle.xlContinuous;
+                        bd.Weight = 2;
                     }
 
                     //rows
@@ -218,10 +293,18 @@ namespace CurseWork
                     {
                         for (var j = 0; j < dtTable.Columns.Count; j++)
                         {
-                            wkSheet.Cells[i + 2, j + 1] = dtTable.Rows[i][j];
+                            wkSheet.Cells[i + 3, j + 1] = dtTable.Rows[i][j];
+
+                            Range cell = excelRange.Cells[i+3, j + 1];
+                            Borders bd = cell.Borders;
+                            bd.LineStyle = XlLineStyle.xlContinuous;
+                            bd.Weight = 2;
                         }
                     }
 
+                    excelRange.EntireColumn.AutoFit();
+                    excelRange.EntireRow.AutoFit();
+                    
                     wkBook.SaveAs(saveFileDialog.FileName);
                     
                     excelApp.Quit();

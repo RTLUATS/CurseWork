@@ -34,6 +34,7 @@ namespace CurseWork
 
             dataTablePurchase = new DataTable();
             dataTableOrders = new DataTable();
+            commonDataTable = new DataTable();
 
             dataTablePurchase.Columns.Add(new DataColumn("Название", typeof(string)));
             dataTablePurchase.Columns.Add(new DataColumn("Сумма затрат", typeof(decimal)));
@@ -42,6 +43,7 @@ namespace CurseWork
 
             dictionary = new Dictionary<int, int>() 
             {
+                {0, 0 },
                 {1, 365},
                 {2, 182},
                 {3, 91},
@@ -55,18 +57,7 @@ namespace CurseWork
 
         private void AllFood_Click(object sender, RoutedEventArgs e)
         {
-            TableOrders.Visibility = Visibility.Hidden;
-            TableIngredients.Visibility = Visibility.Hidden;
-            Income.Visibility = Visibility.Hidden;
-            Expenses.Visibility = Visibility.Hidden;
-            CommonIncome.Visibility = Visibility.Hidden;
-            CommonExpenses.Visibility = Visibility.Hidden;
-
-            CommonExpenses.IsEnabled = false;
-            CommonIncome.IsEnabled = false;
-            TableOrders.IsEnabled = false;
-            TableIngredients.IsEnabled = false;
-
+            FoodVisibility();
             LoadFood(1);   
         }
 
@@ -125,19 +116,7 @@ namespace CurseWork
 
         private void FoodInMenu_Click(object sender,  RoutedEventArgs e)
         {
-
-            TableOrders.Visibility = Visibility.Hidden;
-            TableIngredients.Visibility = Visibility.Hidden;
-            Income.Visibility = Visibility.Hidden;
-            Expenses.Visibility = Visibility.Hidden;
-            CommonIncome.Visibility = Visibility.Hidden;
-            CommonExpenses.Visibility = Visibility.Hidden;
-
-            CommonExpenses.IsEnabled = false;
-            CommonIncome.IsEnabled = false;
-            TableOrders.IsEnabled = false;
-            TableIngredients.IsEnabled = false;
-
+            FoodVisibility();
             LoadFood(0);
         }
 
@@ -146,6 +125,7 @@ namespace CurseWork
             using (var context = new MSSQLContext())
             {
                 var list = context.Foods
+                             .Where(f => f.InMenu == true)
                             .Include(f => f.Structures).ToList();
 
                 foreach (var item in list)
@@ -153,8 +133,9 @@ namespace CurseWork
                     string str = "";
 
                     foreach (var structure in item.Structures)
-                        str += context.Ingredients.Find(structure.IngredientId).Name + " ,";
-                    commonDataTable.Rows.Add(item.Name, str, item.Name);
+                        str += $"{structure.Ingredient.Name} {structure.Quantity} " +
+                                         $"{structure.Ingredient.Unit} ,";
+                    commonDataTable.Rows.Add(item.Name, str, item.CurrentPrice);
                 }
             }
 
@@ -166,7 +147,6 @@ namespace CurseWork
             using(var context = new MSSQLContext())
             {
                 var list = context.Foods
-                            .Where(f => f.InMenu == true)
                             .Include(f => f.Structures).ToList();
                 
                 foreach(var item in list)
@@ -174,11 +154,31 @@ namespace CurseWork
                     string str = "";
 
                     foreach (var structure in item.Structures)
-                        str += context.Ingredients.Find(structure.IngredientId).Name + " ,"; 
-                    commonDataTable.Rows.Add(item.Name, str, item.Name);
+                        str += $"{structure.Ingredient.Name} {structure.Quantity} " +
+                                        $"{structure.Ingredient.Unit} ,";
+                    commonDataTable.Rows.Add(item.Name, str, item.CurrentPrice);
                 }
             }
             CommonTable.ItemsSource = commonDataTable.DefaultView;
+        }
+
+        private void FoodVisibility()
+        {
+            TableOrders.Visibility = Visibility.Hidden;
+            TableIngredients.Visibility = Visibility.Hidden;
+            Date.Visibility = Visibility.Hidden;
+            Income.Visibility = Visibility.Hidden;
+            Expenses.Visibility = Visibility.Hidden;
+            CommonIncome.Visibility = Visibility.Hidden;
+            CommonExpenses.Visibility = Visibility.Hidden;
+            CommonTable.Visibility = Visibility.Visible;
+
+            Date.IsEnabled = false;
+            CommonTable.IsEnabled = true;
+            CommonExpenses.IsEnabled = false;
+            CommonIncome.IsEnabled = false;
+            TableOrders.IsEnabled = false;
+            TableIngredients.IsEnabled = false;
         }
 
         private void Statistic_Click(object sender, RoutedEventArgs e)
@@ -202,53 +202,6 @@ namespace CurseWork
             Date.Visibility = Visibility.Visible;
         }
 
-        private void AllTime_Click(object sender,  RoutedEventArgs e)
-        {
-            LoadPurchase(dataTablePurchase);
-            LoadOrders(dataTableOrders);
-        }
-
-        private void LastYear_Click(object sender, RoutedEventArgs e)
-        {
-            LoadPurchase(dataTablePurchase, Date.SelectedIndex);
-            LoadOrders(dataTableOrders, Date.SelectedIndex);
-        }
-
-        private void LastHalfYear_Click(object sender, RoutedEventArgs e)
-        {
-            LoadPurchase(dataTablePurchase, Date.SelectedIndex);
-            LoadOrders(dataTableOrders, Date.SelectedIndex);
-        }
-
-        private void Last3Month_Click(object sender, RoutedEventArgs e)
-        {
-            LoadPurchase(dataTablePurchase, Date.SelectedIndex);
-            LoadOrders(dataTableOrders, Date.SelectedIndex);
-        }
-
-        private void LastMonth_Click(object sender, RoutedEventArgs e)
-        {
-            LoadPurchase(dataTablePurchase, Date.SelectedIndex);
-            LoadOrders(dataTableOrders, Date.SelectedIndex);
-        }
-
-        private void LastWeek_Click(object sender, RoutedEventArgs e)
-        {
-            LoadPurchase(dataTablePurchase, Date.SelectedIndex);
-            LoadOrders(dataTableOrders, Date.SelectedIndex);
-        }
-
-        private void Last3Days_Click(object sender, RoutedEventArgs e)
-        {
-            LoadPurchase(dataTablePurchase, Date.SelectedIndex);
-            LoadOrders(dataTableOrders, Date.SelectedIndex);
-        }
-
-        private void Yesterday_Click(object sender, RoutedEventArgs e)
-        {
-            LoadPurchase(dataTablePurchase, Date.SelectedIndex);
-            LoadOrders(dataTableOrders, Date.SelectedIndex);
-        }
 
         private void LoadPurchase(DataTable dataTable, int date = 0)
         {
@@ -263,26 +216,27 @@ namespace CurseWork
                 
                 foreach(var item in list)
                 {
-                    if (listId.Contains(item.Id))
+                    if (!listId.Contains(item.IngredientId))
                     {
-                        listId.Add(item.Id);
+                        listId.Add(item.IngredientId);
 
                         if(date == 0)
                             dataTable.Rows.Add(item.Ingredient.Name, 
-                                list.Where(i=>i.Id == item.Id).Sum(i=>i.Price * i.Count));
+                                list.Where(i=>i.IngredientId == item.IngredientId).Sum(i=>i.Price * i.Count));
                         else
                             dataTable.Rows.Add(item.Ingredient.Name,
-                               list.Where(i => i.Id == item.Id && i.DateOfPurchase.Subtract(DateTime.Now).TotalDays <= dictionary[date])
-                               .Sum(i => i.Price * i.Count));
+                               list.Where(i => i.IngredientId == item.IngredientId &&
+                                    i.DateOfPurchase.Subtract(DateTime.Now).TotalDays <= dictionary[date])
+                                        .Sum(i => i.Price * i.Count));
                     }
                 }
                   
                 TableIngredients.ItemsSource = dataTable.DefaultView;
 
                 if (date == 0)
-                    CommonIncome.Text = list.Sum(l => l.Price * l.Count).ToString();
+                    CommonExpenses.Text = list.Sum(l => l.Price * l.Count).ToString();
                 else
-                    CommonIncome.Text = list.Where(l => l.DateOfPurchase.Subtract(DateTime.Now).TotalDays <= dictionary[date])
+                    CommonExpenses.Text = list.Where(l => l.DateOfPurchase.Subtract(DateTime.Now).TotalDays <= dictionary[date])
                         .Sum(l => l.Price).ToString();
             }
         }
@@ -297,21 +251,22 @@ namespace CurseWork
                             .Include(o => o.OrderList)
                             .Include(o => o.Food).ToList();
 
-                var listId = new List<ValueTuple<int, int>>();
+                var listId = new List<int>();
 
                 foreach (var item in list)
                 {
-                   if (!listId.Contains((item.FoodId, item.IdOrderList)))
+                   if (!listId.Contains(item.FoodId))
                    {
-                        listId.Add((item.FoodId, item.IdOrderList));
+                        listId.Add(item.FoodId);
 
                         if(date == 0)
                             dataTable.Rows.Add(item.Food.Name, list.Where(i => i.FoodId == item.FoodId)
                                 .Sum(i => i.PriceBoughtFor));
                          else
                             dataTable.Rows.Add(item.Food.Name,
-                                list.Where(i => i.FoodId == item.FoodId && i.OrderList.DateOrder.Subtract(DateTime.Now).TotalDays <= dictionary[date])
-                                .Sum(i => i.PriceBoughtFor));
+                                list.Where(i => i.FoodId == item.FoodId &&
+                                        i.OrderList.DateOrder.Subtract(DateTime.Now).TotalDays <= dictionary[date])
+                                            .Sum(i => i.PriceBoughtFor));
                    }
                 }
 
@@ -324,6 +279,11 @@ namespace CurseWork
             TableOrders.ItemsSource = dataTable.DefaultView;
         }
 
+        private void Date_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            LoadPurchase(dataTablePurchase, Date.SelectedIndex);
+            LoadOrders(dataTableOrders, Date.SelectedIndex);
+        }
     }
 }
 

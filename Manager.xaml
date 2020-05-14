@@ -16,26 +16,39 @@
         FontFamily="{DynamicResource MaterialDesignFont}"
         Title="Manager" Height="650" Width="800">
     <Grid Background="Black">
-        <UniformGrid Visibility="Hidden" IsEnabled="False" Name="Table" Columns="1" Margin="10,10,267,10"/>
-        <ListBox  IsEnabled="False" Name="InquiryListBox" Margin="10,63,267,10"/>
-        <Label Content="Наименование" Foreground="White" Margin="10,10,644,568"/>
-        <Label Content="Количество" Foreground="White" Margin="198,10,485,568"/>
-        <Label Content="Дата подачи заявки" Foreground="White" Margin="345,10,267,568"/>
+        <ListBox Visibility="Hidden" IsEnabled="False" Name="Table"  Margin="10,10,267,10"/>
+        <ListBox Visibility="Hidden"  IsEnabled="False" Name="InquiryListBox" Margin="10,63,267,10"/>
+        <Label Name="LName" Visibility="Hidden" Content="Наименование" Foreground="White" Margin="10,10,644,568"/>
+        <Label Name="LCount" Visibility="Hidden" Content="Количество" Foreground="White" Margin="198,10,485,568"/>
+        <Label Name="LDate" Visibility="Hidden" Content="Дата подачи заявки" Foreground="White" Margin="345,10,267,568"/>
         <Button Foreground="White" FontSize="16" FontWeight="DemiBold" Content="Заказать ингредиенты" IsEnabled="False" Visibility="Hidden" Margin="575,67,10,507"/>
-        <ComboBox Margin="532,155,10,416" Style="{StaticResource MaterialDesignFloatingHintComboBox}" materialDesign:TextFieldAssist.UnderlineBrush="{DynamicResource SecondaryAccentBrush}" materialDesign:ColorZoneAssist.Mode="Inverted"  Foreground="PaleGreen" materialDesign:HintAssist.Hint="Действия с блюдами" Height="50">
-            <Button Foreground="White" Name="AllFoods" Content="Все блюда" Width="222" Click="AllFoods_Click"/>
-            <Button Foreground="White" Name="FoodWithOutPrice" Content="Блюда без цены" Width="222" Click="FoodWithOutPrice_Click"/>
-            <Button Foreground="White" Name="FoodWithOutDescription" Content="Блюда без описанний" Width="222" Click="ShowFoodWithOutDescription_Click"/>
-            <Button Foreground="White" Name="FoodNotInMenu" Content="Блюда не в меню" Width="222" Click="FoodNotInMenu_Click"/>
+        <ComboBox Name="BoxWithFoods" SelectionChanged="ComboBox_SelectionChanged" Margin="532,155,10,416" Style="{StaticResource MaterialDesignFloatingHintComboBox}" materialDesign:TextFieldAssist.UnderlineBrush="{DynamicResource SecondaryAccentBrush}" materialDesign:ColorZoneAssist.Mode="Inverted"  Foreground="PaleGreen" materialDesign:HintAssist.Hint="Действия с блюдами" Height="50">
+            <ComboBoxItem>
+            <TextBlock Foreground="White" Name="AllFoods" Text="Все блюда" Width="222" />
+            </ComboBoxItem>
+            <ComboBoxItem>
+            <TextBlock Foreground="White" Name="FoodWithOutPrice" Text="Блюда без цены" Width="222" />
+            </ComboBoxItem>
+            <ComboBoxItem>
+                <TextBlock Foreground="White" Name="FoodWithOutDescription" Text="Блюда без описанний" Width="222" />
+            </ComboBoxItem>
+            <ComboBoxItem>
+                <TextBlock Foreground="White" Name="FoodNotInMenu" Text="Блюда не в меню" Width="222" />
+            </ComboBoxItem>
         </ComboBox>
-        <ComboBox Margin="532,357,10,214" Style="{StaticResource MaterialDesignFloatingHintComboBox}" materialDesign:TextFieldAssist.UnderlineBrush="{DynamicResource SecondaryAccentBrush}" materialDesign:ColorZoneAssist.Mode="Inverted"  Foreground="PaleGreen" materialDesign:HintAssist.Hint="Действия с ингредиентами" Height="50">
-            <Button Foreground="White" Name="AllIngredients" Content="Все ингредиенты" Width="222" Click="AllIngredients_Click"/>
-            <Button Foreground="White" Name="InquiryBuy" Content="Запросы на покупку" Width="222" Click="InquiryBuy_Click" />
-            <Button Foreground="White" Name="IngredientsCountNull" Content="Ингредиенты которых нет" Width="222" Click="IngredientsCountNull_Click"/>
-            <Button Foreground="White" Name="IngredientsWithOutPrice" Content="Ингредиенты без цены" Width="222" Click="IngredientsWithOutPrice_Click"/>
+        <ComboBox Name="BoxWithIngredients" SelectionChanged="BoxWithIngredients_SelectionChanged" Margin="532,357,10,214" Style="{StaticResource MaterialDesignFloatingHintComboBox}" materialDesign:TextFieldAssist.UnderlineBrush="{DynamicResource SecondaryAccentBrush}" materialDesign:ColorZoneAssist.Mode="Inverted"  Foreground="PaleGreen" materialDesign:HintAssist.Hint="Действия с ингредиентами" Height="50">
+            <ComboBoxItem>
+                <TextBlock Foreground="White" Name="AllIngredients" Text="Все ингредиенты" Width="222" />
+            </ComboBoxItem>
+            <ComboBoxItem>
+                 <TextBlock Foreground="White" Name="InquiryBuy" Text="Запросы на покупку" Width="222"  />
+            </ComboBoxItem>
+            <ComboBoxItem>
+                <TextBlock Foreground="White" Name="IngredientsCountNull" Text="Ингредиенты которых нет" Width="222"/>
+            </ComboBoxItem>
         </ComboBox>
-        <Button Name="DishReport" Foreground="White" Content="Отчёт о блюдах" Margin="570,482,10,107" Click="DishReport_Click"/>
-        <Button Name="IngredientReport" Foreground="White" Content="Отчёт об ингредиентах" Margin="570,530,10,59" Click="IngredientReport_Click"/>
+        <Button Name="DishReport" Foreground="White" Content="Отчёт о блюдах" Margin="570,482,10,94" Click="DishReport_Click" Height="Auto"/>
+        <Button Name="IngredientReport" Foreground="White" Content="Отчёт об ингредиентах" Margin="570,532,10,44" Click="IngredientReport_Click" Height="Auto"/>
         <Button Foreground="White" Name="SearchButton" Content="Поиск" Margin="700,18,10,560" Height="Auto"></Button>
         <TextBox Foreground="PaleGreen" materialDesign:HintAssist.Hint="Поиск..." Name="SearchText" Margin="564,18,99,560"></TextBox>
     </Grid>

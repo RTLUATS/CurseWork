@@ -14,7 +14,7 @@ namespace CurseWork
         public int FoodId { get; set; }
 
         [Key, Column(Order = 2)]
-        public int IdOrderList { get; set; }
+        public int OrderListId { get; set; }
 
         public decimal PriceBoughtFor { get; set; }
 

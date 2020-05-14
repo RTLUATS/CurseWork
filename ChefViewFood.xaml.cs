@@ -175,55 +175,16 @@ namespace CurseWork
 
         private bool Check()
         {
-            /*
-            if (Image.Source == null || Name.Text.IsEmpty() || Category.Text.IsEmpty() ||
-                Description.Text.IsEmpty() || Structure.Text.IsEmpty() || Recept.Text.IsEmpty())
+            if (!Validation.IsImgeNull(Image.Source)) return false;
+            if (!Validation.NameCategoryValidation(Category.Text)) return false;
+            
+            foreach(var item in model)
             {
-                MessageBox.Show("Для добавления еды, надо заполнить все поля и загрузить картинку");
-                return false;
-            }
-            */
-
-            /*
-            var checkN = checkStringField(Name.Text.ToLower(), "[а-я]+ [а-я]*");
-
-            if (!checkN)
-            {
-                MessageBox.Show("В названии продукции должны быть только буквы кириллицы");
-                return false;
+                if (!Validation.NameIngredientValidation(item.IngredientName)) return false;
+                if (!Validation.CountValidation(item.Weight.ToString())) return false;
             }
 
-            var checkC = checkStringField(Category.Text, "[А-Я]{1}[а-я]+");
-
-            if (!checkC)
-            {
-                MessageBox.Show("В названии продукции должны быть только буквы кириллицы");
-                return false;
-            }
-            */
-
-            /*
-            var checkP = checkStringField(Price.Text, "^[0-9]+[.]?[0-9]{0,3}$");
-
-            if (!checkP)
-            {
-                MessageBox.Show("В цене продукции должны быть только цифры. Пример: 123.333");
-                return;
-            }
-            */
-            //Описание не проверяемо?!
-
-            /*var checkS = checkStringField(Structure.Text, "\\^([а-я]+)([,][а-я]+)*\\$");
-
-            if (!checkS)
-            {
-                MessageBox.Show("В составе продукции должны быть только буквы и запятые без пробелов," +
-                                " в конце недолжно быть неикаких символов. Пример: булка,кетчуп");
-                return false;
-            }
-            */
             return true;
-
         }
 
         private void AddFood_Click(object sender, RoutedEventArgs e)
@@ -271,17 +232,15 @@ namespace CurseWork
                 {
                     if (!listName.Contains(item.IngredientName))
                     {
-                        var usefullList = model.Where(m => m.IngredientName.ToLower() == item.IngredientName.ToLower()).ToList();
-
+                        var usefullList = model.Where(m => m.IngredientName == item.IngredientName).ToList();
                         string CookingStep = "";
                         decimal Weight = 0;
-
+                        
                         foreach(var elem in usefullList)
                         {
                             CookingStep += elem.CookingStep + ";";
                             Weight += elem.Weight;  
                         }
-
 
                         newModel.Add(new IngredientsModel()
                         {
@@ -325,7 +284,13 @@ namespace CurseWork
                     {
                         var structure = new Structure();
 
-                        structure = new Structure() { IngredientId = ingredient.Id, FoodId = newFood.Id, Quantity = item.Weight, CookingStep = item.CookingStep };
+                        structure = new Structure() 
+                        { 
+                            IngredientId = ingredient.Id,
+                            FoodId = newFood.Id,
+                            Quantity = item.Weight,
+                            CookingStep = item.CookingStep
+                        };
 
                         context.Structures.Add(structure);
                         context.SaveChanges();
@@ -335,11 +300,5 @@ namespace CurseWork
                 context.SaveChanges();
             }
         }
-
-        private bool checkStringField(string text, string pattern)
-        {
-            return Regex.IsMatch(text, pattern);
-        }
-
     }
 }

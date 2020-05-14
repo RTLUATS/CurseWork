@@ -5,11 +5,68 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Media;
 
 namespace CurseWork
 {
     internal static class Validation
     {
+        internal static bool IsImgeNull(ImageSource image)
+        {
+            if (image == null)
+            {
+                MessageBox.Show("Вы не добавили картинку!",
+                                   "Внимание", MessageBoxButton.OK, MessageBoxImage.Error);
+
+                return false;
+            }
+
+            return true;
+        }
+
+        internal static bool ManagerBuyValidation()
+        {
+            var result = MessageBox.Show
+                        (
+                        "Вы уверены что хотите купить?",
+                        "Внимание",
+                        MessageBoxButton.YesNo,
+                        MessageBoxImage.Question
+                        );
+
+            if (result == MessageBoxResult.No)
+                return false;
+
+            return true;
+        }
+        
+        internal static bool NameCategoryValidation(string str)
+        {
+
+            if (!Regex.IsMatch(str, "^([А-я]{1}[а-я]+)$"))
+            {
+                MessageBox.Show("Категория указана Неверно! Пример: Напиток",
+                    "Внимание", MessageBoxButton.OK, MessageBoxImage.Error);
+
+                return false;
+            }
+
+            return true;
+        }
+
+        internal static bool NameIngredientValidation(string str)
+        {
+            if (!Regex.IsMatch(str, "^([А-я]{1}[а-я]+)$"))
+            {
+                MessageBox.Show("имя ингредента указано не правильно. Пример:coca-cola",
+                    "Внимание", MessageBoxButton.OK, MessageBoxImage.Error);
+
+                return false;
+            }
+
+            return true;
+        }
+
         internal static bool NameValidation(string str)
         {
             if(!Regex.IsMatch(str, "^([А-я]{1}[а-я]+)$"))
@@ -22,6 +79,19 @@ namespace CurseWork
             
             return true;
         } 
+
+        internal static bool NegativeValidation(string str)
+        {
+            if (Convert.ToDecimal(str) < 0)
+            {
+                MessageBox.Show("Это число не может быть отрицательным!",
+                    "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+
+                return false;
+            }
+
+            return true;
+        }
 
         internal static bool EmtyValidation(string str)
         {
@@ -88,7 +158,7 @@ namespace CurseWork
             return true;
         }
 
-        internal static bool CanUserBuy(List<Food> foods, Food currentFood)
+        internal static bool CanUserBuy(List<FoodInBasket> foods, Food currentFood)
         {
 
             using (var context = new MSSQLContext())
@@ -97,7 +167,7 @@ namespace CurseWork
                 
                 foreach (var food in foods)
                 {
-                    foreach (var structure in food.Structures)
+                    foreach (var structure in context.Structures.Where(s => s.FoodId == food.Id))
                     {
                         listIngredients.First(i => i.Id == structure.IngredientId).Count -= structure.Quantity;
                     }
@@ -137,6 +207,16 @@ namespace CurseWork
                 MessageBox.Show("В пароле не могут быть пробелы",
                     "Внимание", MessageBoxButton.OK, MessageBoxImage.Error);
 
+                return false;
+            }
+
+            return true;
+        }
+
+        internal static bool IsNumValidation(string str)
+        {
+            if (!Regex.IsMatch(str, "[0-9]+"))
+            {
                 return false;
             }
 

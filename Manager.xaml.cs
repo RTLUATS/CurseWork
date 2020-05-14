@@ -23,45 +23,70 @@ namespace CurseWork
     public partial class Manager : Window
     {
         private List<Food> foods;
-        private List<User> users;
         private List<Inquiry> listInquiry;
         private List<Ingredient> ingredients;
         private Dictionary<int, TextBox> inquiryDictionary;
+        private Dictionary<int, Action> foodDictionary;
+        private Dictionary<int, Action> ingredientsDictionary;
 
         public Manager()
         {
             InitializeComponent();
+
+            foodDictionary = new Dictionary<int, Action>()
+            {
+                {0, LoadAllFood},
+                {1, LoadWoodWithOutPrice},
+                {2, LoadFoodWithOutDescription},
+                {3, LoadFoodNotInMenu}
+
+            };
+
+            ingredientsDictionary = new Dictionary<int, Action>()
+            {
+                {0, LoadAllIngredients },
+                {1, LoadInquiryListBox},
+                {2, LoadIngredientsWithCountNull},
+            };
         }
 
-        private void AllFoods_Click(object sender, RoutedEventArgs e)
+        private void LoadFoodNotInMenu()
         {
-            LoadFood("select * from Foods");
-        }
-
-        private void FoodClick(object sender, RoutedEventArgs e)
-        {
-            var button = (Button) sender;
-
-            var id = Convert.ToInt32(button.Name.Replace("Name", ""));
-            
-            var window = new ManagerViewFood(foods.First(f=>f.Id == id));
-            
-            window.Show();
-        }
-
-        private void FoodWithOutPrice_Click(object sender, RoutedEventArgs e)
-        {
-           LoadFood("select * from Foods where CurrentPrice=0");
-        }
-
-        private void LoadFood(string sqlQuery)
-        {
-            Table.Children.RemoveRange(0, Table.Children.Count);
-
             using (var context = new MSSQLContext())
             {
-                foods = context.Database.SqlQuery<Food>(sqlQuery).ToList();
+                foods = context.Foods.Where(f => f.InMenu == false).ToList();
             }
+        }
+
+        private void LoadWoodWithOutPrice()
+        {
+            using (var context = new MSSQLContext())
+            {
+                foods = context.Foods.Where(f => f.CurrentPrice == 0).ToList();
+            }
+        }
+
+        private void LoadFoodWithOutDescription()
+        {
+            using (var context = new MSSQLContext())
+            {
+                foods = context.Foods.Where(f => f.Description == "").ToList();
+            }
+        }
+
+        private void LoadAllFood()
+        {
+            using(var context = new MSSQLContext())
+            {
+                foods = context.Foods.ToList();
+            }
+        }
+
+        private void LoadFood()
+        {
+            FoodContolVisiability();
+            
+            Table.Children.RemoveRange(0, Table.Children.Count);
 
             foreach (var food in foods)
             {
@@ -79,19 +104,58 @@ namespace CurseWork
             }
         }
 
-        private void FoodNotInMenu_Click(object sender, RoutedEventArgs e)
+        private void FoodContolVisiability()
         {
-            LoadFood("select * from Foods where InMenu=0");
+            Table.Visibility = Visibility.Visible;
+            LName.Visibility = Visibility.Hidden;
+            LCount.Visibility = Visibility.Hidden;
+            LDate.Visibility = Visibility.Hidden;
+            InquiryListBox.Visibility = Visibility.Hidden;
+
+            Table.IsEnabled = true;
+            InquiryListBox.IsEnabled = false;
         }
 
-        private void LoadIngredients(string sqlQuery)
+        private void FoodClick(object sender, RoutedEventArgs e)
         {
-            Table.Children.RemoveRange(0, Table.Children.Count);
+            var button = (Button) sender;
+            var id = Convert.ToInt32(button.Name.Replace("Name", ""));
+            var window = new ManagerViewFood(foods.First(f=>f.Id == id));
+            
+            window.Show();
+        }
 
-            using (var context = new MSSQLContext())
+        private void IngredientControlVisibility(int a )
+        {
+            if (a == 1)
             {
-                ingredients = context.Database.SqlQuery<Ingredient>(sqlQuery).ToList();
+                Table.Visibility = Visibility.Visible;
+                InquiryListBox.Visibility = Visibility.Hidden;
+                LName.Visibility = Visibility.Hidden;
+                LCount.Visibility = Visibility.Hidden;
+                LDate.Visibility = Visibility.Hidden;
+
+                Table.IsEnabled = true;
+                InquiryListBox.IsEnabled = false;
             }
+            else
+            {
+                Table.Visibility = Visibility.Hidden;
+                InquiryListBox.Visibility = Visibility.Visible;
+                LName.Visibility = Visibility.Visible;
+                LCount.Visibility = Visibility.Visible;
+                LDate.Visibility = Visibility.Visible;
+
+                Table.IsEnabled = false;
+                InquiryListBox.IsEnabled = true;
+            }
+        }
+
+        private void LoadIngredients()
+        {
+            IngredientControlVisibility(1);
+
+            Table.Children.RemoveRange(0, Table.Children.Count);
 
             foreach (var ingredient in ingredients)
             {
@@ -99,7 +163,8 @@ namespace CurseWork
                 {
                     Name = "Name" + ingredient.Id.ToString(),
                     IsEnabled = true,
-                    Content = ingredient.Name
+                    Content = ingredient.Name,
+                    Foreground = Brushes.White
                 };
 
                 button.Margin = new Thickness(10);
@@ -111,47 +176,36 @@ namespace CurseWork
 
         private void EventForIngredients(object sender, RoutedEventArgs e)
         {
-            var button = (Button)sender;
-            
+            var button = (Button)sender; 
             var id = Convert.ToInt32(button.Name.Replace("Name",""));
-
             var window = new ManagerViewIngredients(ingredients.First(i => i.Id == id));
             
             window.Show();
         }
 
-       
-        private void AllIngredients_Click(object sender, RoutedEventArgs e)
+        private void LoadAllIngredients()
         {
-            LoadIngredients("select * from Ingredient");
+            using(var context = new MSSQLContext())
+            {
+                ingredients = context.Ingredients.ToList();
+            }
+
+            LoadIngredients();
         }
 
-        private void IngredientsCountNull_Click(object sender, RoutedEventArgs e)
+        private void LoadIngredientsWithCountNull()
         {
-            LoadIngredients("select * from Ingredient where Count=0");
-        }
-
-        private void IngredientsWithOutPrice_Click(object sender, RoutedEventArgs e)
-        {
-            LoadIngredients("select * from Ingredient where Price=0");
-        }
-
-        private void ShowFoodWithOutDescription_Click(object sender, RoutedEventArgs e)
-        {
-            
-        }
-
-        private void InquiryBuy_Click(object sender, RoutedEventArgs e)
-        {
-            InquiryListBox.Visibility = Visibility.Visible;
-            InquiryListBox.IsEnabled = true;
-
-
-            LoadInquiryListBox();
+            using (var context = new MSSQLContext())
+            {
+                ingredients = context.Ingredients.Where(i => i.Count == 0).ToList();
+            }
+            LoadIngredients();
         }
 
         private void LoadInquiryListBox()
         {
+            IngredientControlVisibility(2);
+
             inquiryDictionary = new Dictionary<int, TextBox>();
 
             var context = new MSSQLContext();
@@ -235,11 +289,9 @@ namespace CurseWork
             var button = (Button)sender;
             var id = Convert.ToInt32(button.Name.Replace("Name", ""));
 
-            if (!Regex.IsMatch(inquiryDictionary[id].Text, "^([0-9]+([.][0-9]{1,2}){0,1})$"))
-            {
-                MessageBox.Show("Проверьте праильность ввёднных данных");
-                return;
-            }
+            if (!Validation.PriceValidation(inquiryDictionary[id].Text)) return;
+            if (!Validation.NegativeValidation(inquiryDictionary[id].Text)) return;
+            if (!Validation.ManagerBuyValidation()) return;
 
             using(var context = new MSSQLContext())
             {
@@ -254,23 +306,40 @@ namespace CurseWork
                 var ingredient = context.Ingredients.Find(listInquiry.First(i => i.Id == id).IngredientId);
 
                 ingredient.Count += listInquiry.First(i => i.Id == id).ExpectedQuantity;
+                ingredient.Price = Convert.ToDecimal(inquiryDictionary[id].Text);
 
-                context.Inquiries.Remove(listInquiry.First(i => i.Id == id));
+                context.Inquiries.Remove(context.Inquiries.Find(id));
                 context.SaveChanges();
             }
 
-            InquiryListBox.Items.Remove(listInquiry.IndexOf(listInquiry.First(i => i.Id == id)));
-            
+            InquiryListBox.Items.RemoveAt(listInquiry.IndexOf(listInquiry.First(i => i.Id == id)));
+            InquiryListBox.Items.Refresh();
+            inquiryDictionary.Remove(id);
         }
 
         private void DishReport_Click(object sender, RoutedEventArgs e)
         {
-            Reports.CommonPart(1);
+            Reports report = new Reports();
+
+            report.CommonPart(1);
         }
 
         private void IngredientReport_Click(object sender, RoutedEventArgs e)
         {
-            Reports.CommonPart(2);
+            Reports report = new Reports();
+
+            report.CommonPart(2);
+        }
+
+        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            foodDictionary[BoxWithFoods.SelectedIndex].Invoke();
+            LoadFood();
+        }
+
+        private void BoxWithIngredients_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ingredientsDictionary[BoxWithIngredients.SelectedIndex].Invoke();
         }
     }
 }

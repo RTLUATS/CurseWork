@@ -26,52 +26,32 @@ namespace CurseWork
 
         private void ClickBuy_Click(object sender, RoutedEventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(Buy.Text))
-            {
-                MessageBox.Show("Перед покупкой вы должны заполнить сколько штук покупать будем");
-                return;
-            }
-            
-            if (!Regex.IsMatch(Buy.Text, "[0-9]+"))
-            {
-                MessageBox.Show("Введите целое число, сколько штук купим. Пример: 40");
-                return;
-            }
+            if (!Validation.CountValidation(Buy.Text) || !Validation.PriceValidation(IngredientPrice.Text)) return;
+            if (!Validation.NegativeValidation(Buy.Text) || !Validation.NegativeValidation(IngredientPrice.Text)) return;
 
-            if (!Regex.IsMatch(IngredientPrice.Text, "^([0-9]+)([.][0-9]{1,3})$"))
+            if (Validation.ManagerBuyValidation())
             {
-                MessageBox.Show("Введите дробное число, по какой цене купим 1 штуку товара. Пример: 10.22");
-                return;
-            }
+                IngredientCount.Text = (Convert.ToDecimal(IngredientCount.Text) + Convert.ToDecimal(Buy.Text)).ToString();
+                Buy.Text = "";
 
-            IngredientCount.Text = (Convert.ToInt32(IngredientCount.Text) + Convert.ToInt32(Buy.Text)).ToString();
-
-            using(var context= new MSSQLContext())
-            {
-                var buy = new PurchaseIngredient()
+                using (var context = new MSSQLContext())
                 {
-                    IngredientId = ingredient.Id,
-                    DateOfPurchase = DateTime.Now,
-                    Price = Convert.ToDecimal(IngredientPrice.Text),
-                    Count = Convert.ToInt32(IngredientCount.Text),
-                };
+                    var buy = new PurchaseIngredient()
+                    {
+                        IngredientId = ingredient.Id,
+                        DateOfPurchase = DateTime.Now,
+                        Price = Convert.ToDecimal(IngredientPrice.Text),
+                        Count = Convert.ToInt32(IngredientCount.Text),
+                    };
 
-                context.PurchaseIngredients.Add(buy);
+                    var ingr = context.Ingredients.Find(ingredient.Id);
 
-                context.SaveChanges();
-            }
-            //диалоговое окно с тончно вы хотите докупить столько?
-        }
+                    ingr.Price = buy.Price;
+                    ingr.Count += buy.Count; 
 
-        private void Save_Click(object sender, RoutedEventArgs e)
-        {
-            using(var context = new MSSQLContext())
-            {
-                ingredient = context.Ingredients.First(i => i.Id == ingredient.Id);
-                ingredient.Count = Convert.ToInt32(IngredientCount.Text);
-                ingredient.Price = Convert.ToDecimal(IngredientPrice.Text);
-
-                context.SaveChanges();
+                    context.PurchaseIngredients.Add(buy);
+                    context.SaveChanges();
+                }
             }
         }
     }

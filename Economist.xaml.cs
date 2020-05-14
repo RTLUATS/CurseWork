@@ -26,8 +26,6 @@ namespace CurseWork
 
         public Economist()
         {
-            InitializeComponent();
-
             dictionary = new Dictionary<int, int>()
             {
                 {0, 0},
@@ -39,6 +37,8 @@ namespace CurseWork
                 {6, 3},
                 {7, 1}
             };
+
+            InitializeComponent();
         }
 
         private void Foods_Click(object sender, RoutedEventArgs e)
@@ -75,6 +75,16 @@ namespace CurseWork
                 LoadIncome(Date.SelectedIndex);
             else
                 LoadExpense(Date.SelectedIndex);
+        }
+
+        private void Report_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Reports report = new Reports();
+
+            if(Report.SelectedIndex == 0)
+                report.CommonPart(3, dictionary[Date.SelectedIndex]);
+            else
+                report.CommonPart(4, dictionary[Date.SelectedIndex]);
         }
     }
 }

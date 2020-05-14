@@ -22,9 +22,8 @@
         <Label Foreground="White" FontWeight="DemiBold" FontSize="16" Margin="10,136,585,245">Сколько штук, докупим?</Label>
         <TextBox Foreground="PaleGreen" FontSize="16" FontWeight="DemiBold" Name="Buy" Margin="335,140,283,245" materialDesign:HintAssist.Hint="Число"/>
         <TextBox Foreground="PaleGreen" FontSize="16" FontWeight="DemiBold" Name="IngredientPrice" Margin="335,97,283,288" materialDesign:HintAssist.Hint="Цена"/>
-        <TextBlock Foreground="White" Name="IngredientName" Margin="335,10,283,371"></TextBlock>
-        <TextBlock Foreground="White" Name="IngredientCount" Margin="335,53,283,327"></TextBlock>
-        <Button Foreground="White" FontWeight="DemiBold" FontSize="16" Name="Save" Content="Сохранить" Margin="653,368,10,10" Click="Save_Click" Height="Auto"></Button>
-        <Button Foreground="White" FontWeight="DemiBold" Name="ClickBuy" Margin="545,136,120,235" FontSize="16" Content="Докупить" Click="ClickBuy_Click" Height="Auto"></Button>
+        <TextBlock Foreground="White" Name="IngredientName" Margin="335,10,283,371"/>
+        <TextBlock Foreground="White" Name="IngredientCount" Margin="335,53,283,327"/>
+        <Button Foreground="White" FontWeight="DemiBold" Name="ClickBuy" Margin="545,136,120,235" FontSize="16" Content="Докупить" Click="ClickBuy_Click" Height="Auto"/>
     </Grid>
 </Window>

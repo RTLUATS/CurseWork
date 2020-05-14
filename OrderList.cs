@@ -11,13 +11,11 @@ namespace CurseWork
     {
         public int Id { get; set; }
 
-        public int? IdUser { get; set; }
+        public int? UserId { get; set; }
 
         public decimal AmountOrder { get; set; }
 
         public DateTime DateOrder { get; set; }
-
-        public int IdContracts { get; set; }
         
         public string FirstName { get; set; }
 

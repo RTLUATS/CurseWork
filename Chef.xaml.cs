@@ -191,7 +191,6 @@ namespace CurseWork
             CreateButtons();
         }
 
-
         private void RequestReport_Click(object sender, RoutedEventArgs e)
         {
             var flag = true;
@@ -199,10 +198,14 @@ namespace CurseWork
             using(var context = new MSSQLContext())
             {
                 flag = context.Inquiries.ToList().Count != 0;    
-            }  
+            }
 
-            if(flag)
-                Reports.CommonPart(0);
+            if (flag)
+            {
+                Reports report = new Reports();
+
+                report.CommonPart(0);
+            }
         }
 
         private void Chef_Closing(object sender, CancelEventArgs e)

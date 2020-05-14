@@ -10,7 +10,7 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
-        TextElement.FontWeight="Regular"
+        TextElement.FontWeight="DemiBold"
         TextElement.FontSize="16"
         TextOptions.TextFormattingMode="Ideal"
         TextOptions.TextRenderingMode="Auto"
@@ -26,18 +26,18 @@
                 <DataGridComboBoxColumn Header="В чём измеряется" SelectedValueBinding="{Binding Path=Unit, Mode=TwoWay}">
                     <DataGridComboBoxColumn.ItemsSource>
                         <col:ArrayList>
-                            <sys:String>Литры</sys:String>
-                            <sys:String>Килограммы</sys:String>
+                            <sys:String>л.</sys:String>
+                            <sys:String>кг.</sys:String>
                         </col:ArrayList>
                     </DataGridComboBoxColumn.ItemsSource>
                 </DataGridComboBoxColumn>
                 <DataGridTextColumn Binding="{Binding Path=CookingSteps, Mode=TwoWay}" Header="Действия при приготовлении"/>
             </DataGrid.Columns>
         </DataGrid>
-        <TextBox Foreground="PaleGreen" FontSize="16" Name="Name" SpellCheck.IsEnabled="True"  materialDesign:HintAssist.Hint="Наименование..." Margin="431,87,209,290"/>
-        <TextBox Foreground="PaleGreen" FontSize="16" Name="Category" SpellCheck.IsEnabled="True"  materialDesign:HintAssist.Hint="Категория..." Margin="431,167,209,213"/>
-        <Button Foreground="White" FontWeight="DemiBold" FontSize="14" Name="ChangeImage" Content="Выбрать картинку" Margin="431,10,189,370" Click="ChangeImage_Click" Height="Auto"></Button>
-        <Button Foreground="White" FontWeight="DemiBold" FontSize="14" Name="AddFood" Content="Добавить в меню" Margin="612,167,10,213" Click="AddFood_Click" Height="Auto"></Button>
-        <Button Foreground="White" FontWeight="DemiBold" FontSize="14" Name="SaveChange" Content="Сохранить измения" Margin="612,117,10,263" Click="SaveChange_Click" Height="Auto"></Button>
+        <TextBox Foreground="PaleGreen" Name="Name" SpellCheck.IsEnabled="True"  materialDesign:HintAssist.Hint="Наименование..." Margin="431,87,209,290"/>
+        <TextBox Foreground="PaleGreen" Name="Category" SpellCheck.IsEnabled="True"  materialDesign:HintAssist.Hint="Категория..." Margin="431,167,209,213"/>
+        <Button Foreground="White" FontWeight="DemiBold" FontSize="14" Name="ChangeImage" Content="Выбрать картинку" Margin="431,10,189,370" Click="ChangeImage_Click" Height="Auto"/>
+        <Button Foreground="White" FontWeight="DemiBold" FontSize="14" Name="AddFood" Content="Добавить в меню" Margin="612,167,10,213" Click="AddFood_Click" Height="Auto"/>
+        <Button Foreground="White" FontWeight="DemiBold" FontSize="14" Name="SaveChange" Content="Сохранить измения" Margin="612,117,10,263" Click="SaveChange_Click" Height="Auto"/>
     </Grid>
 </Window>

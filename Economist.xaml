@@ -7,8 +7,8 @@
         xmlns:local="clr-namespace:CurseWork" 
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
-        TextElement.FontWeight="Regular"
+        TextElement.Foreground="White"
+        TextElement.FontWeight="DemiBold"
         TextElement.FontSize="16"
         TextOptions.TextFormattingMode="Ideal"
         TextOptions.TextRenderingMode="Auto"
@@ -20,17 +20,25 @@
         <Label Name="LabelIncome" Foreground="White" FontWeight="DemiBold" FontSize="17" Margin="695,488,143,88">Сумма рассходов:</Label>
         <Label Name="LabelExpenses" Foreground="White" FontWeight="DemiBold" FontSize="17" Margin="695,536,143,40">Сумма доходов:</Label>
         <ComboBox Name="Date" SelectionChanged="Date_SelectionChanged"  SelectedIndex="0" Margin="734,283,10,288" Foreground="PaleGreen" Height="50" materialDesign:HintAssist.Hint="Период" Style="{StaticResource MaterialDesignFloatingHintComboBox}" materialDesign:TextFieldAssist.UnderlineBrush="{DynamicResource SecondaryAccentBrush}" materialDesign:ColorZoneAssist.Mode="Inverted">
-            <Button Foreground="White" Content="За всё время"/>
-            <Button Foreground="White" Content="За прошедший год"/>
-            <Button Foreground="White" Content="За полгода"/>
-            <Button Foreground="White" Content="За 3 месяца"/>
-            <Button Foreground="White" Content="За месяц"/>
-            <Button Foreground="White" Content="За неделю"/>
-            <Button Foreground="White" Content="За 3 дня"/>
-            <Button Foreground="White" Content="За вчера"/>
+            <TextBlock Foreground="White"  Text="За всё время"/>
+            <TextBlock Foreground="White" Text="За прошедший год"/>
+            <TextBlock Foreground="White" Text="За полгода"/>
+            <TextBlock Foreground="White" Text="За 3 месяца"/>
+            <TextBlock Foreground="White" Text="За месяц"/>
+            <TextBlock Foreground="White" Text="За неделю"/>
+            <TextBlock Foreground="White" Text="За 3 дня"/>
+            <TextBlock Foreground="White" Text="За вчера"/>
         </ComboBox>
-        <Button Foreground="PaleGreen" Name="Foods" FontSize="16" Content="Доходы" Margin="815,57,10,524" Click="Foods_Click" Height="Auto"/>
-        <Button Foreground="PaleGreen" Name="Ingredients" FontSize="16" Content="Расходы" Margin="815,136,10,445" Click="Ingredients_Click" Height="Auto"/>
+        <Button Foreground="White" Name="Foods" FontSize="16" Content="Доходы" Margin="815,10,10,571" Click="Foods_Click" Height="Auto"/>
+        <Button Foreground="White" Name="Ingredients" FontSize="16" Content="Расходы" Margin="815,89,10,492" Click="Ingredients_Click" Height="Auto"/>
+        <ComboBox Name="Report" SelectionChanged="Report_SelectionChanged" Margin="734,167,10,404" Foreground="PaleGreen" Height="50" materialDesign:HintAssist.Hint="Отчёты" Style="{StaticResource MaterialDesignFloatingHintComboBox}" materialDesign:TextFieldAssist.UnderlineBrush="{DynamicResource SecondaryAccentBrush}" materialDesign:ColorZoneAssist.Mode="Inverted">
+            <ComboBoxItem>
+                <TextBlock Foreground="White" Text="Отчёт по доходам" />
+            </ComboBoxItem>
+            <ComboBoxItem>
+                <TextBlock Foreground="White" Text="Отчёт по расходам" />
+            </ComboBoxItem>
+        </ComboBox>
         <TextBlock Name="Income" Margin="854,536,10,40"/>
         <TextBlock Name="Expenses" Margin="854,488,10,88"/>
     </Grid>

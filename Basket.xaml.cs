@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.ComponentModel;
+using System.Data.Entity;
 
 namespace CurseWork
 {
@@ -22,21 +23,22 @@ namespace CurseWork
     public partial class Basket : Window
     { 
     
-        private List<Food> foodInBasket;
+        private List<FoodInBasket> basket;
         private User user;
         private Button button;
 
-        public Basket(List<Food> foods, User currentUser, Button button)
+        public Basket(List<FoodInBasket> basket, User currentUser, Button button)
         {
             InitializeComponent();
 
-            if (foods.Count != 0)
+            if (basket.Count != 0)
             {
-                foodInBasket = foods;
-                BasketTable.ItemsSource = foods;
+                this.basket = basket;
+                BasketTable.ItemsSource = this.basket;
                 this.button = button;
                 user = currentUser;
-                AllSum.Text = foods.Sum(f => f.CurrentPrice).ToString();
+                AllSum.Text = this.basket.Sum(f => f.Price).ToString();
+                DeleteFromBasket.IsEnabled = false;
                 Buy.IsEnabled = true;
             }
 
@@ -57,61 +59,34 @@ namespace CurseWork
 
         private void DeleteFromBasket_Click(object sender, RoutedEventArgs e)
         {
-            var str = Delete.Text.TrimEnd();
+            var str = Delete.Text;
             var numbers = str.Split(new char[] {' '}, StringSplitOptions.RemoveEmptyEntries);
 
             foreach (var num in numbers)
             {
-                if (!Regex.IsMatch(num, "[0-9]+")) continue;
+                if (!Validation.IsNumValidation(num)) continue;
              
-                var id = Convert.ToInt32(num);
+                var index = Convert.ToInt32(num);
 
-                if (foodInBasket.FirstOrDefault(f => f.Id == id) == null) continue;
+                if (basket.FirstOrDefault(f => f.Num == index) == null) continue;
                 
-                foodInBasket.Remove(foodInBasket.First(f=>f.Id == id));
-                foodInBasket.Remove(foodInBasket.First(f => f.Id == id));
-                
+                basket.Remove(basket.First(f=>f.Num == index));
             }
 
-            AllSum.Text = foodInBasket.Sum(f => f.CurrentPrice).ToString();
-            button.Content = $"Корзина ({foodInBasket.Count()})";
+            AllSum.Text = basket.Sum(f => f.Price).ToString();
+            button.Content = $"Корзина ({basket.Count()})";
+            Delete.Text = "";
 
-            if (foodInBasket.Count == 0) Buy.IsEnabled = false;
-
+            if (basket.Count == 0) Buy.IsEnabled = false;
         }
-
-        private bool checkStringField(string text, string pattern)
-        {
-            return Regex.IsMatch(text, pattern);
-        }
-
 
         private void Buy_Click(object sender, RoutedEventArgs e)
         {
             if (user == null)
             {
-                if (Telephone.Text.IsEmpty() || FirstName.Text.IsEmpty() || LastName.Text.IsEmpty() ||
-                    MiddleName.Text.IsEmpty())
+                if (!Validation.TelephoneValidation(Telephone.Text) || !Validation.NameValidation(FirstName.Text) 
+                    || !Validation.NameValidation(MiddleName.Text) || !Validation.NameValidation(LastName.Text))
                 {
-                    MessageBox.Show("Контактные данные должны быть заполнены");
-                    return;
-                }
-
-                var checkFN = checkStringField(FirstName.Text, "[А-Я]{1}[а-я]+");
-                var checkMN = checkStringField(MiddleName.Text, "[А-Я]{1}[а-я]+");
-                var checkLN = checkStringField(LastName.Text, "[А-Я]{1}[а-я]+");
-
-                if (!checkFN || !checkMN || !checkLN)
-                {
-                    MessageBox.Show("В ФИО должны быть только символы кириллицы Пример:Иванов Иван Иванович");
-                    return;
-                }
-
-                var checkT = checkStringField(Telephone.Text, "\\+375[0-9]{9}");
-                
-                if (!checkT)
-                {
-                    MessageBox.Show("В Телефоне должны быть только цифры Пример: +375447856909");
                     return;
                 }
 
@@ -123,8 +98,8 @@ namespace CurseWork
             }
 
             button.Content = "Корзина (0)";
-            foodInBasket = null;
-
+            basket.Clear();
+            Buy.IsEnabled = false;
         }
 
         private void SaveOrder(int id = 0)
@@ -137,6 +112,10 @@ namespace CurseWork
                 {
                     AmountOrder = Convert.ToDecimal(AllSum.Text),
                     DateOrder = DateTime.Now,
+                    FirstName = default,
+                    MiddleName = default,
+                    LastName = default,
+                    Telephone = default,
                 };
 
                 if (id == 0)
@@ -148,7 +127,11 @@ namespace CurseWork
                 }
                 else
                 {
-                    currentOrder.IdUser = id;
+                    currentOrder.UserId = id;
+                    currentOrder.FirstName = user.FirstName;
+                    currentOrder.LastName = user.LastName;
+                    currentOrder.MiddleName = user.MiddleName;
+                    currentOrder.Telephone = user.Telephone;
                 }
 
                 context.OrderLists.Add(currentOrder);
@@ -156,17 +139,30 @@ namespace CurseWork
 
                 var orders =  new List<Order>();
 
-                foreach (var food in foodInBasket)
+                foreach (var food in basket)
                 {
                     if (!listId.Contains(food.Id))
                     {
                         orders.Add(new Order()
                         {
                             FoodId = food.Id,
-                            IdOrderList = currentOrder.Id,
-                            PriceBoughtFor = food.CurrentPrice,
-                            Count = foodInBasket.Where(f => f.Id == food.Id).ToList().Count,
+                            OrderListId = currentOrder.Id,
+                            PriceBoughtFor = food.Price,
+                            Count = basket.Where(f => f.Id == food.Id).ToList().Count,
                         });
+
+                        var list = context.Structures.Where(s => s.FoodId == food.Id)
+                                                       .Include(s => s.Ingredient)
+                                                       .ToList();
+
+                        foreach(var structure in list)
+                        {
+                            var ingr = context.Ingredients.Find(structure.IngredientId);
+                            
+                            ingr.Count -= structure.Quantity * orders[orders.Count-1].Count;
+
+                            context.SaveChanges();
+                        }
 
                         listId.Add(food.Id);
                     }

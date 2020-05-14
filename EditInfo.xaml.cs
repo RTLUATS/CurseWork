@@ -92,7 +92,7 @@ namespace CurseWork
             {
                 if (ChangePasswordValidation()) SaveNewPassword();
             }
-            else if (Validation())
+            else if (Check())
             {
                 SaveChanges();
             }
@@ -107,33 +107,20 @@ namespace CurseWork
             }
 
             MessageBox.Show("Изменения прошли успешно.", "Внимание", MessageBoxButton.OK, MessageBoxImage.Information);
+            
+            isDataDirty = false;
 
-            Close();
+            Close(); ;
         }
 
         private bool ChangePasswordValidation()
         {
-            if(string.IsNullOrWhiteSpace(Telephone.Text))
-            {
-                MessageBox.Show("Для смены пароля вы должны указать номер телефона", "Внимание", MessageBoxButton.OK, MessageBoxImage.Error);
-                return false;
-            }
-            
-            if (CheckStringField(Telephone.Text, "^([+375]{1}[0-9]{9})$"))
-            {
-                MessageBox.Show("Для смены пароля вы должны указать номер телефона", "Внимание", MessageBoxButton.OK, MessageBoxImage.Error);
-                return false;
-            }
-
-            if (!CheckStringField(Password.Password, "\\S{6,20}"))
-            {
-                MessageBox.Show("В Пароле должны быть любые непробельные символы от 6 до 20 символов Пример: BigB0$");
-                return false;
-            }
+            if(Validation.TelephoneValidation(Telephone.Text)) return false;
+            if (!Validation.PasswordValidation(Password.Password)) return false;
 
             if (Password.Password != PasswordCheck.Password)
             {
-                MessageBox.Show("Пароли не совпадают");
+                MessageBox.Show("Пароли не совпадают", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;
             }
 
@@ -141,7 +128,7 @@ namespace CurseWork
             {
                 if(null == context.Users.FirstOrDefault(u => u.Telephone == Telephone.Text))
                 {
-                    MessageBox.Show("Такого теефона мы не знаем", "Внимание", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show("Такого теефона мы не знаем", "Ошабка", MessageBoxButton.OK, MessageBoxImage.Error);
                     return false;
                 }
             }
@@ -178,49 +165,24 @@ namespace CurseWork
             success.Invoke(currentUser);
 
             MessageBox.Show("Изменения прошли успешно.", "Внимание", MessageBoxButton.OK, MessageBoxImage.Information);
+            
+            isDataDirty = false;
 
             Close();
         }
 
-        private bool Validation()
+        private bool Check()
         {
-            if(string.IsNullOrWhiteSpace(FirstName.Text) || string.IsNullOrWhiteSpace(MiddleName.Text) 
-                || string.IsNullOrWhiteSpace(LastName.Text) || string.IsNullOrWhiteSpace(Telephone.Text))
+
+            if (!Validation.NameValidation(FirstName.Text) || !Validation.NameValidation(MiddleName.Text)
+                    || !Validation.NameValidation(LastName.Text))
             {
-                MessageBox.Show("Все поля должны быть заполнены", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;
             }
 
-            if (!CheckStringField(FirstName.Text, "^([А-я]{1}[а-я]+)$"))
-            {
-                MessageBox.Show("Фамилия может содержать только русские буквы", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-                return false;
-            }
-
-            if (!CheckStringField(MiddleName.Text, "^([А-я]{1}[а-я]+)$"))
-            {
-                MessageBox.Show("Имя может содержать только русские буквы", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-                return false;
-            }
-
-            if (!CheckStringField(LastName.Text, "^([А-я]{1}[а-я]+)$"))
-            {
-                MessageBox.Show("Отчество может содержать только русские буквы", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-                return false;
-            }
-
-            if (!CheckStringField(Telephone.Text, "^([+375]{1}[0-9]{9})$"))
-            {
-                MessageBox.Show("Телефон должен начинаться на +375 ,а дальше идут 9 цифр вашего номера", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-                return false;
-            }
+            if (!Validation.TelephoneValidation(Telephone.Text)) return false;
 
             return true;
-        }
-
-        private bool CheckStringField(string str, string pattern)
-        {
-            return Regex.IsMatch(str, pattern);
         }
     }
 }

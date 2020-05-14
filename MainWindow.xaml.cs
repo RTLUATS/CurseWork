@@ -24,7 +24,7 @@ namespace CurseWork
         private List<Food> listFood;
         private List<Category> listCategories;
         private List<Ingredient> listIngredients;
-        private List<Food> foodInBasket;
+        private List<FoodInBasket> basket;
         private Action<User> success;
         private int checker = 0;
         private bool show = false;
@@ -34,7 +34,7 @@ namespace CurseWork
             InitializeComponent();
             Load();
 
-            foodInBasket =  new List<Food>();
+            basket =  new List<FoodInBasket>();
 
         }
 
@@ -82,8 +82,8 @@ namespace CurseWork
         private void LoadFood(int category = 0, string name = "")
         {
             bool checkIngredients;
-           
-            Menu.Children.RemoveRange(0, Menu.Children.Count);
+
+            Menu.Items.Clear();
 
             using (var context = new MSSQLContext())
             {
@@ -116,16 +116,43 @@ namespace CurseWork
                     if (food.CategoryId != category && category != 0) continue;
                     if (!food.Name.StartsWith(name) && name != "") continue;
 
+                    var stackpanel = new StackPanel()
+                    {
+                        Orientation = Orientation.Horizontal
+                    };
+
+                    Label label = new Label()
+                    {
+                        Content = food.Name,
+                        Foreground = Brushes.White,
+                        FontWeight = FontWeights.DemiBold,
+                        FontSize = 16,
+                        VerticalAlignment = VerticalAlignment.Center
+                    };
+
+                    Image img = new Image()
+                    {
+                        Source = WorkWithImage.ConvertArrayByteToImage(food.Image),
+                    };
+
                     var button = new Button()
                     {
                         Name = "Name" + food.Id.ToString(),
-                        IsEnabled = true
+                        IsEnabled = true,
+                        Foreground = Brushes.White,
+                        VerticalAlignment = VerticalAlignment.Center,
+                        HorizontalAlignment = HorizontalAlignment.Right,
+                        Margin = new Thickness(5),
+                        Content = $"{food.Name}",
                     };
 
-                    button.Foreground = Brushes.White;
-                    button.Content = $"{food.Name}";
+                    stackpanel.Children.Add(img);
+                    stackpanel.Children.Add(label);
+                    stackpanel.Children.Add(button);
+     
                     button.Click += EventForFood;
-                    Menu.Children.Add(button);
+
+                    Menu.Items.Add(stackpanel);
 
                 }
             }
@@ -136,7 +163,7 @@ namespace CurseWork
             var allCategories = new Button()
             {
                 Name = "AllCategories",
-                Margin = new Thickness(10),
+                Margin = new Thickness(5),
                 Content = "Все категории",
                 FontSize = 16,
                 FontWeight = FontWeights.DemiBold,
@@ -144,13 +171,14 @@ namespace CurseWork
             };
            
             allCategories.Click += EventForCategories;
-            Categories.Children.Add(allCategories);
+            Categories.Items.Add(allCategories);
 
             foreach (var category in listCategories)
             {
                 var button = new Button()
                 {
                     Name = "Name" + category.Id,
+                    Margin = new Thickness(5),
                     Content = $"{category.Name}",
                     FontWeight = FontWeights.DemiBold,
                     FontSize = 16,
@@ -158,7 +186,7 @@ namespace CurseWork
                 };
 
                 button.Click += EventForCategories;
-                Categories.Children.Add(button);
+                Categories.Items.Add(button);
 
             }
         }
@@ -167,14 +195,13 @@ namespace CurseWork
         {
             var button = (Button)sender;
             var id = Convert.ToInt32(button.Name.Replace("Name", ""));
-            var window = new UserViewFood(listFood.First(f=>f.Id == id), foodInBasket, Basket);
+            var window = new UserViewFood(listFood.First(f=>f.Id == id), basket, Basket);
 
             window.Show();
         }
 
         private void EventForCategories(object sender, RoutedEventArgs e)
         {
-            Menu.Children.RemoveRange(0,Menu.Children.Count);
 
             var button = (Button) sender;
             var id = button.Name == "AllCategories" ? 0 : Convert.ToInt32(button.Name.Replace("Name", ""));
@@ -229,11 +256,10 @@ namespace CurseWork
 
         private void Basket_Click(object sender, RoutedEventArgs e)
         {
-            var basket = new Basket(foodInBasket, currentUser, Basket);
-            basket.Show();
+            var windowBasket = new Basket(basket, currentUser, Basket);
+            windowBasket.Show();
         }
 
-        //???
         private void Search_Click(object sender, RoutedEventArgs e)
         {
             if (SearchField.Text != "")
