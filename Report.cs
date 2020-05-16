@@ -86,7 +86,7 @@ namespace CurseWork
                 }
             }
 
-            margCellsEnd = "С1";
+            margCellsEnd = "C1";
             reportName = "Отчёт Менеджера по Ингредиентам";
 
             return table;
