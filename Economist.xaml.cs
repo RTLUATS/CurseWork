@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -37,7 +38,6 @@ namespace CurseWork
                 {6, 3},
                 {7, 1}
             };
-
             InitializeComponent();
         }
 
@@ -48,11 +48,30 @@ namespace CurseWork
             LoadIncome(Date.SelectedIndex);
         }
 
-        private void LoadIncome(int index = 0)
+        private void LoadIncome(int index )
         {
+            Income.Visibility = Visibility.Visible;
+            LabelIncome.Visibility = Visibility.Visible;
+            Expenses.Visibility = Visibility.Hidden;
+            LabelExpenses.Visibility = Visibility.Hidden;
+
             pageIncome = new DiagramIncome(dictionary[index]);
 
             Frame.Navigate(pageIncome);
+
+            using (var context = new MSSQLContext())
+            {
+                var list = context.Orders
+                                .Include(o => o.OrderList)
+                                .ToList();
+
+                if(index != 0)
+                    Income.Text = list.Where(l => l.OrderList.DateOrder
+                                        .Subtract(DateTime.Now).TotalDays <= dictionary[index])
+                                        .Sum(l => l.PriceBoughtFor * l.Count).ToString();
+                else
+                    Income.Text = list.Sum(l => l.PriceBoughtFor * l.Count).ToString();
+            }
         }
 
         private void Ingredients_Click(object sender, RoutedEventArgs e)
@@ -62,11 +81,29 @@ namespace CurseWork
             LoadExpense(Date.SelectedIndex);   
         }
 
-        private void LoadExpense(int index = 0)
+        private void LoadExpense(int index)
         {
+            Income.Visibility = Visibility.Hidden;
+            LabelIncome.Visibility = Visibility.Hidden;
+            Expenses.Visibility = Visibility.Visible;
+            LabelExpenses.Visibility = Visibility.Visible;
+
             pageExpense = new ExpenseChart(dictionary[index]);
             
             Frame.Navigate(pageExpense);
+
+            using (var context = new MSSQLContext())
+            {
+                var list = context.PurchaseIngredients.ToList();
+
+                if (index != 0)
+                    Expenses.Text = list.Where(l => l.DateOfPurchase
+                                        .Subtract(DateTime.Now).TotalDays <= dictionary[index])
+                                        .Sum(l => l.Price * l.Count).ToString();
+                else
+                    Expenses.Text = list.Sum(l => l.Price * l.Count).ToString();
+            }
+
         }
 
         private void Date_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -83,7 +120,7 @@ namespace CurseWork
 
             if(Report.SelectedIndex == 0)
                 report.CommonPart(3, dictionary[Date.SelectedIndex]);
-            else
+            else if(Report.SelectedIndex == 1)
                 report.CommonPart(4, dictionary[Date.SelectedIndex]);
         }
     }

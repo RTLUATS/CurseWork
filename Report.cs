@@ -281,11 +281,13 @@ namespace CurseWork
                     {
                         wkSheet.Cells[2, i + 1] = dtTable.Columns[i].ColumnName;
                         wkSheet.Cells[2, i + 1].Font.Bold = true;
+  
 
                         Range cell = excelRange.Cells[2, i + 1];
                         Borders bd = cell.Borders;
                         bd.LineStyle = XlLineStyle.xlContinuous;
                         bd.Weight = 2;
+                     
                     }
 
                     //rows
@@ -299,12 +301,15 @@ namespace CurseWork
                             Borders bd = cell.Borders;
                             bd.LineStyle = XlLineStyle.xlContinuous;
                             bd.Weight = 2;
+                           
                         }
                     }
 
-                    excelRange.EntireColumn.AutoFit();
-                    excelRange.EntireRow.AutoFit();
-                    
+
+                    wkSheet.StandardWidth = 30;
+                    wkSheet.Columns.ColumnWidth = 30;
+                   
+                    wkSheet.Columns.HorizontalAlignment = XlVAlign.xlVAlignCenter;
                     wkBook.SaveAs(saveFileDialog.FileName);
                     
                     excelApp.Quit();
