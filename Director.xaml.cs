@@ -189,7 +189,9 @@ namespace CurseWork
             Expenses.Visibility = Visibility.Visible;
             CommonIncome.Visibility = Visibility.Visible;
             CommonExpenses.Visibility = Visibility.Visible;
+            CommonTable.Visibility = Visibility.Hidden;
 
+            CommonTable.IsEnabled = false;
             CommonExpenses.IsEnabled = true;
             CommonIncome.IsEnabled = true;
             TableOrders.IsEnabled = true;
@@ -201,7 +203,6 @@ namespace CurseWork
             Date.IsEnabled = true;
             Date.Visibility = Visibility.Visible;
         }
-
 
         private void LoadPurchase(DataTable dataTable, int date = 0)
         {
