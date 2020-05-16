@@ -13,12 +13,6 @@ namespace CurseWork
 
         private decimal _AdditionalAmount;
 
-        private string _Unit;
-
-        private decimal _Count;
-
-        private string _Name;
-
         public string this[string columnName]
         {
             get
@@ -48,35 +42,11 @@ namespace CurseWork
 
         public int Id { set; get; }
 
-        public string Name
-        {
-            get { return _Name; }
+        public string Name { set; get; }
+       
+        public decimal Count { set; get; }
 
-            set
-            {
-                OnPropertyChanged(ref _Name, value);
-            }
-        }
-
-        public decimal Count
-        {
-            get { return _Count; }
-
-            set
-            {
-                OnPropertyChanged(ref _Count, value);
-            }
-        }
-
-        public string Unit 
-        {
-            get { return _Unit; }
-
-            set
-            {
-                OnPropertyChanged(ref _Unit, value);
-            }
-        }
+        public string Unit { set; get; }
 
         public decimal AdditionalAmount
         {

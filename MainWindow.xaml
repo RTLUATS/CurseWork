@@ -47,6 +47,6 @@
         <Button Grid.Row="0" Grid.Column="7" Style="{StaticResource MaterialDesignRaisedDarkButton}" Name="LogOut" FontSize="16" Click="LogOut_Click" FontWeight="DemiBold" Content="Разлогиниться" IsEnabled="False" Visibility="Hidden" Height="Auto" Margin="10,16,10,17" />
         <Button Grid.Row="0" Grid.Column="5" Style="{StaticResource MaterialDesignRaisedDarkButton}" Name="WorkRoom" Click="WorkRoom_Click" Content="Рабочий кабинет" FontWeight="DemiBold" FontSize="16" IsEnabled="False" Visibility="Hidden" Height="Auto" Margin="10,16,5,17"/>
         <Button Name="Basket" Grid.Row="0" Style="{StaticResource MaterialDesignRaisedDarkButton}" Grid.Column="4" Content="Корзина(0)" FontWeight="DemiBold" FontSize="16"  Click="Basket_Click" Height="Auto" Margin="10,16,10,17" />
-        <TextBox Name="SearchField" FontWeight="DemiBold" Background="Black" Foreground="PaleGreen"  materialDesign:HintAssist.Hint="Поиск по названию" Grid.Row="0" Grid.Column="2" VerticalAlignment="Center"   Margin="10,18,10,17"></TextBox>
+        <TextBox Name="SearchField" TextWrapping="Wrap" FontWeight="DemiBold" Background="Black" Foreground="PaleGreen"  materialDesign:HintAssist.Hint="Поиск по названию" Grid.Row="0" Grid.Column="2" VerticalAlignment="Center"   Margin="10,18,10,17"></TextBox>
     </Grid>
 </Window>

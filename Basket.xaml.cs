@@ -38,7 +38,7 @@ namespace CurseWork
                 this.button = button;
                 user = currentUser;
                 AllSum.Text = this.basket.Sum(f => f.Price).ToString();
-                DeleteFromBasket.IsEnabled = false;
+                DeleteFromBasket.IsEnabled = true;
                 Buy.IsEnabled = true;
             }
 
@@ -119,7 +119,7 @@ namespace CurseWork
                 };
 
                 if (id == 0)
-                {
+                {   
                     currentOrder.FirstName = FirstName.Text;
                     currentOrder.LastName = LastName.Text;
                     currentOrder.MiddleName = MiddleName.Text;

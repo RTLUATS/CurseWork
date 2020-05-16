@@ -79,7 +79,7 @@ namespace CurseWork
 
         private void Report_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            Reports report = new Reports();
+            Report report = new Report();
 
             if(Report.SelectedIndex == 0)
                 report.CommonPart(3, dictionary[Date.SelectedIndex]);

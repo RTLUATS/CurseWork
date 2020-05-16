@@ -205,7 +205,7 @@ namespace CurseWork
 
             if (flag)
             {
-                Reports report = new Reports();
+                Report report = new Report();
 
                 report.CommonPart(0);
             }

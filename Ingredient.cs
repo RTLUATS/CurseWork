@@ -20,7 +20,7 @@ namespace CurseWork
         
         public virtual ICollection<Structure> Structures { get; set; }
 
-        public virtual ICollection<PurchaseIngredient> purchaseIngredients { get; set; }
+        public virtual ICollection<PurchaseIngredient> PurchaseIngredients { get; set; }
 
         public virtual ICollection<Inquiry> Inquiries { get; set; }
     }

@@ -270,7 +270,7 @@
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="ObservableObject.cs" />
     <Compile Include="PurchaseIngredient.cs" />
-    <Compile Include="Reports.cs" />
+    <Compile Include="Report.cs" />
     <Compile Include="RequestIngredientsModel.cs" />
     <Compile Include="UserViewFood.xaml.cs">
       <DependentUpon>UserViewFood.xaml</DependentUpon>

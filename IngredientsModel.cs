@@ -10,6 +10,7 @@ namespace CurseWork
 {
     public class IngredientsModel: ObservableObject, IDataErrorInfo
     {
+        public Dictionary<string, string> ErrorCollection { get; private set; } = new Dictionary<string, string>();
 
         public string this[string columnName]
         {
@@ -36,6 +37,14 @@ namespace CurseWork
                         break; 
                 }
 
+
+                if (ErrorCollection.ContainsKey(columnName))
+                    ErrorCollection[columnName] = result;
+                else if (result != null)
+                    ErrorCollection.Add(columnName, result);
+
+                OnPropertyChanged("ErrorCollection");
+
                 return result;
             }
         }
@@ -47,8 +56,6 @@ namespace CurseWork
         private decimal _Weight;
 
         private string _Unit;
-
-        private string _CookingStep;
 
         public string IngredientName
         {
@@ -80,14 +87,6 @@ namespace CurseWork
             }   
         }
        
-        public string CookingStep
-        {
-            get { return _CookingStep; }
-            
-            set
-            {
-                OnPropertyChanged(ref _CookingStep, value);
-            }
-        }
+        public string CookingStep { get; set; }
     }
 }

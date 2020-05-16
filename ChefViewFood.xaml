@@ -34,6 +34,11 @@
                 </DataGridComboBoxColumn>
                 <DataGridTextColumn Binding="{Binding Path=CookingSteps, UpdateSourceTrigger=PropertyChanged,  Mode=TwoWay}" Header="Действия при приготовлении"/>
             </DataGrid.Columns>
+            <DataGrid.Resources>
+                <Style TargetType="DataGridCell">
+                    <Setter Property="ToolTip" Value="{Binding ErrorCollection[AdditionalAmount]}" />
+                </Style>
+            </DataGrid.Resources>
         </DataGrid>
         <TextBox Foreground="PaleGreen" MaxLength="20" TextChanged="Text_TextChanged" Name="Name" SpellCheck.IsEnabled="True"  materialDesign:HintAssist.Hint="Наименование..." Margin="431,87,209,290"/>
         <TextBox Foreground="PaleGreen" MaxLength="20" TextChanged="Text_TextChanged" Name="Category" SpellCheck.IsEnabled="True"  materialDesign:HintAssist.Hint="Категория..." Margin="431,167,209,213"/>

@@ -13,13 +13,13 @@ using Excel = Microsoft.Office.Interop.Excel;
 
 namespace CurseWork
 {
-    internal class Reports
+    internal class Report
     {
         private Dictionary<int, Func<int, System.Data.DataTable>> dictionary;
         private string margCellsEnd;
         private string reportName;
 
-        public Reports()
+        public Report()
         {
             dictionary = new Dictionary<int, Func<int,System.Data.DataTable>>()
             {

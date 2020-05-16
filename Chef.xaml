@@ -23,7 +23,13 @@
                 <DataGridTextColumn CanUserResize="False" Binding="{Binding Path=Name}"  IsReadOnly="True" Header="Название" Width="120"/>
                 <DataGridTextColumn CanUserResize="False" Binding="{Binding Path=Count}" IsReadOnly="True" Header="Сколько есть" Width="140"/>
                 <DataGridTextColumn CanUserResize="False" Binding="{Binding Path=Unit}" IsReadOnly="True" Header="Измерение" Width="110"/>
-                <DataGridTextColumn CanUserResize="False" Binding="{Binding Path=AdditionalAmount, ValidatesOnDataErrors=True, Mode=TwoWay}" IsReadOnly="False" Header="Сколько докупить" Width="*"/>
+                <DataGridTextColumn CanUserResize="False" Binding="{Binding Path=AdditionalAmount, ValidatesOnDataErrors=True, Mode=TwoWay}"  IsReadOnly="False" Header="Сколько докупить" Width="*">
+                    <DataGridTextColumn.CellStyle>
+                        <Style TargetType="DataGridCell">
+                            <Setter Property="ToolTip" Value="{Binding ErrorCollection[AdditionalAmount]}" />
+                        </Style>
+                    </DataGridTextColumn.CellStyle>
+                </DataGridTextColumn>
             </DataGrid.Columns>
         </DataGrid>
         <StackPanel Margin="539,10,10,10">

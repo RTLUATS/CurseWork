@@ -319,14 +319,14 @@ namespace CurseWork
 
         private void DishReport_Click(object sender, RoutedEventArgs e)
         {
-            Reports report = new Reports();
+            Report report = new Report();
 
             report.CommonPart(1);
         }
 
         private void IngredientReport_Click(object sender, RoutedEventArgs e)
         {
-            Reports report = new Reports();
+            Report report = new Report();
 
             report.CommonPart(2);
         }
