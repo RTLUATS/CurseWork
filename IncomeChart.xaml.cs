@@ -50,8 +50,8 @@ namespace CurseWork
                                                                 .Sum(o => o.PriceBoughtFor * o.Count)));
                         else
                             income.Add((item.Food.Name, orders.Where(o => o.FoodId == item.FoodId
-                                                                     && o.OrderList.DateOrder
-                                                                     .Subtract(DateTime.Now).TotalDays <= days)
+                                                                     && DateTime.Now
+                                                                     .Subtract(o.OrderList.DateOrder.Date).TotalDays <= days)
                                                                 .Sum(o => o.PriceBoughtFor * o.Count)));
                     }
                 }

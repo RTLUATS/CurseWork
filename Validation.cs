@@ -72,7 +72,7 @@ namespace CurseWork
 
         internal static bool NameIngredientValidation(string str)
         {
-            if (!Regex.IsMatch(str, "^([А-я]{1}[а-я]+)$") ||  str.Length > 20 )
+            if (!Regex.IsMatch(str, "^\\p{Ll}{2,}(\\-?\\p{Ll}{2,})?$") || str.Length > 20)
             {
                 MessageBox.Show("имя ингредента указано не правильно и" +
                     " количество сиволов < 20! Пример:coca-cola",
@@ -128,7 +128,7 @@ namespace CurseWork
         internal static bool PriceValidation(string str)
         {
 
-            if (!Regex.IsMatch(str, "^([0-9]{1}([.]{1}[0-9]{1,2})?)$"))
+            if (!Regex.IsMatch(str, "^([0-9]+([.]{1}[0-9]{1,2})?)$"))
             {
                 MessageBox.Show("Стоймость указана неверно: 0.3",
                     "Внимание", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -141,7 +141,7 @@ namespace CurseWork
 
         internal static bool CountValidation(string str)
         {
-            if (!Regex.IsMatch(str, "^([0-9]{1}([.]{1}[0-9]{1,3})?)$"))
+            if (!Regex.IsMatch(str, "^([0-9]+([.]{1}[0-9]{1,3})?)$"))
             {
                 MessageBox.Show("Количество указано неверно. Пример: 0.123",
                     "Внимание", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -154,7 +154,7 @@ namespace CurseWork
 
         internal static bool CountValidationWMB(string str)
         {
-            if (!Regex.IsMatch(str, "^([0-9]{1}([.]{1}[0-9]{1,3})?)$"))
+            if (!Regex.IsMatch(str, "^([0-9]+([.]{1}[0-9]{1,3})?)$"))
             {
 
                 return false;

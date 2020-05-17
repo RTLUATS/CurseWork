@@ -50,8 +50,8 @@ namespace CurseWork
                                 .Sum(l => l.Price * l.Count)));
                         else
                             expense.Add((item.Ingredient.Name,
-                               purchaseList.Where(l => l.IngredientId == item.IngredientId && 
-                                                l.DateOfPurchase.Subtract(DateTime.Now).TotalDays <= days)
+                               purchaseList.Where(l => l.IngredientId == item.IngredientId &&
+                                               DateTime.Now.Subtract(l.DateOfPurchase.Date).Days <= days)
                                                 .Sum(l => l.Price * l.Count)));
                     }
                 }

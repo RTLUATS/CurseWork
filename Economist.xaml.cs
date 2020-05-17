@@ -66,8 +66,8 @@ namespace CurseWork
                                 .ToList();
 
                 if(index != 0)
-                    Income.Text = list.Where(l => l.OrderList.DateOrder
-                                        .Subtract(DateTime.Now).TotalDays <= dictionary[index])
+                    Income.Text = list.Where(l => DateTime.Now
+                                        .Subtract(l.OrderList.DateOrder.Date).TotalDays <= dictionary[index])
                                         .Sum(l => l.PriceBoughtFor * l.Count).ToString();
                 else
                     Income.Text = list.Sum(l => l.PriceBoughtFor * l.Count).ToString();
@@ -97,8 +97,8 @@ namespace CurseWork
                 var list = context.PurchaseIngredients.ToList();
 
                 if (index != 0)
-                    Expenses.Text = list.Where(l => l.DateOfPurchase
-                                        .Subtract(DateTime.Now).TotalDays <= dictionary[index])
+                    Expenses.Text = list.Where(l => DateTime.Now
+                                        .Subtract(l.DateOfPurchase.Date).TotalDays <= dictionary[index])
                                         .Sum(l => l.Price * l.Count).ToString();
                 else
                     Expenses.Text = list.Sum(l => l.Price * l.Count).ToString();

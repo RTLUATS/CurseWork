@@ -24,7 +24,7 @@ namespace CurseWork
                     case nameof(AdditionalAmount):
                         if (AdditionalAmount < 0)
                             result = "Колличество не может быть отрицательным";
-                        else if (Validation.CountValidationWMB(AdditionalAmount.ToString()))
+                        else if (!Validation.CountValidationWMB(AdditionalAmount.ToString()))
                             result = "Количество указано неверно.";
                     break;
                 }

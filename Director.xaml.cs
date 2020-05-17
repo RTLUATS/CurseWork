@@ -227,7 +227,7 @@ namespace CurseWork
                         else
                             dataTable.Rows.Add(item.Ingredient.Name,
                                list.Where(i => i.IngredientId == item.IngredientId &&
-                                    i.DateOfPurchase.Subtract(DateTime.Now).TotalDays <= dictionary[date])
+                                    DateTime.Now.Subtract(i.DateOfPurchase.Date).TotalDays <= dictionary[date])
                                         .Sum(i => i.Price * i.Count));
                     }
                 }
@@ -237,8 +237,9 @@ namespace CurseWork
                 if (date == 0)
                     CommonExpenses.Text = list.Sum(l => l.Price * l.Count).ToString();
                 else
-                    CommonExpenses.Text = list.Where(l => l.DateOfPurchase.Subtract(DateTime.Now).TotalDays <= dictionary[date])
-                        .Sum(l => l.Price).ToString();
+                    CommonExpenses.Text = list.Where(l => DateTime.Now.
+                                                Subtract(l.DateOfPurchase.Date).TotalDays <= dictionary[date])
+                                                .Sum(l => l.Price).ToString();
             }
         }
 
@@ -266,7 +267,7 @@ namespace CurseWork
                          else
                             dataTable.Rows.Add(item.Food.Name,
                                 list.Where(i => i.FoodId == item.FoodId &&
-                                        i.OrderList.DateOrder.Subtract(DateTime.Now).TotalDays <= dictionary[date])
+                                        DateTime.Now.Subtract(i.OrderList.DateOrder.Date).TotalDays <= dictionary[date])
                                             .Sum(i => i.PriceBoughtFor));
                    }
                 }
@@ -274,7 +275,8 @@ namespace CurseWork
                 if (date == 0)
                     CommonIncome.Text = list.Sum(l => l.PriceBoughtFor).ToString();
                 else
-                    CommonIncome.Text = list.Where(l => l.OrderList.DateOrder.Subtract(DateTime.Now).TotalDays <= dictionary[date]).Sum(l => l.PriceBoughtFor).ToString();
+                    CommonIncome.Text = list.Where(l => DateTime.Now
+                                            .Subtract(l.OrderList.DateOrder.Date).TotalDays <= dictionary[date]).Sum(l => l.PriceBoughtFor).ToString();
             }       
 
             TableOrders.ItemsSource = dataTable.DefaultView;

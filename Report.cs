@@ -138,7 +138,7 @@ namespace CurseWork
         private System.Data.DataTable EconomistReportIncome(int days)
         {
             var table = new System.Data.DataTable();
-            var listId = new List<(int, int)>();
+            var listId = new List<int>();
 
             using (var context = new MSSQLContext())
             {
@@ -153,7 +153,7 @@ namespace CurseWork
 
                 foreach (var item in list)
                 {
-                    if(!listId.Contains((item.FoodId, item.OrderListId))) {
+                    if(!listId.Contains(item.FoodId)) {
                         
                         DataRow newRow = table.NewRow();
 
@@ -167,14 +167,14 @@ namespace CurseWork
                         else
                         {
                             newRow[1] = list.Where(l => l.FoodId == item.FoodId &&
-                                                   l.OrderList.DateOrder.Subtract(DateTime.Now).TotalDays <= days)
+                                                  DateTime.Now.Subtract(l.OrderList.DateOrder.Date).TotalDays <= days)
                                                    .Sum(i => i.PriceBoughtFor * i.Count);
                             newRow[2] = list.Where(l => l.FoodId == item.FoodId &&
-                                                   l.OrderList.DateOrder.Subtract(DateTime.Now).TotalDays <= days)
+                                                   DateTime.Now.Subtract(l.OrderList.DateOrder.Date).TotalDays <= days)
                                                    .Sum(i => i.Count);
 
                         }
-                        listId.Add((item.FoodId, item.OrderListId));
+                        listId.Add(item.FoodId);
 
                         table.Rows.Add(newRow);
                     }
@@ -218,11 +218,11 @@ namespace CurseWork
                         }
                         else
                         {
-                            newRow[1] = list.Where(l => l.IngredientId == item.IngredientId && 
-                                                    item.DateOfPurchase.Subtract(DateTime.Now).TotalDays <= days)
+                            newRow[1] = list.Where(l => l.IngredientId == item.IngredientId &&
+                                                    DateTime.Now.Subtract(item.DateOfPurchase.Date).Days <= days)
                                                             .Sum(i => i.Price * i.Count);
                             newRow[2] = list.Where(l => l.IngredientId == item.IngredientId &&
-                                                    item.DateOfPurchase.Subtract(DateTime.Now).TotalDays <= days)
+                                                    DateTime.Now.Subtract(item.DateOfPurchase.Date).Days <= days)
                                                             .Sum(i => i.Count);
                         }
 
