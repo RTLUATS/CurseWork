@@ -105,7 +105,6 @@ namespace CurseWork
                 table.Columns.Add(new DataColumn("Название", typeof(string)));
                 table.Columns.Add(new DataColumn("Есть в меню?", typeof(bool)));
                 table.Columns.Add(new DataColumn("Текущая цена", typeof(decimal)));
-                table.Columns.Add(new DataColumn("Состав", typeof(string)));
 
                 foreach (var item in list)
                 {
@@ -115,21 +114,11 @@ namespace CurseWork
                     newRow[1] = item.InMenu;
                     newRow[2] = item.CurrentPrice;
 
-                    var str = "";
-
-                    foreach(var structure in item.Structures)
-                    {
-                        if(item.Structures.IndexOf(structure) == item.Structures.Count - 1)
-                            str += $"{structure.Ingredient.Name} {structure.Quantity} {structure.Ingredient.Unit}.";
-                        else
-                            str += $"{structure.Ingredient.Name} {structure.Quantity} {structure.Ingredient.Unit},";
-                    }
-
                     table.Rows.Add(newRow);
                 }
 
                 reportName = "Отчёт Менеджера по Блюдам";
-                margCellsEnd = "D1";
+                margCellsEnd = "C1";
             }
 
             return table;
@@ -199,7 +188,7 @@ namespace CurseWork
                                 .ToList();
 
                 table.Columns.Add(new DataColumn("Название", typeof(string)));
-                table.Columns.Add(new DataColumn("Общий рассход", typeof(decimal)));
+                table.Columns.Add(new DataColumn("Общий расход", typeof(decimal)));
                 table.Columns.Add(new DataColumn("Приобретённое количество", typeof(decimal)));
 
                 foreach (var item in list)
@@ -232,7 +221,7 @@ namespace CurseWork
                     }
                 }
                 margCellsEnd = "C1";
-                reportName = "Отчёт Экономита по рассходам за" + (days == 0 ? "всё время" : $"последние {days} дней"); ;
+                reportName = "Отчёт Экономита по расходам за" + (days == 0 ? "всё время" : $"последние {days} дней"); ;
             }
 
             return table;

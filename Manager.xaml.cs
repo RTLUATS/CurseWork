@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MaterialDesignColors;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Globalization;
@@ -23,6 +24,7 @@ namespace CurseWork
     public partial class Manager : Window
     {
         private List<Food> foods;
+        private List<Window> windows;
         private List<Inquiry> listInquiry;
         private List<Ingredient> ingredients;
         private Dictionary<int, TextBox> inquiryDictionary;
@@ -121,8 +123,10 @@ namespace CurseWork
             var button = (Button) sender;
             var id = Convert.ToInt32(button.Name.Replace("Name", ""));
             var window = new ManagerViewFood(foods.First(f=>f.Id == id));
-            
+           
             window.Show();
+            
+            windows.Add(window);
         }
 
         private void IngredientControlVisibility(int a )
@@ -181,6 +185,8 @@ namespace CurseWork
             var window = new ManagerViewIngredients(ingredients.First(i => i.Id == id));
             
             window.Show();
+
+            windows.Add(window);
         }
 
         private void LoadAllIngredients()
@@ -340,6 +346,14 @@ namespace CurseWork
         private void BoxWithIngredients_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ingredientsDictionary[BoxWithIngredients.SelectedIndex].Invoke();
+        }
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            foreach(var item in windows)
+            {
+                if (item.IsVisible) item.Close();
+            }
         }
     }
 }

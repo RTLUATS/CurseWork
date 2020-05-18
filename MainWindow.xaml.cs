@@ -1,18 +1,10 @@
-﻿using MSharp.Framework;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.ComponentModel;
+
 namespace CurseWork
 {
     /// <summary>
@@ -22,6 +14,7 @@ namespace CurseWork
     {
         private User currentUser;
         private List<Food> listFood;
+        private List<Window> windows;
         private List<Category> listCategories;
         private List<Ingredient> listIngredients;
         private List<FoodInBasket> basket;
@@ -35,7 +28,7 @@ namespace CurseWork
             Load();
 
             basket =  new List<FoodInBasket>();
-
+            windows = new List<Window>();
         }
 
         private void Load()
@@ -61,6 +54,8 @@ namespace CurseWork
             var window = new EditInfo(currentUser, success);
             
             window.Show();
+
+            windows.Add(window);
         }
 
         private void LogOut_Click(object sender, RoutedEventArgs e) 
@@ -77,6 +72,11 @@ namespace CurseWork
             Autorization.Visibility = Visibility.Visible;
             Autorization.IsEnabled = true;
             currentUser = null;
+
+            foreach(var item in windows)
+            {
+                if (item.IsVisible) item.Close();
+            }
         }
 
         private void LoadFood(int category = 0, string name = "")
@@ -230,24 +230,24 @@ namespace CurseWork
             switch (currentUser.LvlAccess) 
             {
                 case 1: var managerWindow = new Manager();
-                        
                         managerWindow.Show();
+                        windows.Add(managerWindow);
                     break;
                 case 2: var chefWindow = new Chef();
-
                         chefWindow.Show();
+                        windows.Add(chefWindow);
                     break;
                 case 3: var economistWindow = new Economist();
-
                         economistWindow.Show();
+                        windows.Add(economistWindow);
                     break;
                 case 4: var adminWindow = new Administrator();
-
                         adminWindow.Show();
+                        windows.Add(adminWindow);
                     break;
                 case 5: var directorWindow = new Director();
-
                         directorWindow.Show();
+                        windows.Add(directorWindow);
                     break;
             }
 

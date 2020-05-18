@@ -19,18 +19,29 @@ namespace CurseWork
     /// </summary>
     public partial class Authorization : Window
     {
+        private List<Window> windows;
         private Action<User> successAuth;
         private Button LogOut, WorkRoom, Autoris, Edit;
 
         public Authorization(Button Edit, Button LogOut, Button WorkRoom, Button Authorization, Action<User> successAuth)
         {
             InitializeComponent();
+
+            windows = new List<Window>();
             this.LogOut = LogOut;
             this.WorkRoom = WorkRoom;
             this.successAuth = successAuth;
             this.Edit = Edit;
             Autoris = Authorization;
 
+        }
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            foreach(var item in windows)
+            {
+                if (item.IsVisible) item.Close();
+            }
         }
 
         private void Autorization_Click(object sender, RoutedEventArgs e)
@@ -85,6 +96,8 @@ namespace CurseWork
         {
             var window = new EditInfo();
             window.Show();
+
+            windows.Add(window);
         }
 
         private void Registration_Click(object sender, RoutedEventArgs e)
@@ -92,6 +105,8 @@ namespace CurseWork
             var registration = new Registration(successAuth, LogOut, Autoris, Edit);
             
             registration.Show();
+
+            windows.Add(registration);
         }
     }
 }

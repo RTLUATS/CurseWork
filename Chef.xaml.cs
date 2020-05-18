@@ -21,13 +21,14 @@ namespace CurseWork
     /// </summary>
     public partial class Chef : Window
     {
-
+        private List<Window> windows;
         private List<Food> foods;
         private List<RequestIngredientsModel> list;
 
         public Chef()
         {
             list = new List<RequestIngredientsModel>();
+            windows = new List<Window>();
 
             InitializeComponent();
             LoadAllFood();
@@ -70,16 +71,17 @@ namespace CurseWork
             var id = Convert.ToInt32(button.Name.Replace("Name", ""));
 
             var window = new ChefViewFood(foods.First(f=>f.Id == id));
-
             window.Show();
+
+            windows.Add(window);
 
         }
 
         private void AddFood_Click(object sender, RoutedEventArgs e)
         { 
             var newCurrentFood = new ChefViewFood();
-
             newCurrentFood.Show();
+            windows.Add(newCurrentFood);
         }
 
         private void AllFood_Click(object sender, RoutedEventArgs e)
@@ -208,6 +210,14 @@ namespace CurseWork
                 Report report = new Report();
 
                 report.CommonPart(0);
+            }
+        }
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            foreach(var item in windows)
+            {
+                if (item.IsVisible) item.Close();
             }
         }
     }
