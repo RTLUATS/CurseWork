@@ -8,9 +8,7 @@ using System.Data.Entity;
 
 namespace CurseWork
 {
-    /// <summary>
-    /// Interaction logic for ExpenseChart.xaml
-    /// </summary>
+   
     public partial class ExpenseChart : Page
     {
         public ExpenseChart(int days)

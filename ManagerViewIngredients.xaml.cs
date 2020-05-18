@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Linq;
-using System.Text.RegularExpressions;
 using System.Windows;
 
 
 namespace CurseWork
 {
-    /// <summary>
-    /// Interaction logic for ManagerViewIngredients.xaml
-    /// </summary>
+   
     public partial class ManagerViewIngredients : Window
     {
         private Ingredient ingredient;

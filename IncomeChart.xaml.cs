@@ -8,9 +8,7 @@ using LiveCharts.Wpf;
 
 namespace CurseWork
 {
-    /// <summary>
-    /// Interaction logic for DiagramIncome.xaml
-    /// </summary>
+    
     public partial class DiagramIncome : Page
     {
         public DiagramIncome(int days)

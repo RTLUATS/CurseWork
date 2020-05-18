@@ -73,6 +73,8 @@ namespace CurseWork
             Autorization.IsEnabled = true;
             currentUser = null;
 
+            basket.Clear();
+
             foreach(var item in windows)
             {
                 if (item.IsVisible) item.Close();
@@ -198,6 +200,8 @@ namespace CurseWork
             var window = new UserViewFood(listFood.First(f=>f.Id == id), basket, Basket);
 
             window.Show();
+
+            windows.Add(window);
         }
 
         private void EventForCategories(object sender, RoutedEventArgs e)
@@ -258,6 +262,7 @@ namespace CurseWork
         {
             var windowBasket = new Basket(basket, currentUser, Basket);
             windowBasket.Show();
+            windows.Add(windowBasket);
         }
 
         private void Search_Click(object sender, RoutedEventArgs e)

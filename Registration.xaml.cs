@@ -1,6 +1,4 @@
-﻿using System.Linq;
-using System.Windows;
-using System.Text.RegularExpressions;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System;
 using System.ComponentModel;

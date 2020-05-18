@@ -2,9 +2,6 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Linq;
-using System.IO;
-using System.Windows.Media.Imaging;
-using System.ComponentModel;
 using System.Data.Entity;
 
 namespace CurseWork

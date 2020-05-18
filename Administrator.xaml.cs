@@ -1,23 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+
 
 namespace CurseWork
 {
-    /// <summary>
-    /// Interaction logic for Administrator.xaml
-    /// </summary>
     public partial class Administrator : Window
     {
         private List<User> users;
@@ -27,14 +17,16 @@ namespace CurseWork
             InitializeComponent();
         }
 
-        private void LoadUsers(int LvlAccess)
+        private void LoadUsers(int LvlAccess, string str="")
         {
             ListUsers.Items.Clear();
 
             using (var context = new MSSQLContext())
             {
                 users = LvlAccess == 6 ? context.Users.ToList() : 
-                    context.Users.Where(u => u.LvlAccess == LvlAccess).ToList();
+                    context.Users.Where(u => u.LvlAccess == LvlAccess &&
+                                    (u.FirstName.StartsWith(str) || u.MiddleName.StartsWith(str)
+                                       || u.LastName.StartsWith(str))).ToList();
             }
 
             foreach (var user in users)
@@ -83,6 +75,11 @@ namespace CurseWork
         private void Box_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             LoadUsers(Box.SelectedIndex);
+        }
+
+        private void Search_Click(object sender, RoutedEventArgs e)
+        {
+            LoadUsers(Box.SelectedIndex, SearchField.Text);
         }
     }
 }
