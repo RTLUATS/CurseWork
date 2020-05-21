@@ -23,7 +23,9 @@ namespace CurseWork
 
             using (var context = new MSSQLContext())
             {
-                users = LvlAccess == 6 ? context.Users.ToList() : 
+                users = LvlAccess == 6 ? context.Users.Where(u => u.FirstName.StartsWith(str)
+                                        || u.MiddleName.StartsWith(str)
+                                        || u.LastName.StartsWith(str)).ToList() : 
                     context.Users.Where(u => u.LvlAccess == LvlAccess &&
                                     (u.FirstName.StartsWith(str) || u.MiddleName.StartsWith(str)
                                        || u.LastName.StartsWith(str))).ToList();

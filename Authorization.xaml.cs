@@ -49,7 +49,7 @@ namespace CurseWork
             {
                 using (var context = new MSSQLContext())
                 {
-                    var autUser = context.Database.SqlQuery<User>("SELECT * FROM Users").FirstOrDefault(u => u.Login == login && u.Password == password);
+                    var autUser = context.Database.SqlQuery<User>("SELECT * FROM Users").FirstOrDefault(u => u.Login == login && u.Password == password && u.IsBlock == false);
 
                     if (autUser == null)
                     {

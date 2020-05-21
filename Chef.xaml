@@ -27,7 +27,7 @@
                 <DataGridTextColumn CanUserResize="False" Binding="{Binding Path=AdditionalAmount, ValidatesOnDataErrors=True, Mode=TwoWay}"  IsReadOnly="False" Header="Сколько докупить" Width="*">
                     <DataGridTextColumn.CellStyle>
                         <Style TargetType="DataGridCell">
-                            <Setter Property="ToolTip" Value="{Binding ErrorCollection[AdditionalAmount]}" />
+                            <Setter Property="ToolTip" Value="{Binding Path = ErrorCollection[AdditionalAmount]}" />
                         </Style>
                     </DataGridTextColumn.CellStyle>
                 </DataGridTextColumn>

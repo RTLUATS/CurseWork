@@ -59,6 +59,7 @@ namespace CurseWork
                 if (basket.FirstOrDefault(f => f.Num == index) == null) continue;
                 
                 basket.Remove(basket.First(f=>f.Num == index));
+                BasketTable.Items.Refresh();
             }
 
             AllSum.Text = basket.Sum(f => f.Price).ToString();

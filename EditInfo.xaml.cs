@@ -11,7 +11,7 @@ namespace CurseWork
     {
         private User currentUser;
         private Action<User> success;
-        private bool isDataDirty = false;
+        private bool isDataDirty;
 
         public EditInfo(User user = null, Action<User> success = null)
         {
@@ -22,6 +22,8 @@ namespace CurseWork
                 LoadToChangePass();
             else
                 LoadToEdit(user, success);
+            
+            isDataDirty = false;
         }
 
         private void LoadToEdit(User user, Action<User> success)
@@ -79,7 +81,7 @@ namespace CurseWork
         {
             using(var context = new MSSQLContext())
             {
-                currentUser = context.Users.First(u => u.Telephone == Telephone.Text);
+                currentUser = context.Users.FirstOrDefault(u => u.Telephone == Telephone.Text);
                 currentUser.Password = Password.Password;
                 context.SaveChanges();
             }
@@ -104,9 +106,9 @@ namespace CurseWork
 
             using (var context = new MSSQLContext())
             {
-                if(null == context.Users.FirstOrDefault(u => u.Telephone == Telephone.Text))
+                if(null == context.Users.FirstOrDefault(u => u.Telephone == Telephone.Text && u.IsBlock == false))
                 {
-                    MessageBox.Show("Такого теефона мы не знаем", "Ошабка", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show("Такого теефона мы не знаем или он заблокирован", "Ошабка", MessageBoxButton.OK, MessageBoxImage.Error);
                     return false;
                 }
             }

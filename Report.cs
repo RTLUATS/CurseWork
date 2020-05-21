@@ -219,7 +219,7 @@ namespace CurseWork
                     }
                 }
                 margCellsEnd = "C1";
-                reportName = "Отчёт Экономита по расходам за" + (days == 0 ? "всё время" : $"последние {days} дней"); ;
+                reportName = "Отчёт Экономита по расходам за " + (days == 0 ? "всё время" : $"последние {days} дней"); ;
             }
 
             return table;

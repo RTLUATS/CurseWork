@@ -55,7 +55,7 @@ namespace CurseWork
 
                 basket.Add(new FoodInBasket()
                 {
-                    Num = (basket.Count == 0 ? 0 : basket[basket.Count-1].Num++),
+                    Num = (basket.Count == 0 ? 0 : basket[0].Num++),
                     Id = currentFood.Id,
                     Name = currentFood.Name,
                     Price = currentFood.CurrentPrice

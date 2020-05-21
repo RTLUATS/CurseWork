@@ -76,7 +76,7 @@ namespace CurseWork
         {
             Menu.Items.Clear();
 
-            Inquiry.IsEnabled = false;
+            Inquiry.IsEnabled = true;
             Table.IsEnabled = false;
             Table.Visibility = Visibility.Hidden;
             Menu.IsEnabled = true;

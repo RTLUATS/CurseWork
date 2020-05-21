@@ -19,8 +19,8 @@
         <DataGrid Name="BasketTable" Margin="0,0,481,0" AutoGenerateColumns="False">
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding Path=Num}" IsReadOnly="True" Header="Номер" Width="*"/>
-                <DataGridTextColumn Binding="{Binding Path=Name}" IsReadOnly="True" Header="Название" Width="*"/>
-                <DataGridTextColumn Binding="{Binding Path=Price}" IsReadOnly="True" Header="Цена" Width="*"/>
+                <DataGridTextColumn Binding="{Binding Path=Name}" IsReadOnly="True" Header="Название" Width="150"/>
+                <DataGridTextColumn Binding="{Binding Path=Price}" IsReadOnly="True" Header="Цена" Width="80"/>
             </DataGrid.Columns>
         </DataGrid>
         <Label Foreground="White" FontWeight="DemiBold" FontSize="24" Margin="617,0,12,527" Width="165">Итог:</Label>

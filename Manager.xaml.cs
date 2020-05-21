@@ -40,6 +40,8 @@ namespace CurseWork
                 {1, LoadInquiryListBox},
                 {2, LoadIngredientsWithCountNull},
             };
+
+            windows = new List<Window>();
         }
 
         private void LoadFoodNotInMenu()
